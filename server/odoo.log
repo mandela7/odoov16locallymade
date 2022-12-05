@@ -1,0 +1,441 @@
+2022-12-05 07:53:48,604 14220 INFO ? odoo: Odoo version 16.0-20221117 
+2022-12-05 07:53:48,604 14220 INFO ? odoo: Using configuration file at D:\odoov16locallymade\server\odoo.conf 
+2022-12-05 07:53:48,604 14220 INFO ? odoo: addons paths: ['D:\\odoov16locallymade\\server\\odoo\\addons', 'c:\\users\\derickmandela\\appdata\\local\\openerp s.a\\odoo\\addons\\16.0', 'd:\\odoov16locallymade\\server\\odoo\\addons'] 
+2022-12-05 07:53:48,604 14220 INFO ? odoo: database: openpg@localhost:5432 
+2022-12-05 07:53:50,174 14220 INFO ? odoo.addons.base.models.ir_actions_report: A package may be missing to print Data Matrix barcodes: pylibdmtx or libdmtx. 
+2022-12-05 07:53:50,205 14220 INFO ? odoo.addons.base.models.ir_actions_report: Will use the Wkhtmltopdf binary at D:\odoov16locallymade\thirdparty\wkhtmltopdf.exe 
+2022-12-05 07:53:52,861 14220 INFO ? odoo.service.server: Initiating shutdown 
+2022-12-05 07:53:52,861 14220 INFO ? odoo.service.server: Hit CTRL-C again or send a second signal to force the shutdown. 
+2022-12-05 07:53:55,678 624 INFO ? odoo: Odoo version 16.0-20221117 
+2022-12-05 07:53:55,678 624 INFO ? odoo: Using configuration file at D:\odoov16locallymade\server\odoo.conf 
+2022-12-05 07:53:55,678 624 INFO ? odoo: addons paths: ['D:\\odoov16locallymade\\server\\odoo\\addons', 'c:\\users\\derickmandela\\appdata\\local\\openerp s.a\\odoo\\addons\\16.0', 'd:\\odoov16locallymade\\server\\odoo\\addons'] 
+2022-12-05 07:53:55,678 624 INFO ? odoo: database: openpg@localhost:5432 
+2022-12-05 07:53:55,867 624 INFO ? odoo.addons.base.models.ir_actions_report: A package may be missing to print Data Matrix barcodes: pylibdmtx or libdmtx. 
+2022-12-05 07:53:55,867 624 INFO ? odoo.addons.base.models.ir_actions_report: Will use the Wkhtmltopdf binary at D:\odoov16locallymade\thirdparty\wkhtmltopdf.exe 
+2022-12-05 07:53:56,275 624 INFO ? odoo.service.server: HTTP service (werkzeug) running on Mandela:8069 
+2022-12-05 07:56:57,764 624 INFO Alpha3 odoo.modules.loading: loading 1 modules... 
+2022-12-05 07:56:57,779 624 INFO Alpha3 odoo.modules.loading: 1 modules loaded in 0.02s, 0 queries (+0 extra) 
+2022-12-05 07:56:57,810 624 WARNING Alpha3 odoo.modules.graph: module mrp_plm: not installable, skipped 
+2022-12-05 07:56:57,810 624 WARNING Alpha3 odoo.modules.graph: module hr_appraisal: not installable, skipped 
+2022-12-05 07:56:57,826 624 WARNING Alpha3 odoo.modules.graph: module website_sale_subscription: not installable, skipped 
+2022-12-05 07:56:57,842 624 WARNING Alpha3 odoo.modules.graph: module web_studio: not installable, skipped 
+2022-12-05 07:56:57,842 624 WARNING Alpha3 odoo.modules.graph: module sign: not installable, skipped 
+2022-12-05 07:56:57,842 624 WARNING Alpha3 odoo.modules.graph: module quality_control: not installable, skipped 
+2022-12-05 07:56:57,842 624 WARNING Alpha3 odoo.modules.graph: module hr_work_entry_contract_enterprise: not installable, skipped 
+2022-12-05 07:56:57,858 624 WARNING Alpha3 odoo.modules.graph: module helpdesk: not installable, skipped 
+2022-12-05 07:56:57,858 624 WARNING Alpha3 odoo.modules.graph: module timesheet_grid: not installable, skipped 
+2022-12-05 07:56:57,858 624 WARNING Alpha3 odoo.modules.graph: module stock_barcode: not installable, skipped 
+2022-12-05 07:56:57,858 624 WARNING Alpha3 odoo.modules.graph: module account_accountant: not installable, skipped 
+2022-12-05 07:56:57,873 624 WARNING Alpha3 odoo.modules.graph: module documents_spreadsheet: not installable, skipped 
+2022-12-05 07:56:57,873 624 WARNING Alpha3 odoo.modules.graph: module project_timesheet_synchro: not installable, skipped 
+2022-12-05 07:56:57,873 624 WARNING Alpha3 odoo.modules.graph: module spreadsheet_dashboard_edition: not installable, skipped 
+2022-12-05 07:56:57,889 624 WARNING Alpha3 odoo.modules.graph: module crm_helpdesk: not installable, skipped 
+2022-12-05 07:56:57,889 624 WARNING Alpha3 odoo.modules.graph: module website_sale_dashboard: not installable, skipped 
+2022-12-05 07:56:57,905 624 WARNING Alpha3 odoo.modules.graph: module mass_mailing_sale_subscription: not installable, skipped 
+2022-12-05 07:56:57,905 624 WARNING Alpha3 odoo.modules.graph: module hr_mobile: not installable, skipped 
+2022-12-05 07:56:57,905 624 WARNING Alpha3 odoo.modules.graph: module mail_mobile: not installable, skipped 
+2022-12-05 07:56:57,905 624 WARNING Alpha3 odoo.modules.graph: module barcodes_mobile: not installable, skipped 
+2022-12-05 07:56:57,905 624 WARNING Alpha3 odoo.modules.graph: module digest_enterprise: not installable, skipped 
+2022-12-05 07:56:57,905 624 WARNING Alpha3 odoo.modules.graph: module spreadsheet_dashboard_stock: not installable, skipped 
+2022-12-05 07:56:57,905 624 WARNING Alpha3 odoo.modules.graph: module helpdesk_holidays: not installable, skipped 
+2022-12-05 07:56:57,905 624 WARNING Alpha3 odoo.modules.graph: module data_merge_crm: not installable, skipped 
+2022-12-05 07:56:57,905 624 WARNING Alpha3 odoo.modules.graph: module data_merge_helpdesk: not installable, skipped 
+2022-12-05 07:56:57,905 624 WARNING Alpha3 odoo.modules.graph: module data_merge_project: not installable, skipped 
+2022-12-05 07:56:57,959 624 WARNING Alpha3 odoo.modules.graph: module analytic_enterprise: not installable, skipped 
+2022-12-05 07:56:57,959 624 WARNING Alpha3 odoo.modules.graph: module currency_rate_live: not installable, skipped 
+2022-12-05 07:56:57,983 624 WARNING Alpha3 odoo.modules.graph: module helpdesk_sms: not installable, skipped 
+2022-12-05 07:56:57,983 624 WARNING Alpha3 odoo.modules.graph: module spreadsheet_edition: not installable, skipped 
+2022-12-05 07:56:57,999 624 WARNING Alpha3 odoo.modules.graph: module account_invoice_extract: not installable, skipped 
+2022-12-05 07:56:57,999 624 WARNING Alpha3 odoo.modules.graph: module spreadsheet_dashboard_hr_contract: not installable, skipped 
+2022-12-05 07:56:58,030 624 WARNING Alpha3 odoo.modules.graph: module web_cohort: not installable, skipped 
+2022-12-05 07:56:58,030 624 WARNING Alpha3 odoo.modules.graph: module web_map: not installable, skipped 
+2022-12-05 07:56:58,078 624 WARNING Alpha3 odoo.modules.graph: module web_enterprise: not installable, skipped 
+2022-12-05 07:56:58,078 624 WARNING Alpha3 odoo.modules.graph: module web_gantt: not installable, skipped 
+2022-12-05 07:56:58,093 624 WARNING Alpha3 odoo.modules.graph: module sale_planning: not installable, skipped 
+2022-12-05 07:56:58,109 624 WARNING Alpha3 odoo.modules.graph: module sale_subscription: not installable, skipped 
+2022-12-05 07:56:58,124 624 WARNING Alpha3 odoo.modules.graph: module sale_timesheet_enterprise: not installable, skipped 
+2022-12-05 07:56:58,124 624 WARNING Alpha3 odoo.modules.graph: module appointment_sms: not installable, skipped 
+2022-12-05 07:56:58,172 624 WARNING Alpha3 odoo.modules.graph: module event_enterprise: not installable, skipped 
+2022-12-05 07:56:58,172 624 WARNING Alpha3 odoo.modules.graph: module sale_temporal: not installable, skipped 
+2022-12-05 07:56:58,219 624 WARNING Alpha3 odoo.modules.graph: module iot: not installable, skipped 
+2022-12-05 07:56:58,234 624 WARNING Alpha3 odoo.modules.graph: module contacts_enterprise: not installable, skipped 
+2022-12-05 07:56:58,234 624 WARNING Alpha3 odoo.modules.graph: module hr_holidays_gantt: not installable, skipped 
+2022-12-05 07:56:58,234 624 WARNING Alpha3 odoo.modules.graph: module hr_work_entry_contract_attendance: not installable, skipped 
+2022-12-05 07:56:58,234 624 WARNING Alpha3 odoo.modules.graph: module documents_sign: not installable, skipped 
+2022-12-05 07:56:58,282 624 WARNING Alpha3 odoo.modules.graph: module hr_expense_predict_product: not installable, skipped 
+2022-12-05 07:56:58,282 624 WARNING Alpha3 odoo.modules.graph: module documents_product: not installable, skipped 
+2022-12-05 07:56:58,282 624 WARNING Alpha3 odoo.modules.graph: module appointment_hr: not installable, skipped 
+2022-12-05 07:56:58,282 624 WARNING Alpha3 odoo.modules.graph: module approvals_purchase_stock: not installable, skipped 
+2022-12-05 07:56:58,282 624 WARNING Alpha3 odoo.modules.graph: module appointment_crm: not installable, skipped 
+2022-12-05 07:56:58,282 624 WARNING Alpha3 odoo.modules.graph: module data_cleaning: not installable, skipped 
+2022-12-05 07:56:58,282 624 WARNING Alpha3 odoo.modules.graph: module hr_contract_sign: not installable, skipped 
+2022-12-05 07:56:58,282 624 WARNING Alpha3 odoo.modules.graph: module data_merge: not installable, skipped 
+2022-12-05 07:56:58,282 624 WARNING Alpha3 odoo.modules.graph: module event_sale_dashboard: not installable, skipped 
+2022-12-05 07:56:58,282 624 WARNING Alpha3 odoo.modules.graph: module quality: not installable, skipped 
+2022-12-05 07:56:58,282 624 WARNING Alpha3 odoo.modules.graph: module stock_accountant: not installable, skipped 
+2022-12-05 07:56:58,282 624 WARNING Alpha3 odoo.modules.graph: module approvals_purchase: not installable, skipped 
+2022-12-05 07:56:58,328 624 WARNING Alpha3 odoo.modules.graph: module hr_gantt: not installable, skipped 
+2022-12-05 07:56:58,344 624 WARNING Alpha3 odoo.modules.graph: module hr_appraisal_contract: not installable, skipped 
+2022-12-05 07:56:58,360 624 WARNING Alpha3 odoo.modules.graph: module hr_recruitment_reports: not installable, skipped 
+2022-12-05 07:56:58,360 624 WARNING Alpha3 odoo.modules.graph: module approvals: not installable, skipped 
+2022-12-05 07:56:58,360 624 WARNING Alpha3 odoo.modules.graph: module hr_contract_reports: not installable, skipped 
+2022-12-05 07:56:58,360 624 WARNING Alpha3 odoo.modules.graph: module sale_enterprise: not installable, skipped 
+2022-12-05 07:56:58,375 624 WARNING Alpha3 odoo.modules.graph: module hr_appraisal_skills: not installable, skipped 
+2022-12-05 07:56:58,375 624 WARNING Alpha3 odoo.modules.graph: module hr_expense_extract: not installable, skipped 
+2022-12-05 07:56:58,391 624 WARNING Alpha3 odoo.modules.graph: module stock_enterprise: not installable, skipped 
+2022-12-05 07:56:58,406 624 WARNING Alpha3 odoo.modules.graph: module data_merge_utm: not installable, skipped 
+2022-12-05 07:56:58,406 624 WARNING Alpha3 odoo.modules.graph: module marketing_automation_sms: not installable, skipped 
+2022-12-05 07:56:58,422 624 WARNING Alpha3 odoo.modules.graph: module helpdesk_sale: not installable, skipped 
+2022-12-05 07:56:58,422 624 WARNING Alpha3 odoo.modules.graph: module web_grid: not installable, skipped 
+2022-12-05 07:56:58,422 624 WARNING Alpha3 odoo.modules.graph: module purchase_enterprise: not installable, skipped 
+2022-12-05 07:56:58,460 624 WARNING Alpha3 odoo.modules.graph: module base_automation_hr_contract: not installable, skipped 
+2022-12-05 07:56:58,460 624 WARNING Alpha3 odoo.modules.graph: module project_helpdesk: not installable, skipped 
+2022-12-05 07:56:58,469 624 WARNING Alpha3 odoo.modules.graph: module crm_enterprise: not installable, skipped 
+2022-12-05 07:56:58,469 624 WARNING Alpha3 odoo.modules.graph: module documents_fleet: not installable, skipped 
+2022-12-05 07:56:58,469 624 WARNING Alpha3 odoo.modules.graph: module sale_subscription_dashboard: not installable, skipped 
+2022-12-05 07:56:58,469 624 WARNING Alpha3 odoo.modules.graph: module project_enterprise_hr: not installable, skipped 
+2022-12-05 07:56:58,469 624 WARNING Alpha3 odoo.modules.graph: module hr_attendance_mobile: not installable, skipped 
+2022-12-05 07:56:58,469 624 WARNING Alpha3 odoo.modules.graph: module project_enterprise: not installable, skipped 
+2022-12-05 07:56:58,469 624 WARNING Alpha3 odoo.modules.graph: module stock_barcode_mrp: not installable, skipped 
+2022-12-05 07:56:58,469 624 WARNING Alpha3 odoo.modules.graph: module knowledge: not installable, skipped 
+2022-12-05 07:56:58,485 624 WARNING Alpha3 odoo.modules.graph: module timer: not installable, skipped 
+2022-12-05 07:56:58,485 624 WARNING Alpha3 odoo.modules.graph: module account_invoice_extract_purchase: not installable, skipped 
+2022-12-05 07:56:58,485 624 WARNING Alpha3 odoo.modules.graph: module project_sale_subscription: not installable, skipped 
+2022-12-05 07:56:58,485 624 WARNING Alpha3 odoo.modules.graph: module stock_account_enterprise: not installable, skipped 
+2022-12-05 07:56:58,485 624 WARNING Alpha3 odoo.modules.graph: module documents_project_sale: not installable, skipped 
+2022-12-05 07:56:58,485 624 WARNING Alpha3 odoo.modules.graph: module documents_project: not installable, skipped 
+2022-12-05 07:56:58,485 624 WARNING Alpha3 odoo.modules.graph: module mail_enterprise: not installable, skipped 
+2022-12-05 07:56:58,501 624 WARNING Alpha3 odoo.modules.graph: module documents_hr: not installable, skipped 
+2022-12-05 07:56:58,516 624 WARNING Alpha3 odoo.modules.graph: module quality_iot: not installable, skipped 
+2022-12-05 07:56:58,532 624 WARNING Alpha3 odoo.modules.graph: module documents: not installable, skipped 
+2022-12-05 07:56:58,532 624 WARNING Alpha3 odoo.modules.graph: module web_mobile: not installable, skipped 
+2022-12-05 07:56:58,532 624 WARNING Alpha3 odoo.modules.graph: module voip: not installable, skipped 
+2022-12-05 07:56:58,532 624 WARNING Alpha3 odoo.modules.graph: module planning: not installable, skipped 
+2022-12-05 07:56:58,532 624 WARNING Alpha3 odoo.modules.graph: module appointment: not installable, skipped 
+2022-12-05 07:56:58,532 624 WARNING Alpha3 odoo.modules.graph: module marketing_automation: not installable, skipped 
+2022-12-05 07:56:58,532 624 WARNING Alpha3 odoo.modules.graph: module project_holidays: not installable, skipped 
+2022-12-05 07:56:58,532 624 WARNING Alpha3 odoo.modules.graph: module worksheet: not installable, skipped 
+2022-12-05 07:56:58,548 624 INFO Alpha3 odoo.modules.loading: loading 136 modules... 
+2022-12-05 07:56:58,705 624 WARNING Alpha3 odoo.addons.attachment_indexation.models.ir_attachment: Attachment indexation of PDF documents is unavailable because the 'pdfminer' Python library cannot be found on the system. You may install it from https://pypi.org/project/pdfminer.six/ (e.g. `pip3 install pdfminer.six`) 
+2022-12-05 07:57:10,534 624 INFO Alpha3 odoo.modules.loading: 136 modules loaded in 11.99s, 0 queries (+0 extra) 
+2022-12-05 07:57:10,534 624 ERROR Alpha3 odoo.modules.loading: Some modules are not loaded, some dependencies or manifest may be missing: ['account_accountant', 'account_invoice_extract', 'account_invoice_extract_purchase', 'analytic_enterprise', 'appointment', 'appointment_crm', 'appointment_hr', 'appointment_sms', 'approvals', 'approvals_purchase', 'approvals_purchase_stock', 'barcodes_mobile', 'base_automation_hr_contract', 'contacts_enterprise', 'crm_enterprise', 'crm_helpdesk', 'currency_rate_live', 'data_cleaning', 'data_merge', 'data_merge_crm', 'data_merge_helpdesk', 'data_merge_project', 'data_merge_utm', 'digest_enterprise', 'documents', 'documents_fleet', 'documents_hr', 'documents_product', 'documents_project', 'documents_project_sale', 'documents_sign', 'documents_spreadsheet', 'event_enterprise', 'event_sale_dashboard', 'helpdesk', 'helpdesk_holidays', 'helpdesk_sale', 'helpdesk_sms', 'hr_appraisal', 'hr_appraisal_contract', 'hr_appraisal_skills', 'hr_attendance_mobile', 'hr_contract_reports', 'hr_contract_sign', 'hr_expense_extract', 'hr_expense_predict_product', 'hr_gantt', 'hr_holidays_gantt', 'hr_mobile', 'hr_recruitment_reports', 'hr_work_entry_contract_attendance', 'hr_work_entry_contract_enterprise', 'iot', 'knowledge', 'mail_enterprise', 'mail_mobile', 'marketing_automation', 'marketing_automation_sms', 'mass_mailing_sale_subscription', 'mrp_plm', 'planning', 'project_enterprise', 'project_enterprise_hr', 'project_helpdesk', 'project_holidays', 'project_sale_subscription', 'project_timesheet_synchro', 'purchase_enterprise', 'quality', 'quality_control', 'quality_iot', 'sale_enterprise', 'sale_planning', 'sale_subscription', 'sale_subscription_dashboard', 'sale_temporal', 'sale_timesheet_enterprise', 'sign', 'spreadsheet_dashboard_edition', 'spreadsheet_dashboard_hr_contract', 'spreadsheet_dashboard_stock', 'spreadsheet_edition', 'stock_account_enterprise', 'stock_accountant', 'stock_barcode', 'stock_barcode_mrp', 'stock_enterprise', 'timer', 'timesheet_grid', 'voip', 'web_cohort', 'web_enterprise', 'web_gantt', 'web_grid', 'web_map', 'web_mobile', 'web_studio', 'website_sale_dashboard', 'website_sale_subscription', 'worksheet'] 
+2022-12-05 07:57:10,911 624 INFO Alpha3 odoo.modules.loading: Modules loaded. 
+2022-12-05 07:57:10,958 624 INFO Alpha3 odoo.modules.registry: Registry loaded in 13.340s 
+2022-12-05 07:57:10,990 624 INFO Alpha3 odoo.addons.base.models.ir_http: Generating routing map for key 1 
+2022-12-05 07:57:11,512 624 INFO Alpha3 werkzeug: 127.0.0.1 - - [05/Dec/2022 07:57:11] "GET /websocket HTTP/1.1" 101 - 26 0.146 13.755
+2022-12-05 07:57:11,530 624 INFO ? odoo.addons.bus.models.bus: Bus.loop listen imbus on db postgres 
+2022-12-05 07:57:56,618 624 INFO Alpha3 odoo.addons.base.models.ir_cron: Starting job `Notification: Send scheduled message notifications`. 
+2022-12-05 07:57:56,626 624 INFO Alpha3 odoo.addons.base.models.ir_cron: Job `Notification: Send scheduled message notifications` done. 
+2022-12-05 07:57:56,641 624 INFO Alpha3 odoo.addons.base.models.ir_cron: Starting job `Mail: Email Queue Manager`. 
+2022-12-05 07:58:00,658 624 INFO Alpha3 odoo.addons.base.models.ir_cron: Starting job `Sale Subscription: subscriptions expiration`. 
+2022-12-05 07:58:00,673 624 ERROR Alpha3 odoo.addons.base.models.ir_cron: Call from cron Sale Subscription: subscriptions expiration for server action #1226 failed in Job #63 
+Traceback (most recent call last):
+  File "D:\odoov16locallymade\server\odoo\tools\safe_eval.py", line 339, in safe_eval
+    return unsafe_eval(c, globals_dict, locals_dict)
+  File "ir.actions.server(1226,)", line 1, in <module>
+AttributeError: 'sale.order' object has no attribute 'cron_subscription_expiration'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\odoov16locallymade\server\odoo\addons\base\models\ir_cron.py", line 368, in _callback
+    self.env['ir.actions.server'].browse(server_action_id).run()
+  File "D:\odoov16locallymade\server\odoo\addons\base\models\ir_actions.py", line 668, in run
+    res = runner(run_self, eval_context=eval_context)
+  File "D:\odoov16locallymade\server\odoo\addons\website\models\ir_actions_server.py", line 61, in _run_action_code_multi
+    res = super(ServerAction, self)._run_action_code_multi(eval_context)
+  File "D:\odoov16locallymade\server\odoo\addons\base\models\ir_actions.py", line 538, in _run_action_code_multi
+    safe_eval(self.code.strip(), eval_context, mode="exec", nocopy=True, filename=str(self))  # nocopy allows to return 'action'
+  File "D:\odoov16locallymade\server\odoo\tools\safe_eval.py", line 353, in safe_eval
+    raise ValueError('%s: "%s" while evaluating\n%r' % (ustr(type(e)), ustr(e), expr))
+ValueError: <class 'AttributeError'>: "'sale.order' object has no attribute 'cron_subscription_expiration'" while evaluating
+'model.cron_subscription_expiration()'
+2022-12-05 07:58:00,689 624 INFO Alpha3 odoo.addons.base.models.ir_cron: Starting job `Sale Subscription: generate recurring invoices and payments`. 
+2022-12-05 07:58:00,689 624 ERROR Alpha3 odoo.addons.base.models.ir_cron: Call from cron Sale Subscription: generate recurring invoices and payments for server action #1227 failed in Job #64 
+Traceback (most recent call last):
+  File "D:\odoov16locallymade\server\odoo\tools\safe_eval.py", line 339, in safe_eval
+    return unsafe_eval(c, globals_dict, locals_dict)
+  File "ir.actions.server(1227,)", line 1, in <module>
+AttributeError: 'sale.order' object has no attribute '_cron_recurring_create_invoice'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\odoov16locallymade\server\odoo\addons\base\models\ir_cron.py", line 368, in _callback
+    self.env['ir.actions.server'].browse(server_action_id).run()
+  File "D:\odoov16locallymade\server\odoo\addons\base\models\ir_actions.py", line 668, in run
+    res = runner(run_self, eval_context=eval_context)
+  File "D:\odoov16locallymade\server\odoo\addons\website\models\ir_actions_server.py", line 61, in _run_action_code_multi
+    res = super(ServerAction, self)._run_action_code_multi(eval_context)
+  File "D:\odoov16locallymade\server\odoo\addons\base\models\ir_actions.py", line 538, in _run_action_code_multi
+    safe_eval(self.code.strip(), eval_context, mode="exec", nocopy=True, filename=str(self))  # nocopy allows to return 'action'
+  File "D:\odoov16locallymade\server\odoo\tools\safe_eval.py", line 353, in safe_eval
+    raise ValueError('%s: "%s" while evaluating\n%r' % (ustr(type(e)), ustr(e), expr))
+ValueError: <class 'AttributeError'>: "'sale.order' object has no attribute '_cron_recurring_create_invoice'" while evaluating
+'model._cron_recurring_create_invoice()'
+2022-12-05 07:58:00,705 624 INFO Alpha3 odoo.addons.base.models.ir_cron: Starting job `Sale Subscription: Update KPI`. 
+2022-12-05 07:58:00,705 624 ERROR Alpha3 odoo.addons.base.models.ir_cron: Call from cron Sale Subscription: Update KPI for server action #1228 failed in Job #65 
+Traceback (most recent call last):
+  File "D:\odoov16locallymade\server\odoo\tools\safe_eval.py", line 339, in safe_eval
+    return unsafe_eval(c, globals_dict, locals_dict)
+  File "ir.actions.server(1228,)", line 1, in <module>
+AttributeError: 'sale.order' object has no attribute '_cron_update_kpi'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\odoov16locallymade\server\odoo\addons\base\models\ir_cron.py", line 368, in _callback
+    self.env['ir.actions.server'].browse(server_action_id).run()
+  File "D:\odoov16locallymade\server\odoo\addons\base\models\ir_actions.py", line 668, in run
+    res = runner(run_self, eval_context=eval_context)
+  File "D:\odoov16locallymade\server\odoo\addons\website\models\ir_actions_server.py", line 61, in _run_action_code_multi
+    res = super(ServerAction, self)._run_action_code_multi(eval_context)
+  File "D:\odoov16locallymade\server\odoo\addons\base\models\ir_actions.py", line 538, in _run_action_code_multi
+    safe_eval(self.code.strip(), eval_context, mode="exec", nocopy=True, filename=str(self))  # nocopy allows to return 'action'
+  File "D:\odoov16locallymade\server\odoo\tools\safe_eval.py", line 353, in safe_eval
+    raise ValueError('%s: "%s" while evaluating\n%r' % (ustr(type(e)), ustr(e), expr))
+ValueError: <class 'AttributeError'>: "'sale.order' object has no attribute '_cron_update_kpi'" while evaluating
+'model._cron_update_kpi()'
+2022-12-05 07:58:00,705 624 INFO Alpha3 odoo.addons.base.models.ir_cron: Starting job `payment: post-process transactions`. 
+2022-12-05 07:58:00,725 624 INFO Alpha3 odoo.addons.base.models.ir_cron: Job `payment: post-process transactions` done. 
+2022-12-05 07:58:04,834 624 INFO Alpha3 odoo.models.unlink: User #1 deleted mail.mail records with IDs: [250, 249, 248, 247, 246, 245, 244, 243, 242, 241, 240, 239, 238, 237, 236, 235, 234, 233, 232, 231, 230, 229, 228, 227, 226, 225, 224, 223, 222, 221, 220, 219, 218, 212, 211, 210, 209, 208, 207, 206, 205, 204, 203, 202, 201, 200, 199, 198, 197, 196, 195, 194, 193, 192, 191, 190, 189, 188, 187, 186, 185, 184, 183, 182, 181, 180, 179, 178, 177, 176, 175, 174, 173, 172, 171, 170, 169, 168, 167, 166, 165, 164, 163, 162, 161, 160, 159, 158, 157, 156, 155, 154, 153, 152, 151, 150, 149] 
+2022-12-05 07:58:04,834 624 INFO Alpha3 odoo.addons.base.models.ir_cron: Job `Mail: Email Queue Manager` done. 
+2022-12-05 07:59:01,757 624 INFO Alpha3 odoo.addons.base.models.ir_cron: Starting job `Snailmail: process letters queue`. 
+2022-12-05 07:59:01,773 624 INFO Alpha3 odoo.addons.base.models.ir_cron: Job `Snailmail: process letters queue` done. 
+2022-12-05 07:59:01,788 624 INFO Alpha3 odoo.addons.base.models.ir_cron: Starting job `Partner Autocomplete : Sync with remote DB`. 
+2022-12-05 07:59:01,788 624 INFO Alpha3 odoo.addons.base.models.ir_cron: Job `Partner Autocomplete : Sync with remote DB` done. 
+2022-12-05 07:59:01,805 624 INFO Alpha3 odoo.addons.base.models.ir_cron: Starting job `SMS: SMS Queue Manager`. 
+2022-12-05 07:59:01,805 624 INFO Alpha3 odoo.addons.base.models.ir_cron: Job `SMS: SMS Queue Manager` done. 
+2022-12-05 08:00:02,834 624 INFO Alpha3 odoo.addons.base.models.ir_cron: Starting job `Event: Mail Scheduler`. 
+2022-12-05 08:00:02,850 624 INFO Alpha3 odoo.addons.base.models.ir_cron: Job `Event: Mail Scheduler` done. 
+2022-12-05 08:00:02,850 624 INFO Alpha3 odoo.addons.base.models.ir_cron: Starting job `payment: post-process transactions`. 
+2022-12-05 08:00:02,850 624 INFO Alpha3 odoo.addons.base.models.ir_cron: Job `payment: post-process transactions` done. 
+2022-12-05 08:06:19,420 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model documents.document 
+2022-12-05 08:06:19,421 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model helpdesk.team 
+2022-12-05 08:06:19,424 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model iot.box 
+2022-12-05 08:06:19,425 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model hr.appraisal 
+2022-12-05 08:06:19,425 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model hr.appraisal.report 
+2022-12-05 08:06:19,426 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model data_merge.record 
+2022-12-05 08:06:19,427 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model data_merge.model 
+2022-12-05 08:06:19,427 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model hr.contract.employee.report 
+2022-12-05 08:06:19,429 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model knowledge.article 
+2022-12-05 08:06:19,429 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model knowledge.article.member 
+2022-12-05 08:06:19,430 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model documents.folder 
+2022-12-05 08:06:19,431 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model hr.recruitment.report 
+2022-12-05 08:06:19,431 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model spreadsheet.contributor 
+2022-12-05 08:06:19,431 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model marketing.campaign 
+2022-12-05 08:06:19,432 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model mrp.eco 
+2022-12-05 08:06:19,433 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model sale.subscription.report 
+2022-12-05 08:06:19,434 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model iot.device 
+2022-12-05 08:06:19,434 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model hr.appraisal.goal 
+2022-12-05 08:06:19,435 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model knowledge.article 
+2022-12-05 08:06:19,435 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model knowledge.article.favorite 
+2022-12-05 08:06:19,435 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model documents.facet 
+2022-12-05 08:06:19,436 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model hr.recruitment.report 
+2022-12-05 08:06:19,437 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model hr.referral.reward 
+2022-12-05 08:06:19,437 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model sale.subscription.report 
+2022-12-05 08:06:19,439 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model hr.appraisal.skill.report 
+2022-12-05 08:06:19,439 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model knowledge.article 
+2022-12-05 08:06:19,439 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model documents.workflow.rule 
+2022-12-05 08:06:19,439 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model helpdesk.stage 
+2022-12-05 08:06:19,439 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model hr.recruitment.stage.report 
+2022-12-05 08:06:19,440 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model hr.referral.level 
+2022-12-05 08:06:19,440 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model hr.referral.friend 
+2022-12-05 08:06:19,443 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model documents.share 
+2022-12-05 08:06:19,444 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model hr.recruitment.report 
+2022-12-05 08:06:19,445 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model hr.referral.alert 
+2022-12-05 08:06:19,446 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model hr.appraisal.note 
+2022-12-05 08:06:19,447 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model voip.phonecall 
+2022-12-05 08:06:19,447 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model helpdesk.team 
+2022-12-05 08:06:19,448 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model mrp.eco.type 
+2022-12-05 08:06:19,448 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model mrp.eco.stage 
+2022-12-05 08:06:19,449 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model quality.alert.team 
+2022-12-05 08:06:19,449 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model quality.alert.team 
+2022-12-05 08:06:19,449 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model quality.check 
+2022-12-05 08:06:19,450 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model hr.referral.onboarding 
+2022-12-05 08:06:19,450 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model sale.order.stage 
+2022-12-05 08:06:19,451 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model quality.alert 
+2022-12-05 08:06:19,452 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model helpdesk.sla 
+2022-12-05 08:06:19,452 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model sale.order.alert 
+2022-12-05 08:06:19,457 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model approval.category 
+2022-12-05 08:06:19,457 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model approval.request 
+2022-12-05 08:06:19,457 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model approval.category 
+2022-12-05 08:06:19,457 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model data_cleaning.record 
+2022-12-05 08:06:19,457 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model data_cleaning.model 
+2022-12-05 08:06:19,458 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model appointment.type 
+2022-12-05 08:06:19,458 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model appointment.type 
+2022-12-05 08:06:19,458 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model appointment.invite 
+2022-12-05 08:06:19,459 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model sign.template 
+2022-12-05 08:06:19,459 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model sign.item.type 
+2022-12-05 08:06:19,459 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model sign.item.role 
+2022-12-05 08:06:19,460 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model sign.template 
+2022-12-05 08:06:19,460 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model sign.request 
+2022-12-05 08:06:19,461 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model sign.request 
+2022-12-05 08:06:19,461 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model sign.request 
+2022-12-05 08:06:19,461 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model studio.approval.rule 
+2022-12-05 08:06:19,461 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model helpdesk.ticket.type 
+2022-12-05 08:06:19,462 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model helpdesk.ticket.report.analysis 
+2022-12-05 08:06:19,462 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model helpdesk.ticket 
+2022-12-05 08:06:19,462 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model helpdesk.sla.report.analysis 
+2022-12-05 08:06:19,463 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model planning.slot 
+2022-12-05 08:06:19,464 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model planning.analysis.report 
+2022-12-05 08:06:19,465 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model spreadsheet.template 
+2022-12-05 08:06:19,465 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model spreadsheet.revision 
+2022-12-05 08:06:19,466 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model mrp.eco 
+2022-12-05 08:06:19,467 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model mrp.eco.type 
+2022-12-05 08:06:19,468 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model sale.order.close.reason 
+2022-12-05 08:06:19,469 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model studio.approval.entry 
+2022-12-05 08:06:19,469 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model mrp.eco.tag 
+2022-12-05 08:06:19,469 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model helpdesk.tag 
+2022-12-05 08:06:19,470 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model quality.alert.stage 
+2022-12-05 08:06:19,470 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model marketing.trace 
+2022-12-05 08:06:19,470 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model quality.point 
+2022-12-05 08:06:19,472 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model quality.check 
+2022-12-05 08:06:19,474 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model approval.request 
+2022-12-05 08:06:19,475 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model approval.request 
+2022-12-05 08:06:19,476 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model helpdesk.ticket 
+2022-12-05 08:06:19,477 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model planning.slot 
+2022-12-05 08:06:19,477 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model planning.role 
+2022-12-05 08:06:19,478 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model quality.alert 
+2022-12-05 08:06:19,479 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model sale.temporal.recurrence 
+2022-12-05 08:06:19,479 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model hr.referral.points 
+2022-12-05 08:06:19,480 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model quality.tag 
+2022-12-05 08:06:19,481 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model planning.slot 
+2022-12-05 08:06:19,481 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model planning.slot.template 
+2022-12-05 08:06:19,481 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model hr.referral.report 
+2022-12-05 08:06:19,482 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model marketing.participant 
+2022-12-05 08:06:19,483 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model planning.slot 
+2022-12-05 08:06:19,484 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model account.change.lock.date 
+2022-12-05 08:06:19,486 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model approval.category 
+2022-12-05 08:06:19,486 624 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model stock.report 
+2022-12-05 08:06:19,848 624 INFO Alpha3 werkzeug: 127.0.0.1 - - [05/Dec/2022 08:06:19] "GET / HTTP/1.1" 200 - 185 0.278 26.648
+2022-12-05 08:06:25,579 624 INFO Alpha3 werkzeug: 127.0.0.1 - - [05/Dec/2022 08:06:25] "GET /web/assets/1791-8e0fa54/1/web.assets_frontend.min.css HTTP/1.1" 200 - 4 0.006 5.233
+2022-12-05 08:06:25,580 624 INFO Alpha3 werkzeug: 127.0.0.1 - - [05/Dec/2022 08:06:25] "GET /web/assets/1792-fe05f82/1/web.assets_frontend_minimal.min.js HTTP/1.1" 200 - 4 0.006 4.624
+2022-12-05 08:06:26,160 624 INFO Alpha3 werkzeug: 127.0.0.1 - - [05/Dec/2022 08:06:26] "GET /web/image/website/1/logo/My%20Website?unique=d04eaab HTTP/1.1" 200 - 4 0.011 0.041
+2022-12-05 08:06:26,295 624 INFO ? werkzeug: 127.0.0.1 - - [05/Dec/2022 08:06:26] "GET /base/static/img/country_flags/us.png?height=25 HTTP/1.1" 200 - 0 0.000 0.220
+2022-12-05 08:06:27,643 624 INFO Alpha3 werkzeug: 127.0.0.1 - - [05/Dec/2022 08:06:27] "GET /web/assets/1793-c47f012/1/web.assets_frontend_lazy.min.js HTTP/1.1" 200 - 4 0.002 0.010
+2022-12-05 08:06:28,080 624 INFO Alpha3 werkzeug: 127.0.0.1 - - [05/Dec/2022 08:06:28] "GET /web/image/website/1/favicon?unique=d04eaab HTTP/1.1" 200 - 5 0.003 0.011
+2022-12-05 08:06:28,475 624 INFO Alpha3 werkzeug: 127.0.0.1 - - [05/Dec/2022 08:06:28] "GET /website/translations/6475b196dc23f16deaa51f5e04074321622e285c HTTP/1.1" 200 - 2 0.002 0.012
+2022-12-05 08:06:28,617 624 INFO Alpha3 werkzeug: 127.0.0.1 - - [05/Dec/2022 08:06:28] "POST /shop/cart/quantity HTTP/1.1" 200 - 11 0.018 0.019
+2022-12-05 08:06:28,959 624 INFO Alpha3 werkzeug: 127.0.0.1 - - [05/Dec/2022 08:06:28] "POST /web/dataset/call_kw/web_tour.tour/get_consumed_tours HTTP/1.1" 200 - 7 0.008 0.006
+2022-12-05 08:07:24,420 624 INFO Alpha3 werkzeug: 127.0.0.1 - - [05/Dec/2022 08:07:24] "GET /websocket HTTP/1.1" 101 - 1 0.000 0.009
+2022-12-05 08:09:15,898 624 INFO Alpha3 odoo.addons.base.models.ir_cron: Starting job `Marketing Automation: execute activities`. 
+2022-12-05 08:09:15,901 624 ERROR Alpha3 odoo.addons.base.models.ir_cron: Call from cron Marketing Automation: execute activities for server action #920 failed in Job #54 
+Traceback (most recent call last):
+  File "D:\odoov16locallymade\server\odoo\addons\base\models\ir_cron.py", line 368, in _callback
+    self.env['ir.actions.server'].browse(server_action_id).run()
+  File "D:\odoov16locallymade\server\odoo\addons\base\models\ir_actions.py", line 645, in run
+    self.env[action.model_name].check_access_rights("write")
+  File "D:\odoov16locallymade\server\odoo\api.py", line 537, in __getitem__
+    return self.registry[model_name](self, (), ())
+  File "D:\odoov16locallymade\server\odoo\modules\registry.py", line 186, in __getitem__
+    return self.models[model_name]
+KeyError: 'marketing.campaign'
+2022-12-05 08:09:18,927 624 INFO Alpha3 odoo.addons.base.models.ir_cron: Starting job `Marketing Automation: execute activities`. 
+2022-12-05 08:09:18,930 624 ERROR Alpha3 odoo.addons.base.models.ir_cron: Call from cron Marketing Automation: execute activities for server action #920 failed in Job #54 
+Traceback (most recent call last):
+  File "D:\odoov16locallymade\server\odoo\addons\base\models\ir_cron.py", line 368, in _callback
+    self.env['ir.actions.server'].browse(server_action_id).run()
+  File "D:\odoov16locallymade\server\odoo\addons\base\models\ir_actions.py", line 645, in run
+    self.env[action.model_name].check_access_rights("write")
+  File "D:\odoov16locallymade\server\odoo\api.py", line 537, in __getitem__
+    return self.registry[model_name](self, (), ())
+  File "D:\odoov16locallymade\server\odoo\modules\registry.py", line 186, in __getitem__
+    return self.models[model_name]
+KeyError: 'marketing.campaign'
+2022-12-05 08:10:15,958 624 INFO Alpha3 odoo.addons.base.models.ir_cron: Starting job `payment: post-process transactions`. 
+2022-12-05 08:10:15,967 624 INFO Alpha3 odoo.addons.base.models.ir_cron: Job `payment: post-process transactions` done. 
+2022-12-05 08:17:29,502 624 INFO Alpha3 werkzeug: 127.0.0.1 - - [05/Dec/2022 08:17:29] "GET /websocket HTTP/1.1" 101 - 1 0.000 0.016
+2022-12-05 08:18:32,395 624 INFO ? odoo.service.server: Initiating shutdown 
+2022-12-05 08:18:32,395 624 INFO ? odoo.service.server: Hit CTRL-C again or send a second signal to force the shutdown. 
+2022-12-05 08:18:32,678 624 INFO ? odoo.sql_db: ConnectionPool(used=0/count=0/max=64): Closed 8 connections  
+2022-12-05 08:39:24,349 14436 INFO ? odoo: Odoo version 16.0-20221117 
+2022-12-05 08:39:24,350 14436 INFO ? odoo: Using configuration file at D:\odoov16locallymade\server\odoo.conf 
+2022-12-05 08:39:24,350 14436 INFO ? odoo: addons paths: ['D:\\odoov16locallymade\\server\\odoo\\addons', 'c:\\users\\derickmandela\\appdata\\local\\openerp s.a\\odoo\\addons\\16.0', 'd:\\odoov16locallymade\\server\\odoo\\addons', 'd:\\odoov16locallymade\\addons'] 
+2022-12-05 08:39:24,350 14436 INFO ? odoo: database: openpg@localhost:5432 
+2022-12-05 08:39:24,652 14436 INFO ? odoo.addons.base.models.ir_actions_report: A package may be missing to print Data Matrix barcodes: pylibdmtx or libdmtx. 
+2022-12-05 08:39:24,700 14436 INFO ? odoo.addons.base.models.ir_actions_report: Will use the Wkhtmltopdf binary at D:\odoov16locallymade\thirdparty\wkhtmltopdf.exe 
+2022-12-05 08:39:25,230 14436 INFO ? odoo.service.server: HTTP service (werkzeug) running on Mandela:8069 
+2022-12-05 08:39:25,503 14436 INFO Alpha3 odoo.modules.loading: loading 1 modules... 
+2022-12-05 08:39:25,518 14436 INFO Alpha3 odoo.modules.loading: 1 modules loaded in 0.02s, 0 queries (+0 extra) 
+2022-12-05 08:39:27,634 14436 INFO Alpha3 odoo.modules.loading: loading 236 modules... 
+2022-12-05 08:39:27,691 14436 WARNING Alpha3 odoo.addons.attachment_indexation.models.ir_attachment: Attachment indexation of PDF documents is unavailable because the 'pdfminer' Python library cannot be found on the system. You may install it from https://pypi.org/project/pdfminer.six/ (e.g. `pip3 install pdfminer.six`) 
+2022-12-05 08:39:30,327 14436 WARNING Alpha3 odoo.addons.voip.models.res_partner: The `phonenumbers` Python module is not installed, contact look up will not be done for incoming calls. Try: pip install phonenumbers. 
+2022-12-05 08:39:39,019 14436 INFO Alpha3 odoo.modules.loading: 236 modules loaded in 11.39s, 0 queries (+0 extra) 
+2022-12-05 08:39:39,962 14436 INFO Alpha3 odoo.modules.loading: Modules loaded. 
+2022-12-05 08:39:40,447 14436 INFO Alpha3 odoo.modules.registry: Registry loaded in 15.007s 
+2022-12-05 08:39:40,474 14436 INFO Alpha3 odoo.addons.base.models.ir_http: Generating routing map for key 1 
+2022-12-05 08:39:41,282 14436 INFO Alpha3 werkzeug: 127.0.0.1 - - [05/Dec/2022 08:39:41] "GET /websocket HTTP/1.1" 101 - 26 0.725 15.116
+2022-12-05 08:39:41,293 14436 INFO ? odoo.addons.bus.models.bus: Bus.loop listen imbus on db postgres 
+2022-12-05 08:40:04,651 14436 INFO Alpha3 odoo.sql_db: ConnectionPool(used=3/count=13/max=64): Closed 1 connections to 'user=openpg password=xxx dbname=Alpha. host=localhost port=5432 application_name=odoo-14436 sslmode=prefer' 
+2022-12-05 08:40:04,651 14436 INFO Alpha3 odoo.sql_db: ConnectionPool(used=3/count=12/max=64): Closed 1 connections to 'user=openpg password=xxx dbname=Foxtrait host=localhost port=5432 application_name=odoo-14436 sslmode=prefer' 
+2022-12-05 08:40:04,651 14436 INFO Alpha3 odoo.sql_db: ConnectionPool(used=3/count=11/max=64): Closed 1 connections to 'user=openpg password=xxx dbname=Golf host=localhost port=5432 application_name=odoo-14436 sslmode=prefer' 
+2022-12-05 08:40:04,652 14436 INFO Alpha3 odoo.sql_db: ConnectionPool(used=3/count=10/max=64): Closed 1 connections to 'user=openpg password=xxx dbname=SantaMonica host=localhost port=5432 application_name=odoo-14436 sslmode=prefer' 
+2022-12-05 08:40:04,652 14436 INFO Alpha3 odoo.sql_db: ConnectionPool(used=3/count=9/max=64): Closed 1 connections to 'user=openpg password=xxx dbname=Sierra host=localhost port=5432 application_name=odoo-14436 sslmode=prefer' 
+2022-12-05 08:40:04,652 14436 INFO Alpha3 odoo.sql_db: ConnectionPool(used=3/count=8/max=64): Closed 1 connections to 'user=openpg password=xxx dbname=Sierra2 host=localhost port=5432 application_name=odoo-14436 sslmode=prefer' 
+2022-12-05 08:40:04,653 14436 INFO Alpha3 odoo.sql_db: ConnectionPool(used=3/count=7/max=64): Closed 1 connections to 'user=openpg password=xxx dbname=Zulu host=localhost port=5432 application_name=odoo-14436 sslmode=prefer' 
+2022-12-05 08:40:04,653 14436 INFO Alpha3 odoo.sql_db: ConnectionPool(used=3/count=6/max=64): Closed 1 connections to 'user=openpg password=xxx dbname=flower_factory host=localhost port=5432 application_name=odoo-14436 sslmode=prefer' 
+2022-12-05 08:40:04,967 14436 INFO Alpha3 werkzeug: 127.0.0.1 - - [05/Dec/2022 08:40:04] "GET /web/database/manager HTTP/1.1" 200 - 22 0.993 7.491
+2022-12-05 08:40:10,708 14436 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model hr.referral.reward 
+2022-12-05 08:40:10,714 14436 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model hr.referral.level 
+2022-12-05 08:40:10,715 14436 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model hr.referral.friend 
+2022-12-05 08:40:10,717 14436 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model hr.referral.alert 
+2022-12-05 08:40:10,721 14436 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model hr.referral.onboarding 
+2022-12-05 08:40:10,750 14436 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model hr.referral.points 
+2022-12-05 08:40:10,752 14436 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model hr.referral.report 
+2022-12-05 08:40:25,496 14436 INFO Alpha3 odoo.addons.base.models.ir_cron: Starting job `payment: post-process transactions`. 
+2022-12-05 08:40:25,516 14436 INFO Alpha3 odoo.addons.base.models.ir_cron: Job `payment: post-process transactions` done. 
+2022-12-05 08:41:13,978 14436 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model hr.referral.reward 
+2022-12-05 08:41:13,988 14436 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model hr.referral.level 
+2022-12-05 08:41:13,988 14436 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model hr.referral.friend 
+2022-12-05 08:41:13,993 14436 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model hr.referral.alert 
+2022-12-05 08:41:14,017 14436 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model hr.referral.onboarding 
+2022-12-05 08:41:14,115 14436 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model hr.referral.points 
+2022-12-05 08:41:14,120 14436 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model hr.referral.report 
+2022-12-05 08:41:41,582 14436 ERROR Alpha3 odoo.sql_db: bad query: DELETE FROM ir_attachment WHERE id IN (1785)
+ERROR: could not serialize access due to concurrent delete
+ 
+2022-12-05 08:41:41,586 14436 INFO Alpha3 odoo.service.model: SERIALIZATION_FAILURE, 4 tries left, try again in 0.7507 sec... 
+2022-12-05 08:41:41,754 14436 INFO Alpha3 odoo.modules.registry: At least one model cache has been invalidated, signaling through the database. 
+2022-12-05 08:41:41,758 14436 INFO Alpha3 werkzeug: 127.0.0.1 - - [05/Dec/2022 08:41:41] "GET /web?db=Alpha3 HTTP/1.1" 200 - 213 1.321 90.638
+2022-12-05 08:41:42,585 14436 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model hr.referral.reward 
+2022-12-05 08:41:42,589 14436 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model hr.referral.level 
+2022-12-05 08:41:42,590 14436 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model hr.referral.friend 
+2022-12-05 08:41:42,592 14436 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model hr.referral.alert 
+2022-12-05 08:41:42,598 14436 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model hr.referral.onboarding 
+2022-12-05 08:41:42,647 14436 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model hr.referral.points 
+2022-12-05 08:41:42,651 14436 ERROR Alpha3 odoo.addons.base.models.ir_model: Missing model hr.referral.report 
+2022-12-05 08:41:49,765 14436 INFO Alpha3 werkzeug: 127.0.0.1 - - [05/Dec/2022 08:41:49] "GET /web?db=Alpha3 HTTP/1.1" 200 - 212 0.659 35.964
+2022-12-05 08:41:49,850 14436 INFO Alpha3 werkzeug: 127.0.0.1 - - [05/Dec/2022 08:41:49] "GET /web?db=Alpha3 HTTP/1.1" 200 - 38 0.036 4.936
+2022-12-05 08:41:50,637 14436 INFO Alpha3 werkzeug: 127.0.0.1 - - [05/Dec/2022 08:41:50] "GET /web/assets/1794-5497cc9/web.assets_common.min.css HTTP/1.1" 200 - 4 0.005 0.029
+2022-12-05 08:41:50,649 14436 INFO Alpha3 werkzeug: 127.0.0.1 - - [05/Dec/2022 08:41:50] "GET /web/assets/1795-10805d7/web.assets_backend.min.css HTTP/1.1" 200 - 4 0.005 0.023
+2022-12-05 08:41:50,656 14436 INFO Alpha3 werkzeug: 127.0.0.1 - - [05/Dec/2022 08:41:50] "GET /web/assets/1796-5497cc9/web.assets_common.min.js HTTP/1.1" 200 - 4 0.008 0.023
+2022-12-05 08:41:50,741 14436 INFO Alpha3 werkzeug: 127.0.0.1 - - [05/Dec/2022 08:41:50] "GET /web/assets/1798-10805d7/web.assets_backend.min.js HTTP/1.1" 200 - 4 0.003 0.013
+2022-12-05 08:41:50,759 14436 INFO Alpha3 werkzeug: 127.0.0.1 - - [05/Dec/2022 08:41:50] "GET /web/assets/1799-8dfa6bb/web.assets_backend_prod_only.min.js HTTP/1.1" 200 - 4 0.004 0.015
+2022-12-05 08:41:54,057 14436 INFO Alpha3 werkzeug: 127.0.0.1 - - [05/Dec/2022 08:41:54] "POST /web/dataset/call_kw/res.users/has_group HTTP/1.1" 200 - 1 0.001 0.006
+2022-12-05 08:41:55,585 14436 INFO Alpha3 werkzeug: 127.0.0.1 - - [05/Dec/2022 08:41:55] "POST /web/dataset/call_kw/res.users/systray_get_activities HTTP/1.1" 200 - 17 0.224 0.103
+2022-12-05 08:41:55,978 14436 INFO Alpha3 werkzeug: 127.0.0.1 - - [05/Dec/2022 08:41:55] "POST /mail/init_messaging HTTP/1.1" 200 - 85 0.489 0.232
+2022-12-05 08:41:56,054 14436 INFO Alpha3 werkzeug: 127.0.0.1 - - [05/Dec/2022 08:41:56] "POST /mail/load_message_failures HTTP/1.1" 200 - 10 0.020 0.024
+2022-12-05 08:41:56,373 14436 INFO Alpha3 werkzeug: 127.0.0.1 - - [05/Dec/2022 08:41:56] "POST /web/dataset/call_kw/voip.phonecall/get_missed_call_info HTTP/1.1" 200 - 4 0.017 0.010
+2022-12-05 08:41:56,451 14436 INFO Alpha3 werkzeug: 127.0.0.1 - - [05/Dec/2022 08:41:56] "GET /web/image?model=res.users&field=avatar_128&id=2 HTTP/1.1" 304 - 7 0.004 0.024
+2022-12-05 08:46:14,488 14436 INFO Alpha3 werkzeug: 127.0.0.1 - - [05/Dec/2022 08:46:14] "POST /web/action/load HTTP/1.1" 200 - 8 0.019 0.163
+2022-12-05 08:46:14,624 14436 INFO Alpha3 werkzeug: 127.0.0.1 - - [05/Dec/2022 08:46:14] "POST /web/dataset/call_kw/res.users/has_group HTTP/1.1" 200 - 2 0.002 0.058
+2022-12-05 08:46:14,962 14436 INFO Alpha3 werkzeug: 127.0.0.1 - - [05/Dec/2022 08:46:14] "POST /web/dataset/call_kw/res.users/has_group HTTP/1.1" 200 - 2 0.001 0.005
+2022-12-05 08:46:15,371 14436 INFO ? werkzeug: 127.0.0.1 - - [05/Dec/2022 08:46:15] "GET /barcodes/static/img/barcode.png HTTP/1.1" 200 - 0 0.000 0.024
+2022-12-05 08:46:30,037 14436 INFO ? werkzeug: 127.0.0.1 - - [05/Dec/2022 08:46:30] "GET /stock_barcode/static/img/barcodes_demo.pdf HTTP/1.1" 200 - 0 0.000 0.056
+2022-12-05 08:46:58,044 14436 INFO Alpha3 odoo.addons.base.models.ir_actions_report: Generating PDF on Windows platform require DPI >= 96. Using 96 instead. 
+2022-12-05 08:47:00,836 14436 INFO Alpha3 werkzeug: 127.0.0.1 - - [05/Dec/2022 08:47:00] "GET /web/assets/1802-0016e7a/web.report_assets_pdf.min.css HTTP/1.1" 404 - 3 0.014 0.011
+2022-12-05 08:47:00,840 14436 INFO Alpha3 werkzeug: 127.0.0.1 - - [05/Dec/2022 08:47:00] "GET /web/assets/1800-3affcf7/web.report_assets_common.min.css HTTP/1.1" 200 - 5 0.007 0.021
+2022-12-05 08:47:00,922 14436 INFO ? werkzeug: 127.0.0.1 - - [05/Dec/2022 08:47:00] "GET /web/static/fonts/lato/Lato-Reg-webfont.woff HTTP/1.1" 200 - 0 0.000 0.023
+2022-12-05 08:47:03,029 14436 INFO ? werkzeug: 127.0.0.1 - - [05/Dec/2022 08:47:03] "GET /web/static/fonts/lato/Lato-Lig-webfont.woff HTTP/1.1" 200 - 0 0.000 0.019
+2022-12-05 08:47:03,045 14436 INFO ? werkzeug: 127.0.0.1 - - [05/Dec/2022 08:47:03] "GET /web/static/fonts/lato/Lato-Hai-webfont.woff HTTP/1.1" 200 - 0 0.000 0.034
+2022-12-05 08:47:03,054 14436 INFO ? werkzeug: 127.0.0.1 - - [05/Dec/2022 08:47:03] "GET /web/static/fonts/lato/Lato-Bol-webfont.woff HTTP/1.1" 200 - 0 0.000 0.042
+2022-12-05 08:47:03,054 14436 INFO ? werkzeug: 127.0.0.1 - - [05/Dec/2022 08:47:03] "GET /web/static/fonts/lato/Lato-Bla-webfont.woff HTTP/1.1" 200 - 0 0.000 0.042
+2022-12-05 08:47:05,410 14436 INFO Alpha3 werkzeug: 127.0.0.1 - - [05/Dec/2022 08:47:05] "GET /web/assets/1802-0016e7a/web.report_assets_pdf.min.css HTTP/1.1" 404 - 2 0.001 0.005
+2022-12-05 08:47:05,765 14436 WARNING Alpha3 odoo.addons.base.models.ir_actions_report: wkhtmltopdf: b'Exit with code 1 due to network error: ContentNotFoundError\r\n' 
+2022-12-05 08:47:05,770 14436 INFO Alpha3 odoo.addons.base.models.ir_actions_report: The PDF report has been generated for model: stock.picking.type, records (1, 2, 6). 
+2022-12-05 08:47:05,832 14436 INFO Alpha3 odoo.modules.registry: At least one model cache has been invalidated, signaling through the database. 
+2022-12-05 08:47:05,834 14436 INFO Alpha3 werkzeug: 127.0.0.1 - - [05/Dec/2022 08:47:05] "GET /stock_barcode/print_inventory_commands HTTP/1.1" 200 - 167 0.329 20.242
+2022-12-05 08:49:25,722 14436 INFO Alpha3 odoo.addons.base.models.ir_cron: Starting job `payment: post-process transactions`. 
+2022-12-05 08:49:25,737 14436 INFO Alpha3 odoo.addons.base.models.ir_cron: Job `payment: post-process transactions` done. 
+2022-12-05 08:49:56,223 14436 INFO Alpha3 werkzeug: 127.0.0.1 - - [05/Dec/2022 08:49:56] "GET /websocket HTTP/1.1" 101 - 1 0.000 0.009
