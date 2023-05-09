@@ -96,6 +96,6 @@ class StockMove(models.Model):
                 {
                     'cw_demand': rec.product_uom_qty * rec.product_id.average_cw_qty,
                     'cw_uom_id': rec.product_id.cw_uom_id,
-#                    'cw_done': rec.quantity_done * rec.product_id.average_cw_qty,
+                    'cw_done': rec.quantity_done,
                     'cw_reserved': rec.product_uom_qty * rec.product_id.average_cw_qty,
                 })
