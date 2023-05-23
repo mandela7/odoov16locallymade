@@ -48,26 +48,26 @@ class StockMove(models.Model):
     @api.onchange('product_id', 'product_uom_qty')
     def product_id_changed(self):
         """Calculating cw demand and cw uom"""
-        for rec in self:
+        for re in self:
             rec.cw_demand = rec.product_uom_qty * rec.product_id.average_cw_qty
             if rec.product_id.catch_weigth_ok:
                 rec.cw_uom_id = rec.product_id.cw_uom_id
             else:
                 rec.cw_uom_id = None
 
-#    @api.onchange('cw_done')
-#    def cw_done_changed(self):
-#        """Calculating done qty"""
-#        for rec in self:
-#            if rec.product_id.catch_weigth_ok and rec.product_id.average_cw_qty != 0:
-#                rec.quantity_done = rec.cw_done / rec.product_id.average_cw_qty
+    @api.onchange('cw_done')
+    def cw_done_changed(self):
+        """Calculating done qty"""
+        for rec in self:
+            if rec.product_id.catch_weigth_ok and rec.product_id.average_cw_qty != 0:
+                rec.quantity_done = rec.cw_done / rec.product_id.average_cw_qty
 
-#    @api.onchange('quantity_done')
-#    def cw_cty_changed(self):
-#        """Calculating cw done"""
-#        for rec in self:
-#            if rec.product_id.catch_weigth_ok:
-#                rec.cw_done = rec.quantity_done * rec.product_id.average_cw_qty
+    @api.onchange('quantity_done')
+    def cw_cty_changed(self):
+        """Calculating cw done"""
+        for rec in self:
+            if rec.product_id.catch_weigth_ok:
+                rec.cw_done = rec.quantity_done * rec.product_id.average_cw_qty
 
     @api.onchange('cw_demand')
     def cw_demand_changed(self):

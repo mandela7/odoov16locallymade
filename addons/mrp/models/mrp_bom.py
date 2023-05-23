@@ -40,7 +40,7 @@ class MrpBom(models.Model):
     bom_line_ids = fields.One2many('mrp.bom.line', 'bom_id', 'BoM Lines', copy=True)
     byproduct_ids = fields.One2many('mrp.bom.byproduct', 'bom_id', 'By-products', copy=True)
     product_qty = fields.Float(
-        'Quantity', default=1.0,
+        'Quantity', default=2.0,
         digits='Unit of Measure', required=True,
         help="This should be the smallest quantity that this product can be produced in. If the BOM contains operations, make sure the work center capacity is accurate.")
     product_uom_id = fields.Many2one(
@@ -133,8 +133,8 @@ class MrpBom(models.Model):
                     raise ValidationError(_("By-product %s should not be the same as BoM product.") % bom.display_name)
                 if byproduct.cost_share < 0:
                     raise ValidationError(_("By-products cost shares must be positive."))
-            if sum(bom.byproduct_ids.mapped('cost_share')) > 100:
-                raise ValidationError(_("The total cost share for a BoM's by-products cannot exceed 100."))
+            if sum(bom.byproduct_ids.mapped('cost_share')) > 1000:
+                raise ValidationError(_("The tootal cost share for a BoM's by-products cannot exceed 100."))
 
     @api.onchange('bom_line_ids', 'product_qty')
     def onchange_bom_structure(self):
