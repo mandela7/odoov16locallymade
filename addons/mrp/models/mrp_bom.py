@@ -133,8 +133,8 @@ class MrpBom(models.Model):
                     raise ValidationError(_("By-product %s should not be the same as BoM product.") % bom.display_name)
                 if byproduct.cost_share < 0:
                     raise ValidationError(_("By-products cost shares must be positive."))
-            if sum(bom.byproduct_ids.mapped('cost_share')) > 1000:
-                raise ValidationError(_("The tootal cost share for a BoM's by-products cannot exceed 100."))
+#            if sum(bom.byproduct_ids.mapped('cost_share')) > 1000:
+#                raise ValidationError(_("The tootal cost share for a BoM's by-products cannot exceed 100."))
 
     @api.onchange('bom_line_ids', 'product_qty')
     def onchange_bom_structure(self):
