@@ -17,12 +17,15 @@ export class ReferenceField extends Component {
         });
 
         onWillUpdateProps((nextProps) => {
+            const nextRelation = this.getRelation(nextProps);
             if (
                 valuesEqual(this.getValue(this.props) || {}, this.getValue(nextProps) || {}) &&
-                this.getRelation(nextProps) !== this.state.resModel
+                this.state.resModel &&
+                nextRelation !== this.state.resModel
             ) {
                 nextProps.update(false);
             }
+            this.state.resModel = nextRelation;
         });
     }
 
@@ -31,10 +34,14 @@ export class ReferenceField extends Component {
     }
     getValue(p) {
         if (p.type === "char") {
+            const pdata = this.getPreloadedData(p);
+            if (!pdata) {
+                return null;
+            }
             return {
-                resModel: this.getPreloadedData(p).model,
-                resId: this.getPreloadedData(p).data.id,
-                displayName: this.getPreloadedData(p).data.display_name,
+                resModel: pdata.model,
+                resId: pdata.data.id,
+                displayName: pdata.data.display_name,
             };
         } else {
             return p.value;

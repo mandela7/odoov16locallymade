@@ -4,16 +4,16 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Malaz Abuidris <msea@odoo.com>, 2022
+# Malaz Abuidris <msea@odoo.com>, 2023
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:01+0000\n"
+"POT-Creation-Date: 2024-02-06 13:31+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Malaz Abuidris <msea@odoo.com>, 2022\n"
-"Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
+"Last-Translator: Malaz Abuidris <msea@odoo.com>, 2023\n"
+"Language-Team: Arabic (https://app.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -21,7 +21,7 @@ msgstr ""
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
 #. module: base_automation
-#. openerp-web
+#. odoo-javascript
 #: code:addons/base_automation/static/src/xml/base_automation_error_dialog.xml:0
 #, python-format
 msgid ""
@@ -30,19 +30,6 @@ msgid ""
 msgstr ""
 "\"\n"
 "                (المعرف:"
-
-#. module: base_automation
-#: model:ir.model.fields,help:base_automation.field_base_automation__website_published
-msgid ""
-"A code server action can be executed from the website, using a dedicated "
-"controller. The address is <base>/website/action/<website_path>. Set this "
-"field as True to allow users to run this action. If it is set to False the "
-"action cannot be run through the website."
-msgstr ""
-"يمكن تنفيذ إجراء خادم من نوع كود من الموقع، باستخدام متحكم مخصص لهذا. "
-"العنوان هو <base>/website/action/<website_path>. اجعل قيمة هذا الحقل 'صحيح' "
-"للسماح للمستخدمين بتنفيذ هذا الإجراء. إذا كانت قيمته 'خطأ' لا يمكن تنفيذ هذا"
-" الإجراء من خلال الموقع الإلكتروني. "
 
 #. module: base_automation
 #: model:ir.model.fields,field_description:base_automation.field_base_automation__help
@@ -112,14 +99,8 @@ msgid "Automation"
 msgstr "تشغيل تلقائي"
 
 #. module: base_automation
-#: model:ir.model.fields,field_description:base_automation.field_base_automation__website_published
-msgid "Available on the Website"
-msgstr "متوفر في الموقع الإلكتروني "
-
-#. module: base_automation
 #: model:ir.actions.server,name:base_automation.ir_cron_data_base_automation_check_ir_actions_server
 #: model:ir.cron,cron_name:base_automation.ir_cron_data_base_automation_check
-#: model:ir.cron,name:base_automation.ir_cron_data_base_automation_check
 msgid "Base Action Rule: check and execute"
 msgstr "قاعدة الإجراء الأساسي: التحقق والتنفيذ"
 
@@ -168,15 +149,6 @@ msgstr ""
 "إجراء الإعادة الأخير ستستخدم كقيمة معادة عامة. "
 
 #. module: base_automation
-#: model:ir.model.fields,help:base_automation.field_base_automation__sms_method
-msgid ""
-"Choose method for SMS sending:\n"
-"SMS: mass SMS\n"
-"Post as Message: log on document\n"
-"Post as Note: mass SMS with archives"
-msgstr ""
-
-#. module: base_automation
 #: model:ir.model.fields,help:base_automation.field_base_automation__mail_post_method
 msgid ""
 "Choose method for email sending:\n"
@@ -184,6 +156,10 @@ msgid ""
 "Post as Message: post on document and notify followers\n"
 "Post as Note: log a note on document"
 msgstr ""
+"اختر طريقة إرسال البريد الإلكتروني:\n"
+"البريد الإلكتروني: إرسال رسائل البريد الإلكتروني مباشرة\n"
+"النشر كرسالة: قم بالنشر في المستند وإخطار المتابعين\n"
+"النشر كملاحظة: قم بتسجيل ملاحظة في مستند "
 
 #. module: base_automation
 #: model:ir.model.fields,field_description:base_automation.field_base_automation__create_uid
@@ -207,6 +183,9 @@ msgid ""
 "        You can put a negative number if you need a delay before the\n"
 "        trigger date, like sending a reminder 15 minutes before a meeting."
 msgstr ""
+"التأخير بعد تاريخ التشغيل.\n"
+"        يمكنك وضع عدد سالب إذا أردت أن يكون التأخير قبل\n"
+"        تاريخ التشغيل، كإرسال تذكير قبل 15 دقيقة من بدء الاجتماع. "
 
 #. module: base_automation
 #: model:ir.model.fields,field_description:base_automation.field_base_automation__trg_date_range
@@ -219,14 +198,14 @@ msgid "Delay type"
 msgstr "نوع المهلة "
 
 #. module: base_automation
-#. openerp-web
+#. odoo-javascript
 #: code:addons/base_automation/static/src/xml/base_automation_error_dialog.xml:0
 #, python-format
 msgid "Disable Action"
 msgstr "تعطيل الإجراء "
 
 #. module: base_automation
-#. openerp-web
+#. odoo-javascript
 #: code:addons/base_automation/static/src/xml/base_automation_error_dialog.xml:0
 #, python-format
 msgid ""
@@ -234,7 +213,11 @@ msgid ""
 "                but any data created after this could potentially be corrupted,\n"
 "                as you are effectively disabling a customization that may set\n"
 "                important and/or required fields."
-msgstr "المهلة بعد تاريخ التشغيل "
+msgstr ""
+"سيمَكِّنك تعطيل هذا الإجراء المؤتمت من متابعة سير عملك\n"
+"                ولكن قد تتلف أي بيانات يتم إنشاؤها بعد ذلك،\n"
+"                حيث إنك تقوم بتعطيل تخصيصات قد تكون أعدت\n"
+"                حقولاً مهمة أو/و مطلوبة. "
 
 #. module: base_automation
 #: model:ir.model.fields,field_description:base_automation.field_base_automation__display_name
@@ -252,7 +235,7 @@ msgid "Due type"
 msgstr "نوع الاستحقاق"
 
 #. module: base_automation
-#. openerp-web
+#. odoo-javascript
 #: code:addons/base_automation/static/src/xml/base_automation_error_dialog.xml:0
 #, python-format
 msgid "Edit action"
@@ -264,12 +247,15 @@ msgid "Email Template"
 msgstr "قالب البريد الإلكتروني"
 
 #. module: base_automation
+#. odoo-python
 #: code:addons/base_automation/models/base_automation.py:0
 #, python-format
 msgid ""
 "Email, followers or activities action types cannot be used when deleting "
 "records."
 msgstr ""
+"لا يمكن استخدام أنواع إجراءات الأنشطة أو البريد الإلكتروني أو المتابعين عند "
+"حذف السجلات. "
 
 #. module: base_automation
 #: model:ir.model.fields,field_description:base_automation.field_base_automation__xml_id
@@ -282,11 +268,12 @@ msgid "Fields that trigger the onchange."
 msgstr "الحقول التي تقوم بتشغيل onchange. "
 
 #. module: base_automation
+#. odoo-python
 #: code:addons/base_automation/models/base_automation.py:0
 #, python-format
 msgid ""
 "Form Modification based actions can only be used with code action type."
-msgstr ""
+msgstr "يمكن استخدام إجراءات التعديل \"من\" فقط مع نوع إجراء الكود. "
 
 #. module: base_automation
 #: model:ir.model.fields,field_description:base_automation.field_base_automation__groups_id
@@ -345,7 +332,7 @@ msgstr "آخر تحديث في"
 #. module: base_automation
 #: model:ir.model.fields,field_description:base_automation.field_base_automation__least_delay_msg
 msgid "Least Delay Msg"
-msgstr "Least Delay Msg"
+msgstr "رسالة أقل تأخير "
 
 #. module: base_automation
 #: model:ir.model.fields,field_description:base_automation.field_base_automation__link_field_id
@@ -355,7 +342,7 @@ msgstr "حقل الرابط "
 #. module: base_automation
 #: model:ir.model.fields.selection,name:base_automation.selection__base_automation__trg_date_range_type__minutes
 msgid "Minutes"
-msgstr "دقائق "
+msgstr "الدقائق"
 
 #. module: base_automation
 #: model:ir.model.fields,field_description:base_automation.field_base_automation__model_id
@@ -392,11 +379,14 @@ msgid "Note"
 msgstr "ملاحظة "
 
 #. module: base_automation
+#. odoo-python
 #: code:addons/base_automation/models/base_automation.py:0
 #, python-format
 msgid ""
 "Note that this action can be triggered up to %d minutes after its schedule."
 msgstr ""
+"يرجى ملاحظة أنه يمكن تشغيل هذا الإجراء بعد فترة تصل إلى %d دقيقة من وقت "
+"جدولته. "
 
 #. module: base_automation
 #: model:ir.model.fields,field_description:base_automation.field_base_automation__on_change_field_ids
@@ -452,19 +442,9 @@ msgid "Responsible"
 msgstr "المسؤول "
 
 #. module: base_automation
-#: model:ir.model.fields,field_description:base_automation.field_base_automation__sms_template_id
-msgid "SMS Template"
-msgstr "قالب الرسائل النصية القصيرة "
-
-#. module: base_automation
 #: model:ir.model.fields,field_description:base_automation.field_base_automation__mail_post_method
 msgid "Send as"
-msgstr ""
-
-#. module: base_automation
-#: model:ir.model.fields,field_description:base_automation.field_base_automation__sms_method
-msgid "Send as (SMS)"
-msgstr ""
+msgstr "الإرسال كـ"
 
 #. module: base_automation
 #: model:ir.model.fields,field_description:base_automation.field_base_automation__sequence
@@ -496,7 +476,7 @@ msgstr "ضبط عملية أتمتة آلية جديدة "
 #. module: base_automation
 #: model:ir.model.fields,field_description:base_automation.field_base_automation__mail_post_autofollow
 msgid "Subscribe Recipients"
-msgstr ""
+msgstr "مستلمو الاشتراك "
 
 #. module: base_automation
 #: model:ir.model.fields,field_description:base_automation.field_base_automation__activity_summary
@@ -514,6 +494,7 @@ msgid "Target Model Name"
 msgstr "اسم النموذج المستهدف "
 
 #. module: base_automation
+#. odoo-python
 #: code:addons/base_automation/models/base_automation.py:0
 #, python-format
 msgid ""
@@ -529,9 +510,11 @@ msgid ""
 "The action will be triggered if and only if one of these fields is updated. "
 "If empty, all fields are watched."
 msgstr ""
+"سوف يتم تشغيل الإجراء فقط إذا كانت إحدى تلك الحقول محدثة. إذا كانت فارغة، "
+"فستتم مراقبة كافة الحقول. "
 
 #. module: base_automation
-#. openerp-web
+#. odoo-javascript
 #: code:addons/base_automation/static/src/xml/base_automation_error_dialog.xml:0
 #, python-format
 msgid ""
@@ -540,12 +523,6 @@ msgid ""
 msgstr ""
 "حدث الخطأ أثناء تنفيذ الإجراء المؤتمت\n"
 "                \""
-
-#. module: base_automation
-#: model:ir.model.fields,help:base_automation.field_base_automation__website_url
-msgid "The full URL to access the server action through the website."
-msgstr ""
-"الرابط الكامل المستخدم للوصول إلى إجراءات الخادم من خلال الموقع الإلكتروني. "
 
 #. module: base_automation
 #: model:ir.model.fields,field_description:base_automation.field_base_automation__trigger
@@ -617,10 +594,10 @@ msgid ""
 "                opportunity which still has status pending after 14 days might\n"
 "                trigger an automatic reminder email."
 msgstr ""
-"استخدم الإجراءات الآلية لتفعيل الإجراءات تلقائيًا على\n"
-"                شاشات مختلفة. مثلًا: يمكن لترشيح مُقدم من قبل مستخدم ما\n"
-"                أن يُعين تلقائيًا لفريق مبيعات محدد، أو لفرصة بيع لا تزال\n"
-"                معلقة لـ14 يومًا أن تُفعل تلقائيًا رسالة بريد تذكيرية."
+"استخدم الإجراءات المؤتمتة لتفعيل الإجراءات تلقائياً على\n"
+"                شاشات مختلفة. مثال: يمكن لعميل مهتم أُنشئ من قِبَل مستخدم ما\n"
+"                أن يُعين تلقائياً لفريق مبيعات محدد، أو قد تقوم فرصة لا تزال\n"
+"                معلقة لـ 14 يوم أن تُفعل تلقائياً رسالة بريد إلكتروني تذكيرية. "
 
 #. module: base_automation
 #: model:ir.model.fields,field_description:base_automation.field_base_automation__activity_user_field_name
@@ -630,24 +607,15 @@ msgstr "اسم حقل المستخدم"
 #. module: base_automation
 #: model:ir.model.fields,field_description:base_automation.field_base_automation__fields_lines
 msgid "Value Mapping"
-msgstr "تعيين القيمة "
+msgstr "تخطيط القيمة "
 
 #. module: base_automation
+#. odoo-python
 #: code:addons/base_automation/models/base_automation.py:0
 #: code:addons/base_automation/models/base_automation.py:0
 #, python-format
 msgid "Warning"
 msgstr "تحذير"
-
-#. module: base_automation
-#: model:ir.model.fields,field_description:base_automation.field_base_automation__website_path
-msgid "Website Path"
-msgstr "مسار الموقع الإلكتروني "
-
-#. module: base_automation
-#: model:ir.model.fields,field_description:base_automation.field_base_automation__website_url
-msgid "Website Url"
-msgstr "رابط URL للموقع الإلكتروني "
 
 #. module: base_automation
 #: model:ir.model.fields,help:base_automation.field_base_automation__trg_date_calendar_id
@@ -673,6 +641,8 @@ msgid ""
 "When should the condition be triggered.\n"
 "                If present, will be checked by the scheduler. If empty, will be checked at creation and update."
 msgstr ""
+"متى يتم تفعيل الشرط.\n"
+"                إذا كان موجوداً، سيتم التحقق منه من قِبَل المجدوِل. إذا كان فارغاً، سيتم التحقق منه عند الإنشاء والتحديث. "
 
 #. module: base_automation
 #: model:ir.model.fields,help:base_automation.field_base_automation__active
@@ -690,7 +660,7 @@ msgstr ""
 "المساعدة. "
 
 #. module: base_automation
-#. openerp-web
+#. odoo-javascript
 #: code:addons/base_automation/static/src/xml/base_automation_error_dialog.xml:0
 #, python-format
 msgid ""
@@ -698,13 +668,14 @@ msgid ""
 msgstr "يمكنك أن تطلب من أحد المدراء تعطيل أو تصحيح هذا الإجراء المؤتمت. "
 
 #. module: base_automation
-#. openerp-web
+#. odoo-javascript
 #: code:addons/base_automation/static/src/xml/base_automation_error_dialog.xml:0
 #, python-format
 msgid "You can disable this automated action or edit it to solve the issue."
 msgstr "بإمكانك تعطيل هذا الإجراء المؤتمت أو تحريره لحل المشكلة. "
 
 #. module: base_automation
+#. odoo-python
 #: code:addons/base_automation/models/base_automation.py:0
 #, python-format
 msgid ""

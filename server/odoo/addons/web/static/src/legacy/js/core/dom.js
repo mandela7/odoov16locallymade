@@ -19,8 +19,8 @@ odoo.define('web.dom', function (require) {
  * something happens in the DOM.
  */
 
-var concurrency = require('web.concurrency');
 var core = require('web.core');
+const minimalDom = require('@web/legacy/js/core/minimal_dom');
 var _t = core._t;
 
 /**
@@ -39,9 +39,7 @@ function _notify(content, callbacks) {
     core.bus.trigger('DOM_updated', content);
 }
 
-var dom = {
-    DEBOUNCE: 400,
-
+const dom = Object.assign({}, minimalDom, {
     /**
      * Appends content in a jQuery object and optionnally triggers an event
      *
@@ -162,6 +160,13 @@ var dom = {
         return $(el).closestScrollable()[0] || null;
     },
     /**
+     * @param {HTMLElement} el
+     * @see $.compensateScrollbar
+     */
+    compensateScrollbar(el, ...rest) {
+        $(el).compensateScrollbar(...rest);
+    },
+    /**
      * jQuery find function behavior is::
      *
      *      $('A').find('A B') <=> $('A A B')
@@ -185,7 +190,7 @@ var dom = {
         // spaces should be a good-enough condition to use a simple find
         var multiParts = selector.indexOf(' ') >= 0;
         if (multiParts) {
-            $results = $from.find('*').filter(selector);
+            $results = $from.closest('body').find(selector).filter((i, $el) => $from.has($el).length);
         } else {
             $results = $from.find(selector);
         }
@@ -255,6 +260,12 @@ var dom = {
         return $().getScrollingElement(...arguments)[0];
     },
     /**
+     * @returns {HTMLElement|Window}
+     */
+    getScrollingTarget() {
+        return $().getScrollingTarget(...arguments)[0];
+    },
+    /**
      * @param {HTMLElement} el
      * @returns {boolean}
      */
@@ -267,119 +278,6 @@ var dom = {
      */
     isScrollable(el) {
         return $(el).isScrollable();
-    },
-    /**
-     * Protects a function which is to be used as a handler by preventing its
-     * execution for the duration of a previous call to it (including async
-     * parts of that call).
-     *
-     * Limitation: as the handler is ignored during async actions,
-     * the 'preventDefault' or 'stopPropagation' calls it may want to do
-     * will be ignored too. Using the 'preventDefault' and 'stopPropagation'
-     * arguments solves that problem.
-     *
-     * @param {function} fct
-     *      The function which is to be used as a handler. If a promise
-     *      is returned, it is used to determine when the handler's action is
-     *      finished. Otherwise, the return is used as jQuery uses it.
-     * @param {function|boolean} preventDefault
-     * @param {function|boolean} stopPropagation
-     */
-    makeAsyncHandler: function (fct, preventDefault, stopPropagation) {
-        var pending = false;
-        function _isLocked() {
-            return pending;
-        }
-        function _lock() {
-            pending = true;
-        }
-        function _unlock() {
-            pending = false;
-        }
-        return function (ev) {
-            if (preventDefault === true || preventDefault && preventDefault()) {
-                ev.preventDefault();
-            }
-            if (stopPropagation === true || stopPropagation && stopPropagation()) {
-                ev.stopPropagation();
-            }
-
-            if (_isLocked()) {
-                // If a previous call to this handler is still pending, ignore
-                // the new call.
-                return;
-            }
-
-            _lock();
-            var result = fct.apply(this, arguments);
-            Promise.resolve(result).then(_unlock).guardedCatch(_unlock);
-            return result;
-        };
-    },
-    /**
-     * Creates a debounced version of a function to be used as a button click
-     * handler. Also improves the handler to disable the button for the time of
-     * the debounce and/or the time of the async actions it performs.
-     *
-     * Limitation: if two handlers are put on the same button, the button will
-     * become enabled again once any handler's action finishes (multiple click
-     * handlers should however not be binded to the same button).
-     *
-     * @param {function} fct
-     *      The function which is to be used as a button click handler. If a
-     *      promise is returned, it is used to determine when the button can be
-     *      re-enabled. Otherwise, the return is used as jQuery uses it.
-     */
-    makeButtonHandler: function (fct) {
-        // Fallback: if the final handler is not binded to a button, at least
-        // make it an async handler (also handles the case where some events
-        // might ignore the disabled state of the button).
-        fct = dom.makeAsyncHandler(fct);
-
-        return function (ev) {
-            var result = fct.apply(this, arguments);
-
-            var $button = $(ev.target).closest('.btn');
-            if (!$button.length) {
-                return result;
-            }
-
-            // Disable the button for the duration of the handler's action
-            // or at least for the duration of the click debounce. This makes
-            // a 'real' debounce creation useless. Also, during the debouncing
-            // part, the button is disabled without any visual effect.
-            $button.addClass('pe-none');
-            Promise.resolve(dom.DEBOUNCE && concurrency.delay(dom.DEBOUNCE)).then(function () {
-                $button.removeClass('pe-none');
-                const restore = dom.addButtonLoadingEffect($button[0]);
-                return Promise.resolve(result).then(restore).guardedCatch(restore);
-            });
-
-            return result;
-        };
-    },
-    /**
-     * Gives the button a loading effect by disabling it and adding a `fa`
-     * spinner icon.
-     * The existing button `fa` icons will be hidden through css.
-     *
-     * @param {HTMLElement} btn - the button to disable/load
-     * @return {function} a callback function that will restore the button
-     *         initial state
-     */
-    addButtonLoadingEffect: function (btn) {
-        const $btn = $(btn);
-        $btn.addClass('o_website_btn_loading disabled');
-        $btn.prop('disabled', true);
-        const $loader = $('<span/>', {
-            class: 'fa fa-refresh fa-spin me-2',
-        });
-        $btn.prepend($loader);
-        return () => {
-             $btn.removeClass('o_website_btn_loading disabled');
-             $btn.prop('disabled', false);
-             $loader.remove();
-        };
     },
     /**
      * Prepends content in a jQuery object and optionnally triggers an event
@@ -530,10 +428,15 @@ var dom = {
         return size;
     },
     /**
-     * @param {HTMLElement} el - the element to stroll to (limitation: if the
-     *      element is using a fixed position, this function cannot work except
-     *      if is the header (with the "top" id) or the footer (with the
-     *      "bottom" id) for which exceptions have been made)
+     * @param {HTMLElement|string} el - the element to scroll to. If "el" is a
+     *      string, it must be a valid selector of an element in the DOM or
+     *      '#top' or '#bottom'. If it is an HTML element, it must be present
+     *      in the DOM.
+     *      Limitation: if the element is using a fixed position, this
+     *      function cannot work except if is the header (el is then either a
+     *      string set to '#top' or an HTML element with the "top" id) or the
+     *      footer (el is then a string set to '#bottom' or an HTML element
+     *      with the "bottom" id) for which exceptions have been made.
      * @param {number} [options] - same as animate of jQuery
      * @param {number} [options.extraOffset=0]
      *      extra offset to add on top of the automatic one (the automatic one
@@ -549,21 +452,25 @@ var dom = {
             throw new Error("The scrollTo function was called without any given element");
         }
         const $el = $(el);
-        const $scrollable = options.$scrollable || $el.parent().closestScrollable();
+        if (typeof(el) === 'string' && $el[0]) {
+            el = $el[0];
+        }
+        const isTopOrBottomHidden = (el === '#top' || el === '#bottom');
+        const $scrollable = isTopOrBottomHidden ? $().getScrollingElement() : (options.$scrollable || $el.parent().closestScrollable());
         // If $scrollable and $el are not in the same document, we can safely
         // assume $el is in an $iframe. We retrieve it by filtering the list of
         // iframes in $scrollable to keep only the one that contains $el.
         const scrollDocument = $scrollable[0].ownerDocument;
-        const isInOneDocument = scrollDocument === $el[0].ownerDocument;
+        const isInOneDocument = isTopOrBottomHidden || scrollDocument === $el[0].ownerDocument;
         const $iframe = !isInOneDocument && $scrollable.find('iframe').filter((i, node) => $(node).contents().has($el));
         const $topLevelScrollable = $().getScrollingElement(scrollDocument);
         const isTopScroll = $scrollable.is($topLevelScrollable);
 
         function _computeScrollTop() {
-            if (el.id === 'top') {
+            if (el === '#top' || el.id === 'top') {
                 return 0;
             }
-            if (el.id === 'bottom') {
+            if (el === '#bottom' || el.id === 'bottom') {
                 return $scrollable[0].scrollHeight - $scrollable[0].clientHeight;
             }
 
@@ -601,7 +508,8 @@ var dom = {
                     options.progress.apply(this, ...arguments);
                 }
                 const newScrollTop = _computeScrollTop();
-                if (Math.abs(newScrollTop - originalScrollTop) <= 1.0 && !(el.classList.contains('o_transitioning'))) {
+                if (Math.abs(newScrollTop - originalScrollTop) <= 1.0
+                        && (isTopOrBottomHidden || !(el.classList.contains('o_transitioning')))) {
                     return;
                 }
                 $scrollable.stop();
@@ -623,6 +531,6 @@ var dom = {
             $scrollable.animate({scrollTop: originalScrollTop}, clonedOptions);
         });
     },
-};
+});
 return dom;
 });

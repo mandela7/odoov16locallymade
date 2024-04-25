@@ -3,9 +3,9 @@
 # 	* sale_management
 # 
 # Translators:
-# Martin Trigaux, 2022
 # Raymond Yu <cl_yu@hotmail.com>, 2022
-# Jeffery CHEN <jeffery9@gmail.com>, 2022
+# Martin Trigaux, 2022
+# Jeffery CHEN <jeffery9@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,8 +13,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-04 09:23+0000\n"
 "PO-Revision-Date: 2022-09-22 05:54+0000\n"
-"Last-Translator: Jeffery CHEN <jeffery9@gmail.com>, 2022\n"
-"Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
+"Last-Translator: Jeffery CHEN <jeffery9@gmail.com>, 2023\n"
+"Language-Team: Chinese (China) (https://app.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -225,7 +225,7 @@ msgstr "文档"
 #. module: sale_management
 #: model:ir.model.constraint,message:sale_management.constraint_sale_order_template_line_non_accountable_fields_null
 msgid "Forbidden product, quantity and UoM on non-accountable sale quote line"
-msgstr "在非负责任的销售报价行中禁止的产品，数量和单位"
+msgstr "在非负责任的销售报价行中禁止的产品，计数和单位"
 
 #. module: sale_management
 #: model:ir.model.fields,help:sale_management.field_sale_order_option__sequence
@@ -501,7 +501,7 @@ msgid ""
 "Selling the same product in different sizes or colors? Try the product grid "
 "and populate your orders with multiple quantities of each variant. This "
 "feature also exists in the Purchase application."
-msgstr "以不同的尺寸或颜色销售相同的产品？尝试产品网格并使用多个数量的每个变体填充您的订单。此功能也存在于购买应用程序中。"
+msgstr "以不同的尺寸或颜色销售相同的产品？尝试产品网格并使用多个数量的每个变体填充您的订单。此功能也存在于采购应用程序中。"
 
 #. module: sale_management
 #: model:ir.model.fields,field_description:sale_management.field_sale_order_option__sequence
@@ -515,7 +515,7 @@ msgid ""
 "Struggling with a complex product catalog? Try out the Product Configurator "
 "to help sales configure a product with different options: colors, size, "
 "capacity, etc. Make sale orders encoding easier and error-proof."
-msgstr "为复杂的产品目录而苦恼？试用产品配置器，帮助销售人员配置具有不同选项的产品：颜色、尺寸、容量等。使销售订单编码更容易且防错。"
+msgstr "为复杂的产品目录而苦恼？试用产品配置器，帮助销售人员配置具有不同选项的产品：颜色、尺寸、能力等。使销售订单编码更容易且防错。"
 
 #. module: sale_management
 #: model_terms:ir.ui.view,arch_db:sale_management.sale_order_template_view_form

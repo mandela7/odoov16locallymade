@@ -1,4 +1,4 @@
-#!c:\odoobuild\winpy64\python-3.7.7.amd64\python.exe
+#!C:\odoobuild\WinPy64\python-3.10.11.amd64\python.exe
 
 # $Id: rst2odt.py 5839 2009-01-07 19:09:28Z dkuhlman $
 # Author: Dave Kuhlman <dkuhlman@rexx.com>

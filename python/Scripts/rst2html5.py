@@ -1,4 +1,4 @@
-#!c:\odoobuild\winpy64\python-3.7.7.amd64\python.exe
+#!C:\odoobuild\WinPy64\python-3.10.11.amd64\python.exe
 # -*- coding: utf8 -*-
 # :Copyright: © 2015 Günter Milde.
 # :License: Released under the terms of the `2-Clause BSD license`_, in short:

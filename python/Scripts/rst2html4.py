@@ -1,4 +1,4 @@
-#!c:\odoobuild\winpy64\python-3.7.7.amd64\python.exe
+#!C:\odoobuild\WinPy64\python-3.10.11.amd64\python.exe
 
 # $Id: rst2html4.py 7994 2016-12-10 17:41:45Z milde $
 # Author: David Goodger <goodger@python.org>

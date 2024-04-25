@@ -11,10 +11,11 @@ export class KanbanColumnQuickCreate extends Component {
         this.dialog = useService("dialog");
         this.root = useRef("root");
         this.state = useState({
-            columnTitle: "",
+            hasInputFocused: false,
         });
 
         useAutofocus();
+        this.inputRef = useRef("autofocus");
 
         // Close on outside click
         useExternalListener(window, "mousedown", (/** @type {MouseEvent} */ ev) => {
@@ -37,12 +38,17 @@ export class KanbanColumnQuickCreate extends Component {
         );
 
         // Key Navigation
-        const inputRef = useRef("autofocus");
-        useHotkey("enter", () => this.validate(), {
-            area: () => inputRef.el,
-            bypassEditableProtection: true,
-        });
         useHotkey("escape", () => this.fold());
+    }
+
+    get canShowExamples() {
+        const { allowedGroupBys = [], examples = [] } = this.props.exampleData || {};
+        const hasExamples = Boolean(examples.length);
+        return hasExamples && allowedGroupBys.includes(this.props.groupByField.name);
+    }
+
+    get relatedFieldName() {
+        return this.props.groupByField.string;
     }
 
     fold() {
@@ -54,9 +60,10 @@ export class KanbanColumnQuickCreate extends Component {
     }
 
     validate() {
-        if (this.state.columnTitle.length) {
-            this.props.onValidate(this.state.columnTitle);
-            this.state.columnTitle = "";
+        const title = this.inputRef.el.value.trim();
+        if (title.length) {
+            this.props.onValidate(title);
+            this.inputRef.el.value = "";
         }
     }
 
@@ -71,6 +78,12 @@ export class KanbanColumnQuickCreate extends Component {
                 }
             },
         });
+    }
+
+    onInputKeydown(ev) {
+        if (ev.key === "Enter") {
+            this.validate();
+        }
     }
 }
 KanbanColumnQuickCreate.template = "web.KanbanColumnQuickCreate";

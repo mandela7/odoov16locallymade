@@ -4,15 +4,16 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Francisco Santos, 2023
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:25+0000\n"
+"POT-Creation-Date: 2024-02-06 13:32+0000\n"
 "PO-Revision-Date: 2022-09-22 05:55+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
-"Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
+"Last-Translator: Francisco Santos, 2023\n"
+"Language-Team: Spanish (https://app.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -37,7 +38,7 @@ msgstr "<span class=\"label\">Producto</span>"
 #. module: sale_product_configurator
 #: model_terms:ir.ui.view,arch_db:sale_product_configurator.configure_optional_products
 msgid "<span class=\"label\">Quantity</span>"
-msgstr "<span class=\"label\">Calidad</span>"
+msgstr "<span class=\"label\">Cantidad</span>"
 
 #. module: sale_product_configurator
 #: model_terms:ir.ui.view,arch_db:sale_product_configurator.configure_optional_products
@@ -60,7 +61,7 @@ msgid "Available Options:"
 msgstr "Opciones disponibles: "
 
 #. module: sale_product_configurator
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_product_configurator/static/src/js/sale_product_field.js:0
 #, python-format
 msgid "Back"
@@ -72,14 +73,14 @@ msgid "Chair floor protection"
 msgstr "Protección del piso de la silla"
 
 #. module: sale_product_configurator
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_product_configurator/static/src/js/sale_product_field.js:0
 #, python-format
 msgid "Configure"
 msgstr "Configurar"
 
 #. module: sale_product_configurator
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sale_product_configurator/static/src/js/sale_product_field.js:0
 #, python-format
 msgid "Confirm"
@@ -159,8 +160,3 @@ msgstr "Esta combinación no existe."
 #: model_terms:ir.ui.view,arch_db:sale_product_configurator.configure
 msgid "This product has no valid combination."
 msgstr "Este producto no tiene combinaciones válidas."
-
-#. module: sale_product_configurator
-#: model:product.template,uom_name:sale_product_configurator.product_product_1_product_template
-msgid "Units"
-msgstr "Unidades"

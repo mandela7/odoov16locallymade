@@ -29,15 +29,12 @@ export class PopoverWidgetField extends Component {
         this.popover = usePopover();
         this.closePopover = null;
         let fieldValue = this.props.record.data[this.props.name];
-        this.jsonValue = JSON.parse(fieldValue);
+        this.jsonValue = JSON.parse(fieldValue || "{}");
         this.color = this.jsonValue.color || 'text-primary';
         this.icon = this.jsonValue.icon || 'fa-info-circle';
     }
 
     showPopup(ev){
-        if (this.jsonValue.popoverTemplate){
-            this.constructor.components.Popover.template = this.jsonValue.popoverTemplate;
-        }
         this.closePopover = this.popover.add(
             ev.currentTarget,
             this.constructor.components.Popover,

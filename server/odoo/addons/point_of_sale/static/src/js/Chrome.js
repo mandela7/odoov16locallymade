@@ -92,7 +92,9 @@ odoo.define('point_of_sale.Chrome', function(require) {
                 console.error(error.cause);
             });
 
-            this.props.setupIsDone(this);
+            onMounted(() => {
+                this.props.setupIsDone(this);
+            });
         }
 
         // GETTERS //
@@ -170,7 +172,11 @@ odoo.define('point_of_sale.Chrome', function(require) {
                     }
                 } else if (error instanceof Error) {
                     title = error.message;
-                    body = error.stack;
+                    if (error.cause) {
+                        body = error.cause.message;
+                    } else {
+                        body = error.stack;
+                    }
                 }
 
                 await this.showPopup('ErrorTracebackPopup', {
@@ -188,21 +194,31 @@ odoo.define('point_of_sale.Chrome', function(require) {
             // Basically, preload the images in the background.
             this._preloadImages();
             if (this.env.pos.config.limited_partners_loading && this.env.pos.config.partner_load_background) {
-                this.env.pos.loadPartnersBackground().then(() => {
-                    this.env.pos.isEveryPartnerLoaded = true;
-                });
+                // Wrap in fresh reactive: none of the reads during loading should subscribe to anything
+                reactive(this.env.pos).loadPartnersBackground();
             }
             if (this.env.pos.config.limited_products_loading && this.env.pos.config.product_load_background) {
-                this.env.pos.loadProductsBackground().then(() => {
-                    this.env.pos.isEveryProductLoaded = true;
+                // Wrap in fresh reactive: none of the reads during loading should subscribe to anything
+                reactive(this.env.pos).loadProductsBackground().then(() => {
                     this.render(true);
                 });
             }
         }
 
         setupBarcodeParser() {
+            if (!this.env.pos.company.nomenclature_id) {
+                const errorMessage = this.env._t("The barcode nomenclature setting is not configured. " +
+                    "Make sure to configure it on your Point of Sale configuration settings");
+                throw new Error(this.env._t("Missing barcode nomenclature"), { cause: { message: errorMessage } });
+
+            }
             const barcode_parser = new BarcodeParser({ nomenclature_id: this.env.pos.company.nomenclature_id });
             this.env.barcode_reader.set_barcode_parser(barcode_parser);
+            const fallbackNomenclature = this.env.pos.company.fallback_nomenclature_id;
+            if (fallbackNomenclature) {
+                const fallbackBarcodeParser = new BarcodeParser({ nomenclature_id: fallbackNomenclature });
+                this.env.barcode_reader.setFallbackBarcodeParser(fallbackBarcodeParser);
+            }
             return barcode_parser.is_loaded();
         }
 
@@ -266,9 +282,11 @@ odoo.define('point_of_sale.Chrome', function(require) {
             this.tempScreen.name = name;
             this.tempScreen.component = this.constructor.components[name];
             this.tempScreenProps = Object.assign({}, props, { resolve });
+            this.env.pos.tempScreenIsShown = true;
         }
         __closeTempScreen() {
             this.tempScreen.isShown = false;
+            this.env.pos.tempScreenIsShown = false;
             this.tempScreen.name = null;
         }
         __showScreen({ detail: { name, props = {} } }) {
@@ -305,41 +323,9 @@ odoo.define('point_of_sale.Chrome', function(require) {
                 window.location = '/web#action=point_of_sale.action_client_pos_menu';
             }
 
-            if (this.env.pos.db.get_orders().length) {
-                // If there are orders in the db left unsynced, we try to sync.
-                // If sync successful, close without asking.
-                // Otherwise, ask again saying that some orders are not yet synced.
-                try {
-                    await this.env.pos.push_orders();
-                    window.location = '/web#action=point_of_sale.action_client_pos_menu';
-                } catch (error) {
-                    console.warn(error);
-                    const reason = this.env.pos.failed
-                        ? this.env._t(
-                              'Some orders could not be submitted to ' +
-                                  'the server due to configuration errors. ' +
-                                  'You can exit the Point of Sale, but do ' +
-                                  'not close the session before the issue ' +
-                                  'has been resolved.'
-                          )
-                        : this.env._t(
-                              'Some orders could not be submitted to ' +
-                                  'the server due to internet connection issues. ' +
-                                  'You can exit the Point of Sale, but do ' +
-                                  'not close the session before the issue ' +
-                                  'has been resolved.'
-                          );
-                    const { confirmed } = await this.showPopup('ConfirmPopup', {
-                        title: this.env._t('Offline Orders'),
-                        body: reason,
-                    });
-                    if (confirmed) {
-                        this.state.uiState = 'CLOSING';
-                        this.state.loadingSkipButtonIsShown = false;
-                        window.location = '/web#action=point_of_sale.action_client_pos_menu';
-                    }
-                }
-            }
+            // If there are orders in the db left unsynced, we try to sync.
+            await this.env.pos.push_orders_with_closing_popup();
+            window.location = '/web#action=point_of_sale.action_client_pos_menu';
         }
         _toggleDebugWidget() {
             this.state.debugWidgetIsShown = !this.state.debugWidgetIsShown;
@@ -388,7 +374,7 @@ odoo.define('point_of_sale.Chrome', function(require) {
         _preloadImages() {
             for (let product of this.env.pos.db.get_product_by_category(0)) {
                 const image = new Image();
-                image.src = `/web/image?model=product.product&field=image_128&id=${product.id}&unique=${product.write_date}`;
+                image.src = `/web/image?model=product.product&field=image_128&id=${product.id}&unique=${product.__last_update}`;
             }
             for (let category of Object.values(this.env.pos.db.category_by_id)) {
                 if (category.id == 0) continue;
@@ -451,7 +437,7 @@ odoo.define('point_of_sale.Chrome', function(require) {
             );
         }
         showCashMoveButton() {
-            return this.env.pos && this.env.pos.config && this.env.pos.config.cash_control;
+            return this.env.pos && this.env.pos.config && this.env.pos.config.cash_control && this.env.pos.config.has_cash_move_permission;
         }
 
         // UNEXPECTED ERROR HANDLING //

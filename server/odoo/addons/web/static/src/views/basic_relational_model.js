@@ -41,7 +41,28 @@ class DataPoint {
         } else if (params.handle) {
             this.__bm_handle__ = params.handle;
             info = this.model.__bm__.get(this.__bm_handle__);
-            this.context = this.model.__bm__.localData[this.__bm_handle__].getContext();
+            // Create a lazy property that sets itself on first read, because creating the context
+            // is very expensive, and in some cases we are creating a lot of DataPoints whose
+            // context will never be read.
+            Object.defineProperty(this, "context", {
+                get() {
+                    const context = this.model.__bm__.localData[this.__bm_handle__].getContext();
+                    Object.defineProperty(this, "context", {
+                        value: context,
+                        configurable: true,
+                        writable: true,
+                    });
+                    return context;
+                },
+                set(value) {
+                    Object.defineProperty(this, "context", {
+                        value,
+                        configurable: true,
+                        writable: true,
+                    });
+                },
+                configurable: true,
+            });
         } else {
             throw new Error("Datapoint needs load params or handle");
         }
@@ -243,6 +264,11 @@ export class Record extends DataPoint {
                 case "integer":
                 case "monetary":
                     continue;
+                case "html":
+                    if (this.isRequired(fieldName) && this.data[fieldName].length === 0) {
+                        this._setInvalidField(fieldName);
+                    }
+                    break;
                 case "properties":
                     if (!this.checkPropertiesValidity(fieldName)) {
                         this._setInvalidField(fieldName);
@@ -254,6 +280,14 @@ export class Record extends DataPoint {
                         this._setInvalidField(fieldName);
                     }
                     break;
+                case "json":
+                    if (
+                        this.isRequired(fieldName) &&
+                        (!this.data[fieldName] || !Object.keys(this.data[fieldName]).length)
+                    ) {
+                        this.setInvalidField(fieldName);
+                    }
+                    break;
                 default:
                     if (!isSet && this.isRequired(fieldName) && !this.data[fieldName]) {
                         this._setInvalidField(fieldName);
@@ -261,6 +295,21 @@ export class Record extends DataPoint {
             }
         }
         return !this._invalidFields.size;
+    }
+
+    openInvalidFieldsNotification() {
+        if (this._invalidFields.size) {
+            const invalidFields = [...this._invalidFields].map((fieldName) => {
+                return `<li>${escape(this.fields[fieldName].string || fieldName)}</li>`;
+            }, this);
+            this._closeInvalidFieldsNotification = this.model.notificationService.add(
+                markup(`<ul>${invalidFields.join("")}</ul>`),
+                {
+                    title: this.model.env._t("Invalid fields: "),
+                    type: "danger",
+                }
+            );
+        }
     }
 
     async switchMode(mode, options) {
@@ -339,8 +388,10 @@ export class Record extends DataPoint {
         }
         return value.every(
             (propertyDefinition) =>
-                !propertyDefinition.id ||
-                (propertyDefinition.string && propertyDefinition.string.length)
+                propertyDefinition.name &&
+                propertyDefinition.name.length &&
+                propertyDefinition.string &&
+                propertyDefinition.string.length
         );
     }
 
@@ -355,11 +406,18 @@ export class Record extends DataPoint {
         this._setInvalidField(fieldName);
     }
 
+    resetFieldValidity(fieldName) {
+        const bm = this.model.__bm__;
+        bm.setDirty(this.__bm_handle__);
+        this._invalidFields.delete(fieldName);
+        this.model.notify();
+    }
+
     isInvalid(fieldName) {
         return this._invalidFields.has(fieldName);
     }
 
-    async load(params = {}) {
+    async load(params = {}, options = {}) {
         if (!this.__bm_handle__) {
             this.__bm_handle__ = await this.model.__bm__.load({
                 ...this.__bm_load_params__,
@@ -368,6 +426,7 @@ export class Record extends DataPoint {
         } else {
             this.__bm_handle__ = await this.model.__bm__.reload(this.__bm_handle__, {
                 viewType: this.__viewType,
+                keepChanges: !!options.keepChanges,
             });
         }
         this.__syncData();
@@ -416,9 +475,10 @@ export class Record extends DataPoint {
                             handle: data[fieldName].id,
                             handleField,
                             viewType: viewMode,
-                            __syncParent: async (value) => {
+                            __syncParent: async (value, viewType) => {
                                 await this.model.__bm__.save(this.__bm_handle__, {
                                     savePoint: true,
+                                    viewType,
                                 });
                                 await this.update({ [fieldName]: value });
                             },
@@ -503,6 +563,31 @@ export class Record extends DataPoint {
         for (const [fieldName, value] of Object.entries(changes)) {
             const fieldType = this.fields[fieldName].type;
             data[fieldName] = mapWowlValueToLegacy(value, fieldType);
+            // special case for many2ones: they can be updated with a new name (e.g. if edited from
+            // the dialog), but in the basic_model it worked differently, we had a datapoint for the
+            // many2one value and we reloaded it directly. In the new model, we directly update the
+            // value [id, display_name], so we reload beforehand, in the many2one field itself. In
+            // the next few lines, we thus manually apply the renaming on the legacy datapoint.
+            if (this.fields[fieldName].type === "many2one" && Array.isArray(changes[fieldName])) {
+                const newName = changes[fieldName][1];
+                if (newName || newName === "") {
+                    const bm = this.model.__bm__;
+                    const m2oDatapointId = bm.get(this.__bm_handle__).data[fieldName].id;
+                    const m2oDatapoint = bm.localData[m2oDatapointId];
+                    if (m2oDatapoint && m2oDatapoint.data.id === changes[fieldName][0]) {
+                        m2oDatapoint.data.display_name = newName;
+                    }
+                }
+            }
+            // same for reference fields
+            if (this.fields[fieldName].type === "reference" && changes[fieldName].displayName) {
+                const bm = this.model.__bm__;
+                const m2oDatapointId = bm.get(this.__bm_handle__).data[fieldName].id;
+                const m2oDatapoint = bm.localData[m2oDatapointId];
+                if (m2oDatapoint) {
+                    m2oDatapoint.data.display_name = changes[fieldName].displayName;
+                }
+            }
         }
         if (this._urgentSave) {
             const fieldNames = await this.model.__bm__.notifyChanges(this.__bm_handle__, data, {
@@ -535,7 +620,11 @@ export class Record extends DataPoint {
             const prom = this.model.__bm__.notifyChanges(this.__bm_handle__, data, {
                 viewType: this.__viewType,
             });
-            prom.catch(resolveUpdatePromise); // onchange rpc may return an error
+            prom.catch(() => {
+                this.model.notify();
+                // onchange rpc may return an error
+                resolveUpdatePromise();
+            });
             const fieldNames = await prom;
             this._removeInvalidFields(fieldNames);
             for (const fieldName of fieldNames) {
@@ -572,6 +661,9 @@ export class Record extends DataPoint {
             useSaveErrorDialog: false,
         }
     ) {
+        if (this._closeUrgentSaveNotification) {
+            this._closeUrgentSaveNotification();
+        }
         const shouldSwitchToReadonly = !options.stayInEdition && this.isInEdition;
         let resolveSavePromise;
         this._savePromise = new Promise((r) => {
@@ -579,22 +671,14 @@ export class Record extends DataPoint {
         });
         this._closeInvalidFieldsNotification();
         if (!(await this.checkValidity())) {
-            const invalidFields = [...this._invalidFields].map((fieldName) => {
-                return `<li>${escape(this.fields[fieldName].string || fieldName)}</li>`;
-            }, this);
-            this._closeInvalidFieldsNotification = this.model.notificationService.add(
-                markup(`<ul>${invalidFields.join("")}</ul>`),
-                {
-                    title: this.model.env._t("Invalid fields: "),
-                    type: "danger",
-                }
-            );
+            this.openInvalidFieldsNotification();
             resolveSavePromise();
             return false;
         }
         const saveOptions = {
             reload: !options.noReload,
             savePoint: options.savePoint,
+            viewType: this.__viewType,
         };
         try {
             await this.model.__bm__.save(this.__bm_handle__, saveOptions);
@@ -657,15 +741,36 @@ export class Record extends DataPoint {
         this.model.env.bus.trigger("RELATIONAL_MODEL:WILL_SAVE_URGENTLY");
         await Promise.resolve();
         this.__syncData();
-        let isValid = true;
+        let succeeded = true;
         if (this.isDirty) {
-            isValid = await this.checkValidity(true);
-            if (isValid) {
-                this.model.__bm__.save(this.__bm_handle__, { reload: false });
+            succeeded = await this.checkValidity(true);
+            if (succeeded) {
+                this.model.__bm__.useSendBeacon = true;
+                try {
+                    await this.model.__bm__.save(this.__bm_handle__, { reload: false });
+                } catch (e) {
+                    if (e === "send beacon failed") {
+                        if (this._closeUrgentSaveNotification) {
+                            this._closeUrgentSaveNotification();
+                        }
+                        this._closeUrgentSaveNotification = this.model.notificationService.add(
+                            markup(
+                                this.model.env._t(
+                                    `Heads up! Your recent changes are too large to save automatically. Please click the <i class="fa fa-cloud-upload fa-fw"></i> button now to ensure your work is saved before you exit this tab.`
+                                )
+                            ),
+                            { sticky: true }
+                        );
+                        succeeded = false;
+                    } else {
+                        throw e;
+                    }
+                }
+                delete this.model.__bm__.useSendBeacon;
             }
         }
         this.model.__bm__.bypassMutex = false;
-        return isValid;
+        return succeeded;
     }
 
     async archive() {
@@ -708,6 +813,9 @@ export class Record extends DataPoint {
     }
 
     async discard() {
+        if (this._closeUrgentSaveNotification) {
+            this._closeUrgentSaveNotification();
+        }
         await this._savePromise;
         this._closeInvalidFieldsNotification();
         this.model.__bm__.discardChanges(this.__bm_handle__);
@@ -833,7 +941,9 @@ export class StaticList extends DataPoint {
 
     async delete(recordId, operation = "DELETE") {
         const record = this.records.find((r) => r.id === recordId);
-        await this.__syncParent({ operation, ids: [record.__bm_handle__] });
+        if (record) {
+            await this.__syncParent({ operation, ids: [record.__bm_handle__] });
+        }
     }
 
     async add(object, params = { isM2M: false }) {
@@ -859,7 +969,12 @@ export class StaticList extends DataPoint {
     /** Creates a Draft record from nothing and edits it. Relevant in editable x2m's */
     async addNew(params) {
         const position = params.position;
-        const operation = { context: [params.context], operation: "CREATE", position };
+        const operation = {
+            context: [params.context],
+            operation: "CREATE",
+            position,
+            allowWarning: params.allowWarning,
+        };
         await this.model.__bm__.save(this.__bm_handle__, { savePoint: true });
         this.model.__bm__.freezeOrder(this.__bm_handle__);
         await this.__syncParent(operation);
@@ -1042,15 +1157,19 @@ export class StaticList extends DataPoint {
                 this.model.__bm__.notifyChanges(
                     parentID,
                     { [this.__fieldName__]: op },
-                    { notifyChange: false }
+                    { notifyChange: false, viewType: "form" }
                 );
             })
         );
 
         try {
-            await this.model.__bm__.notifyChanges(parentID, {
-                [this.__fieldName__]: lastOperation,
-            });
+            await this.model.__bm__.notifyChanges(
+                parentID,
+                {
+                    [this.__fieldName__]: lastOperation,
+                },
+                { viewType: "form" }
+            );
         } finally {
             if (this.__viewType === "list") {
                 await this.model.__bm__.setSort(this.__bm_handle__, handleField);
@@ -1102,7 +1221,7 @@ export class RelationalModel extends Model {
 
         this.root = null;
 
-        this.__bm__ = new BasicModel(this, {
+        this.__bm__ = new this.constructor.LegacyModel(this, {
             fields: params.fields || {},
             modelName: params.resModel,
             useSampleModel: false, // FIXME AAB
@@ -1266,7 +1385,7 @@ export class RelationalModel extends Model {
             await record.save({ noReload: true });
             operation = { operation: "TRIGGER_ONCHANGE" };
         }
-        await list.__syncParent(operation);
+        await list.__syncParent(operation, record.__viewType);
         if (isM2M) {
             await record.load();
         }
@@ -1323,7 +1442,7 @@ export class RelationalModel extends Model {
                 args = args.concat(ev.target);
                 if (owl.status(this.__component) === "destroyed") {
                     console.warn("Component is destroyed");
-                    return payload.callback(Promise.resolve());
+                    return payload.callback(new Promise(() => {}));
                 }
                 const prom = new Promise((resolve, reject) => {
                     owl.Component.env.session
@@ -1404,4 +1523,5 @@ export class RelationalModel extends Model {
     }
 }
 RelationalModel.services = ["action", "dialog", "notification"];
+RelationalModel.LegacyModel = BasicModel;
 RelationalModel.Record = Record;

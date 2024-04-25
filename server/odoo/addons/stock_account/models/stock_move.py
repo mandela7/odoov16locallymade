@@ -5,7 +5,7 @@ from collections import defaultdict
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
-from odoo.tools import float_is_zero, OrderedSet
+from odoo.tools import float_compare, float_is_zero, OrderedSet
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -19,7 +19,7 @@ class StockMove(models.Model):
     account_move_ids = fields.One2many('account.move', 'stock_move_id')
     stock_valuation_layer_ids = fields.One2many('stock.valuation.layer', 'stock_move_id')
     analytic_account_line_id = fields.Many2one(
-        'account.analytic.line', copy=False)
+        'account.analytic.line', copy=False, index='btree_not_null')
 
     def _filter_anglo_saxon_moves(self, product):
         return self.filtered(lambda m: m.product_id.id == product.id)
@@ -46,8 +46,13 @@ class StockMove(models.Model):
         # If the move is a return, use the original move's price unit.
         if self.origin_returned_move_id and self.origin_returned_move_id.sudo().stock_valuation_layer_ids:
             layers = self.origin_returned_move_id.sudo().stock_valuation_layer_ids
+            # dropshipping create additional positive svl to make sure there is no impact on the stock valuation
+            # We need to remove them from the computation of the price unit.
+            if self.origin_returned_move_id._is_dropshipped() or self.origin_returned_move_id._is_dropshipped_returned():
+                layers = layers.filtered(lambda l: float_compare(l.value, 0, precision_rounding=l.product_id.uom_id.rounding) <= 0)
+            layers |= layers.stock_valuation_layer_ids
             quantity = sum(layers.mapped("quantity"))
-            return layers.currency_id.round(sum(layers.mapped("value")) / quantity) if not float_is_zero(quantity, precision_rounding=layers.uom_id.rounding) else 0
+            return sum(layers.mapped("value")) / quantity if not float_is_zero(quantity, precision_rounding=layers.uom_id.rounding) else 0
         return price_unit if not float_is_zero(price_unit, precision) or self._should_force_price_unit() else self.product_id.standard_price
 
     @api.model
@@ -72,7 +77,7 @@ class StockMove(models.Model):
         self.ensure_one()
         res = OrderedSet()
         for move_line in self.move_line_ids:
-            if move_line.owner_id and move_line.owner_id != move_line.company_id.partner_id:
+            if move_line._should_exclude_for_valuation():
                 continue
             if not move_line.location_id._should_be_valued() and move_line.location_dest_id._should_be_valued():
                 res.add(move_line.id)
@@ -86,7 +91,7 @@ class StockMove(models.Model):
         :rtype: bool
         """
         self.ensure_one()
-        if self._get_in_move_lines():
+        if self._get_in_move_lines() and not self._is_dropshipped_returned():
             return True
         return False
 
@@ -100,7 +105,7 @@ class StockMove(models.Model):
         """
         res = self.env['stock.move.line']
         for move_line in self.move_line_ids:
-            if move_line.owner_id and move_line.owner_id != move_line.company_id.partner_id:
+            if move_line._should_exclude_for_valuation():
                 continue
             if move_line.location_id._should_be_valued() and not move_line.location_dest_id._should_be_valued():
                 res |= move_line
@@ -114,7 +119,7 @@ class StockMove(models.Model):
         :rtype: bool
         """
         self.ensure_one()
-        if self._get_out_move_lines():
+        if self._get_out_move_lines() and not self._is_dropshipped():
             return True
         return False
 
@@ -180,7 +185,7 @@ class StockMove(models.Model):
             svl_vals = move.product_id._prepare_out_svl_vals(forced_quantity or valued_quantity, move.company_id)
             svl_vals.update(move._prepare_common_svl_vals())
             if forced_quantity:
-                svl_vals['description'] = 'Correction of %s (modification of past move)' % move.picking_id.name or move.name
+                svl_vals['description'] = 'Correction of %s (modification of past move)' % (move.picking_id.name or move.name)
             svl_vals['description'] += svl_vals.pop('rounding_adjustment', '')
             svl_vals_list.append(svl_vals)
         return self.env['stock.valuation.layer'].sudo().create(svl_vals_list)
@@ -206,23 +211,26 @@ class StockMove(models.Model):
 
             common_vals = dict(move._prepare_common_svl_vals(), remaining_qty=0)
 
-            # create the in
-            in_vals = {
-                'unit_cost': unit_cost,
-                'value': unit_cost * quantity,
-                'quantity': quantity,
-            }
-            in_vals.update(common_vals)
-            svl_vals_list.append(in_vals)
+            # create the in if it does not come from a valued location (eg subcontract -> customer)
+            if not move.location_id._should_be_valued():
+                in_vals = {
+                    'unit_cost': unit_cost,
+                    'value': unit_cost * quantity,
+                    'quantity': quantity,
+                }
+                in_vals.update(common_vals)
+                svl_vals_list.append(in_vals)
 
-            # create the out
-            out_vals = {
-                'unit_cost': unit_cost,
-                'value': unit_cost * quantity * -1,
-                'quantity': quantity * -1,
-            }
-            out_vals.update(common_vals)
-            svl_vals_list.append(out_vals)
+            # create the out if it does not go to a valued location (eg customer -> subcontract)
+            if not move.location_dest_id._should_be_valued():
+                out_vals = {
+                    'unit_cost': unit_cost,
+                    'value': unit_cost * quantity * -1,
+                    'quantity': quantity * -1,
+                }
+                out_vals.update(common_vals)
+                svl_vals_list.append(out_vals)
+
         return self.env['stock.valuation.layer'].sudo().create(svl_vals_list)
 
     def _create_dropshipped_returned_svl(self, forced_quantity=None):
@@ -247,6 +255,9 @@ class StockMove(models.Model):
         valued_moves['in'].product_price_update_before_done()
 
         res = super(StockMove, self)._action_done(cancel_backorder=cancel_backorder)
+
+        # '_action_done' might have deleted some exploded stock moves
+        valued_moves = {value_type: moves.exists() for value_type, moves in valued_moves.items()}
 
         # '_action_done' might have created an extra move to be valued
         for move in res - self:
@@ -366,7 +377,7 @@ class StockMove(models.Model):
             svl_vals = move.product_id._prepare_in_svl_vals(forced_quantity or valued_quantity, unit_cost)
             svl_vals.update(move._prepare_common_svl_vals())
             if forced_quantity:
-                svl_vals['description'] = 'Correction of %s (modification of past move)' % move.picking_id.name or move.name
+                svl_vals['description'] = 'Correction of %s (modification of past move)' % (move.picking_id.name or move.name)
             svl_vals_list.append(svl_vals)
         return svl_vals_list
 
@@ -374,7 +385,10 @@ class StockMove(models.Model):
         return self.location_id.valuation_out_account_id.id or accounts_data['stock_input'].id
 
     def _get_dest_account(self, accounts_data):
-        return self.location_dest_id.valuation_in_account_id.id or accounts_data['stock_output'].id
+        if not self.location_dest_id.usage in ('production', 'inventory'):
+            return accounts_data['stock_output'].id
+        else:
+            return self.location_dest_id.valuation_in_account_id.id or accounts_data['stock_output'].id
 
     def _prepare_account_move_line(self, qty, cost, credit_account_id, debit_account_id, svl_id, description):
         """
@@ -401,29 +415,36 @@ class StockMove(models.Model):
         if self.state in ['cancel', 'draft']:
             return False
 
+        amount, unit_amount = 0, 0
         if self.state != 'done':
             unit_amount = self.product_uom._compute_quantity(
                 self.quantity_done, self.product_id.uom_id)
             # Falsy in FIFO but since it's an estimation we don't require exact correct cost. Otherwise
             # we would have to recompute all the analytic estimation at each out.
             amount = - unit_amount * self.product_id.standard_price
-        elif self.product_id.valuation == 'real_time':
+        elif self.product_id.valuation == 'real_time' and not self._ignore_automatic_valuation():
             accounts_data = self.product_id.product_tmpl_id.get_product_accounts()
             account_valuation = accounts_data.get('stock_valuation', False)
             analytic_line_vals = self.stock_valuation_layer_ids.account_move_id.line_ids.filtered(
                 lambda l: l.account_id == account_valuation)._prepare_analytic_lines()
-            amount = - sum(sum(vals['amount'] for vals in lists) for lists in analytic_line_vals)
-            unit_amount = - sum(sum(vals['unit_amount'] for vals in lists) for lists in analytic_line_vals)
+            amount = - sum(vals['amount'] for vals in analytic_line_vals)
+            unit_amount = - sum(vals['unit_amount'] for vals in analytic_line_vals)
         elif sum(self.stock_valuation_layer_ids.mapped('quantity')):
             amount = sum(self.stock_valuation_layer_ids.mapped('value'))
             unit_amount = - sum(self.stock_valuation_layer_ids.mapped('quantity'))
         if self.analytic_account_line_id:
+            if amount == 0 and unit_amount == 0:
+                self.analytic_account_line_id.unlink()
+                return False
             self.analytic_account_line_id.unit_amount = unit_amount
             self.analytic_account_line_id.amount = amount
             return False
         elif amount:
             return self._generate_analytic_lines_data(
                 unit_amount, amount)
+
+    def _ignore_automatic_valuation(self):
+        return False
 
     def _generate_analytic_lines_data(self, unit_amount, amount):
         self.ensure_one()
@@ -443,29 +464,33 @@ class StockMove(models.Model):
     def _generate_valuation_lines_data(self, partner_id, qty, debit_value, credit_value, debit_account_id, credit_account_id, svl_id, description):
         # This method returns a dictionary to provide an easy extension hook to modify the valuation lines (see purchase for an example)
         self.ensure_one()
-        debit_line_vals = {
+
+        line_vals = {
             'name': description,
             'product_id': self.product_id.id,
             'quantity': qty,
             'product_uom_id': self.product_id.uom_id.id,
             'ref': description,
             'partner_id': partner_id,
-            'balance': debit_value,
-            'account_id': debit_account_id,
         }
 
-        credit_line_vals = {
-            'name': description,
-            'product_id': self.product_id.id,
-            'quantity': qty,
-            'product_uom_id': self.product_id.uom_id.id,
-            'ref': description,
-            'partner_id': partner_id,
-            'balance': -credit_value,
-            'account_id': credit_account_id,
+        svl = self.env['stock.valuation.layer'].browse(svl_id)
+        if svl.account_move_line_id.analytic_distribution:
+            line_vals['analytic_distribution'] = svl.account_move_line_id.analytic_distribution
+
+        rslt = {
+            'credit_line_vals': {
+                **line_vals,
+                'balance': -credit_value,
+                'account_id': credit_account_id,
+            },
+            'debit_line_vals': {
+                **line_vals,
+                'balance': debit_value,
+                'account_id': debit_account_id,
+            },
         }
 
-        rslt = {'credit_line_vals': credit_line_vals, 'debit_line_vals': debit_line_vals}
         if credit_value != debit_value:
             # for supplier returns of product in average costing method, in anglo saxon mode
             diff_amount = debit_value - credit_value
@@ -478,10 +503,9 @@ class StockMove(models.Model):
                 'product_id': self.product_id.id,
                 'quantity': qty,
                 'product_uom_id': self.product_id.uom_id.id,
+                'balance': -diff_amount,
                 'ref': description,
                 'partner_id': partner_id,
-                'credit': diff_amount > 0 and diff_amount or 0,
-                'debit': diff_amount < 0 and -diff_amount or 0,
                 'account_id': price_diff_account.id,
             }
         return rslt
@@ -514,6 +538,7 @@ class StockMove(models.Model):
             'stock_move_id': self.id,
             'stock_valuation_layer_ids': [(6, None, [svl_id])],
             'move_type': 'entry',
+            'is_storno': self.env.context.get('is_returned') and self.env.company.account_storno,
         }
 
     def _account_analytic_entry_move(self):
@@ -530,6 +555,14 @@ class StockMove(models.Model):
             self.env['stock.move'].browse(
                 move_id).analytic_account_line_id = analytic_line
 
+    def _should_exclude_for_valuation(self):
+        """Determines if this move should be excluded from valuation based on its partner.
+        :return: True if the move's restrict_partner_id is different from the company's partner (indicating
+                it should be excluded from valuation), False otherwise.
+        """
+        self.ensure_one()
+        return self.restrict_partner_id and self.restrict_partner_id != self.company_id.partner_id
+
     def _account_entry_move(self, qty, description, svl_id, cost):
         """ Accounting Valuation Entries """
         self.ensure_one()
@@ -537,8 +570,7 @@ class StockMove(models.Model):
         if self.product_id.type != 'product':
             # no stock valuation for consumable products
             return am_vals
-        if self.restrict_partner_id and self.restrict_partner_id != self.company_id.partner_id:
-            # if the move isn't owned by the company, we don't make any valuation
+        if self._should_exclude_for_valuation():
             return am_vals
 
         company_from = self._is_out() and self.mapped('move_line_ids.location_id.company_id') or False
@@ -549,7 +581,7 @@ class StockMove(models.Model):
         # warehouse of the same company, the transit location belongs to this company, so we don't need to create accounting entries
         if self._is_in():
             if self._is_returned(valued_type='in'):
-                am_vals.append(self.with_company(company_to)._prepare_account_move_vals(acc_dest, acc_valuation, journal_id, qty, description, svl_id, cost))
+                am_vals.append(self.with_company(company_to).with_context(is_returned=True)._prepare_account_move_vals(acc_dest, acc_valuation, journal_id, qty, description, svl_id, cost))
             else:
                 am_vals.append(self.with_company(company_to)._prepare_account_move_vals(acc_src, acc_valuation, journal_id, qty, description, svl_id, cost))
 
@@ -557,26 +589,35 @@ class StockMove(models.Model):
         if self._is_out():
             cost = -1 * cost
             if self._is_returned(valued_type='out'):
-                am_vals.append(self.with_company(company_from)._prepare_account_move_vals(acc_valuation, acc_src, journal_id, qty, description, svl_id, cost))
+                am_vals.append(self.with_company(company_from).with_context(is_returned=True)._prepare_account_move_vals(acc_valuation, acc_src, journal_id, qty, description, svl_id, cost))
             else:
                 am_vals.append(self.with_company(company_from)._prepare_account_move_vals(acc_valuation, acc_dest, journal_id, qty, description, svl_id, cost))
 
         if self.company_id.anglo_saxon_accounting:
             # Creates an account entry from stock_input to stock_output on a dropship move. https://github.com/odoo/odoo/issues/12687
-            if self._is_dropshipped():
-                if cost > 0:
-                    am_vals.append(self.with_company(self.company_id)._prepare_account_move_vals(acc_src, acc_valuation, journal_id, qty, description, svl_id, cost))
-                else:
-                    cost = -1 * cost
-                    am_vals.append(self.with_company(self.company_id)._prepare_account_move_vals(acc_valuation, acc_dest, journal_id, qty, description, svl_id, cost))
-            elif self._is_dropshipped_returned():
-                if cost > 0:
-                    am_vals.append(self.with_company(self.company_id)._prepare_account_move_vals(acc_valuation, acc_src, journal_id, qty, description, svl_id, cost))
-                else:
-                    cost = -1 * cost
-                    am_vals.append(self.with_company(self.company_id)._prepare_account_move_vals(acc_dest, acc_valuation, journal_id, qty, description, svl_id, cost))
+            anglosaxon_am_vals = self._prepare_anglosaxon_account_move_vals(acc_src, acc_dest, acc_valuation, journal_id, qty, description, svl_id, cost)
+            if anglosaxon_am_vals:
+                am_vals.append(anglosaxon_am_vals)
 
         return am_vals
+
+    def _prepare_anglosaxon_account_move_vals(self, acc_src, acc_dest, acc_valuation, journal_id, qty, description, svl_id, cost):
+        anglosaxon_am_vals = {}
+        if self._is_dropshipped():
+            if cost > 0:
+                anglosaxon_am_vals = self.with_company(self.company_id)._prepare_account_move_vals(acc_src, acc_valuation, journal_id, qty, description, svl_id, cost)
+            else:
+                cost = -1 * cost
+                anglosaxon_am_vals = self.with_company(self.company_id)._prepare_account_move_vals(acc_valuation, acc_dest, journal_id, qty, description, svl_id, cost)
+        elif self._is_dropshipped_returned():
+            if cost > 0 and self.location_dest_id._should_be_valued():
+                anglosaxon_am_vals = self.with_company(self.company_id).with_context(is_returned=True)._prepare_account_move_vals(acc_valuation, acc_src, journal_id, qty, description, svl_id, cost)
+            elif cost > 0:
+                anglosaxon_am_vals = self.with_company(self.company_id).with_context(is_returned=True)._prepare_account_move_vals(acc_dest, acc_valuation, journal_id, qty, description, svl_id, cost)
+            else:
+                cost = -1 * cost
+                anglosaxon_am_vals = self.with_company(self.company_id).with_context(is_returned=True)._prepare_account_move_vals(acc_valuation, acc_src, journal_id, qty, description, svl_id, cost)
+        return anglosaxon_am_vals
 
     def _get_analytic_account(self):
         return False
@@ -593,3 +634,9 @@ class StockMove(models.Model):
             return self.location_id and self.location_id.usage == 'customer'   # goods returned from customer
         if valued_type == 'out':
             return self.location_dest_id and self.location_dest_id.usage == 'supplier'   # goods returned to supplier
+
+    def _get_all_related_aml(self):
+        return self.account_move_ids.line_ids
+
+    def _get_all_related_sm(self, product):
+        return self.filtered(lambda m: m.product_id == product)

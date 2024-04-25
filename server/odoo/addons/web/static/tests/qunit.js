@@ -371,18 +371,15 @@ export function setupQUnit() {
         const reRun = testElement.querySelector("li a");
         const reRunDebug = document.createElement("a");
         reRunDebug.textContent = "Rerun in debug";
-        const location = window.location;
-        reRunDebug.setAttribute(
-            "href",
-            `${location.origin}${location.pathname}${location.search}&debugTestId=${testId}`
-        );
-
+        const url = new URL(window.location);
+        url.searchParams.set("testId", testId);
+        url.searchParams.set("debugTest", "true");
+        reRunDebug.setAttribute("href", url.href);
         reRun.parentElement.insertBefore(reRunDebug, reRun.nextSibling);
     });
 
-    const debugTestId = new URLSearchParams(location.search).get("debugTestId");
-    if (debugTestId) {
-        QUnit.config.testId = [debugTestId];
+    const debugTest = new URLSearchParams(location.search).get("debugTest");
+    if (debugTest) {
         setQUnitDebugMode();
     }
 
@@ -559,8 +556,8 @@ export function setupQUnit() {
         if (originalError instanceof Error) {
             originalError.errorEvent = ev;
             await completeUncaughtError(uncaughtError, originalError);
+            originalError.stacktrace = uncaughtError.traceback;
         }
-        originalError.stacktrace = uncaughtError.traceback;
         onError(originalError);
     });
 
@@ -577,8 +574,8 @@ export function setupQUnit() {
         if (originalError instanceof Error) {
             originalError.errorEvent = ev;
             await completeUncaughtError(uncaughtError, originalError);
+            originalError.stack = uncaughtError.traceback;
         }
-        originalError.stack = uncaughtError.traceback;
         onUnhandledRejection(originalError);
     });
 }

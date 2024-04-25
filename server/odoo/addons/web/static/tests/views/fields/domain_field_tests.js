@@ -3,6 +3,7 @@
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
 import {
     click,
+    clickDiscard,
     clickSave,
     editInput,
     getFixture,
@@ -32,6 +33,7 @@ QUnit.module("Fields", (hooks) => {
                         },
                         bar: { string: "Bar", type: "boolean", default: true },
                         int_field: { string: "int_field", type: "integer" },
+                        image: { string: "Picture", type: "binary", searchable: true },
                     },
                     records: [
                         {
@@ -114,9 +116,52 @@ QUnit.module("Fields", (hooks) => {
 
             assert.strictEqual(
                 target.querySelector(".o_edit_mode").textContent,
-                "This domain is not supported.",
+                " This domain is not supported. Reset domain",
                 "The widget should not crash the view, but gracefully admit its failure."
             );
+        }
+    );
+
+    QUnit.test(
+        "The domain editor should not crash the view when given a dynamic filter ( datetime )",
+        async function (assert) {
+            // dynamic filters (containing variables, such as uid, parent or today)
+            // are not handled by the domain editor, but it shouldn't crash the view
+            serverData.models.partner.records[0].foo = `[("datetime", "=", context_today())]`;
+            serverData.models.partner.fields.datetime = { string: "A date", type: "datetime" };
+
+            await makeView({
+                type: "form",
+                resModel: "partner",
+                resId: 1,
+                serverData,
+                arch: `
+                    <form>
+                        <field name="foo" widget="domain" options="{'model': 'partner'}" />
+                    </form>`,
+            });
+
+            // The input field should display that the date is invalid
+            assert.equal(target.querySelector(".o_datepicker_input").value, "Invalid DateTime");
+
+            // Change the date in the datepicker
+            await click(target, ".o_datepicker_input");
+            // Select a date in the datepicker
+            await click(
+                document.body.querySelector(
+                    `.bootstrap-datetimepicker-widget :not(.today)[data-action="selectDay"]`
+                )
+            );
+            // Close the datepicker
+            await click(
+                document.body.querySelector(
+                    `.bootstrap-datetimepicker-widget a[data-action="close"]`
+                )
+            );
+            await clickDiscard(target);
+
+            // Open the datepicker again
+            await click(target, ".o_datepicker_input");
         }
     );
 
@@ -194,6 +239,30 @@ QUnit.module("Fields", (hooks) => {
             target.querySelector(".o_field_domain").textContent.includes("Color index"),
             "field selector readonly value should now contain 'Color index'"
         );
+    });
+
+    QUnit.test("using binary field in domain widget", async function (assert) {
+        assert.expect(0);
+        serverData.models.partner.records[0].foo = "[]";
+
+        await makeView({
+            type: "form",
+            resModel: "partner",
+            resId: 1,
+            serverData,
+            arch: `
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="foo" widget="domain" options="{'model': 'partner'}" />
+                        </group>
+                    </sheet>
+                </form>`,
+        });
+
+        await click(target, ".o_domain_add_first_node_button");
+        await click(target, ".o_field_selector");
+        await click(document.body.querySelector(".o_field_selector_item[data-name='image']"));
     });
 
     QUnit.test("domain field is correctly reset on every view change", async function (assert) {
@@ -450,6 +519,9 @@ QUnit.module("Fields", (hooks) => {
                 if (method === "search_count") {
                     assert.step(JSON.stringify(args[0]));
                 }
+                if (route === "/web/domain/validate") {
+                    return true;
+                }
             },
         });
 
@@ -515,6 +587,9 @@ QUnit.module("Fields", (hooks) => {
                     if (method === "write") {
                         throw new Error("should not save");
                     }
+                    if (route === "/web/domain/validate") {
+                        return false;
+                    }
                 },
             });
 
@@ -545,7 +620,7 @@ QUnit.module("Fields", (hooks) => {
                 ".o_form_view .o_form_editable",
                 "the view is still in edit mode"
             );
-            assert.verifySteps(['[["abc"]]']);
+            assert.verifySteps([]);
         }
     );
 
@@ -688,6 +763,9 @@ QUnit.module("Fields", (hooks) => {
             mockRPC(route, { method, args }) {
                 if (method === "write") {
                     assert.strictEqual(args[1].foo, rawDomain);
+                }
+                if (route === "/web/domain/validate") {
+                    return true;
                 }
             },
         });
@@ -903,4 +981,42 @@ QUnit.module("Fields", (hooks) => {
             "Invalid domain"
         );
     });
+
+    QUnit.test(
+        "quick check on save if domain has been edited via the  debug input",
+        async function (assert) {
+            patchWithCleanup(odoo, { debug: true });
+            serverData.models.partner.fields.display_name.default = "[['id', '=', False]]";
+            await makeView({
+                type: "form",
+                resModel: "partner",
+                serverData,
+                arch: `
+                <form>
+                    <field name="display_name" widget="domain" options="{'model': 'partner'}"/>
+                </form>`,
+                mockRPC: (route, args) => {
+                    if (route === "/web/domain/validate") {
+                        assert.step(route);
+                        assert.deepEqual(args, {
+                            domain: [["id", "!=", false]],
+                            model: "partner",
+                        });
+                        return true;
+                    }
+                },
+            });
+            assert.strictEqual(
+                target.querySelector(".o_domain_show_selection_button").textContent.trim(),
+                "0 record(s)"
+            );
+            await editInput(target, ".o_domain_debug_input", "[['id', '!=', False]]");
+            await click(target, "button.o_form_button_save");
+            assert.verifySteps(["/web/domain/validate"]);
+            assert.strictEqual(
+                target.querySelector(".o_domain_show_selection_button").textContent.trim(),
+                "6 record(s)"
+            );
+        }
+    );
 });

@@ -40,6 +40,9 @@
                     <span attrs="{'invisible': [('on_time_rate', '&gt;=', 0)]}">No On-time Delivery Data</span>
                 </button>
             </xpath>
+            <xpath expr="//label[@for='receipt_reminder_email']" position="attributes">
+                <attribute name="attrs">{'invisible': [('effective_date', '!=', False)]}</attribute>
+            </xpath>
             <xpath expr="//div[@name='reminder']" position="attributes">
                 <attribute name="attrs">{'invisible': [('effective_date', '!=', False)]}</attribute>
             </xpath>
@@ -54,6 +57,9 @@
             </field>
             <xpath expr="//field[@name='order_line']/form//field[@name='analytic_distribution']" position="before">
                 <field name="propagate_cancel" groups="base.group_no_one"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree//field[@name='analytic_distribution']" position="before">
+                <field name="propagate_cancel" groups="base.group_no_one" optional="hide"/>
             </xpath>
             <xpath expr="//field[@name='order_line']/tree//field[@name='qty_received']" position="attributes">
                 <attribute name="attrs">{'column_invisible': [('parent.state', 'not in', ('purchase', 'done'))], 'readonly': [('product_type', 'in', ('consu', 'product'))]}</attribute>

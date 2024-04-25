@@ -65,7 +65,7 @@ smtplib.stderr = WriteToLogger()
 def is_ascii(s):
     return all(ord(cp) < 128 for cp in s)
 
-address_pattern = re.compile(r'([^ ,<@]+@[^> ,]+)')
+address_pattern = re.compile(r'([^" ,<@]+@[^>" ,]+)')
 
 def extract_rfc2822_addresses(text):
     """Returns a list of valid RFC2822 addresses
@@ -89,6 +89,7 @@ class IrMailServer(models.Model):
     _name = "ir.mail_server"
     _description = 'Mail Server'
     _order = 'sequence'
+    _allow_sudo_commands = False
 
     NO_VALID_RECIPIENT = ("At least one valid recipient address should be "
                           "specified for outgoing emails (To/Cc/Bcc)")
@@ -195,19 +196,28 @@ class IrMailServer(models.Model):
 
     def _get_test_email_addresses(self):
         self.ensure_one()
+        email_to = "noreply@odoo.com"
         if self.from_filter:
             if "@" in self.from_filter:
                 # All emails will be sent from the same address
-                return self.from_filter, "noreply@odoo.com"
+                return self.from_filter, email_to
             # All emails will be sent from any address in the same domain
             default_from = self.env["ir.config_parameter"].sudo().get_param("mail.default.from", "odoo")
-            return f"{default_from}@{self.from_filter}", "noreply@odoo.com"
+            if "@" not in default_from:
+                return f"{default_from}@{self.from_filter}", email_to
+            elif self._match_from_filter(default_from, self.from_filter):
+                # the mail server is configured for a domain
+                # that match the default email address
+                return default_from, email_to
+            # the from_filter is configured for a domain different that the one
+            # of the full email configured in mail.default.from
+            return f"noreply@{self.from_filter}", email_to
         # Fallback to current user email if there's no from filter
         email_from = self.env.user.email
         if not email_from:
             raise UserError(_('Please configure an email on the current user to simulate '
                               'sending an email message via this outgoing server'))
-        return email_from, 'noreply@odoo.com'
+        return email_from, email_to
 
     def test_smtp_connection(self):
         for server in self:
@@ -378,7 +388,7 @@ class IrMailServer(models.Model):
                       "You could use STARTTLS instead. "
                        "If SSL is needed, an upgrade to Python 2.6 on the server-side "
                        "should do the trick."))
-            connection = smtplib.SMTP_SSL(smtp_server, smtp_port, timeout=SMTP_TIMEOUT)
+            connection = smtplib.SMTP_SSL(smtp_server, smtp_port, timeout=SMTP_TIMEOUT, context=ssl_context)
         else:
             connection = smtplib.SMTP(smtp_server, smtp_port, timeout=SMTP_TIMEOUT)
 
@@ -467,8 +477,6 @@ class IrMailServer(models.Model):
         body = body or u''
 
         msg = EmailMessage(policy=email.policy.SMTP)
-        msg.set_charset('utf-8')
-
         if not message_id:
             if object_id:
                 message_id = tools.generate_tracking_message_id(object_id)
@@ -492,9 +500,11 @@ class IrMailServer(models.Model):
 
         email_body = ustr(body)
         if subtype == 'html' and not body_alternative:
+            msg['MIME-Version'] = '1.0'
             msg.add_alternative(tools.html2plaintext(email_body), subtype='plain', charset='utf-8')
             msg.add_alternative(email_body, subtype=subtype, charset='utf-8')
         elif body_alternative:
+            msg['MIME-Version'] = '1.0'
             msg.add_alternative(ustr(body_alternative), subtype=subtype_alternative, charset='utf-8')
             msg.add_alternative(email_body, subtype=subtype, charset='utf-8')
         else:
@@ -712,6 +722,8 @@ class IrMailServer(models.Model):
 
         if mail_servers is None:
             mail_servers = self.sudo().search([], order='sequence')
+        # 0. Archived mail server should never be used
+        mail_servers = mail_servers.filtered('active')
 
         # 1. Try to find a mail server for the right mail from
         mail_server = mail_servers.filtered(lambda m: email_normalize(m.from_filter) == email_from_normalized)
@@ -734,14 +746,18 @@ class IrMailServer(models.Model):
 
         # 3. Take the first mail server without "from_filter" because
         # nothing else has been found... Will spoof the FROM because
-        # we have no other choices
+        # we have no other choices (will use the notification email if available
+        # otherwise we will use the user email)
         mail_server = mail_servers.filtered(lambda m: not m.from_filter)
         if mail_server:
-            return mail_server[0], email_from
+            return mail_server[0], notifications_email or email_from
 
         # 4. Return the first mail server even if it was configured for another domain
         if mail_servers:
-            return mail_servers[0], email_from
+            _logger.warning(
+                "No mail server matches the from_filter, using %s as fallback",
+                notifications_email or email_from)
+            return mail_servers[0], notifications_email or email_from
 
         # 5: SMTP config in odoo-bin arguments
         from_filter = self.env['ir.config_parameter'].sudo().get_param(
@@ -753,7 +769,11 @@ class IrMailServer(models.Model):
         if notifications_email and self._match_from_filter(notifications_email, from_filter):
             return None, notifications_email
 
-        return None, email_from
+        _logger.warning(
+            "The from filter of the CLI configuration does not match the notification email "
+            "or the user email, using %s as fallback",
+            notifications_email or email_from)
+        return None, notifications_email or email_from
 
     @api.model
     def _match_from_filter(self, email_from, from_filter):

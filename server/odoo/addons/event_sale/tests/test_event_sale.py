@@ -40,7 +40,7 @@ class TestEventSale(TestEventSaleCommon):
         })
 
         cls.sale_order = cls.env['sale.order'].create({
-            'partner_id': cls.env.ref('base.res_partner_2').id,
+            'partner_id': cls.env['res.partner'].create({'name': 'Test Partner'}).id,
             'note': 'Invoice after delivery',
             'payment_term_id': cls.env.ref('account.account_payment_term_end_following_month').id
         })
@@ -168,14 +168,16 @@ class TestEventSale(TestEventSaleCommon):
         )
         self.assertEqual(
             set(ticket1_new_reg.mapped('phone')),
-            set(['+32456111111', self.event_customer.phone])
+            set(['+32456111111', self.event_customer._phone_format(self.event_customer.phone)])
         )
         self.assertEqual(
             set(ticket1_new_reg.mapped('mobile')),
-            set(['+32456222222', self.event_customer.mobile])
+            set(['+32456222222', self.event_customer._phone_format(self.event_customer.mobile)])
         )
-        for field in ['name', 'email', 'phone', 'mobile']:
+        for field in ['name', 'email']:
             self.assertEqual(ticket2_new_reg[field], self.event_customer[field])
+        for field in ['phone', 'mobile']:
+            self.assertEqual(ticket2_new_reg[field], self.event_customer._phone_format(self.event_customer[field]))
 
         # ADDING MANUAL LINES ON SO
         # ------------------------------------------------------------
@@ -327,6 +329,75 @@ class TestEventSale(TestEventSaleCommon):
         editor.action_make_registration()
         self.assertEqual(len(self.event_0.registration_ids), TICKET_COUNT)
         self.assertTrue(all(reg.state == "draft" for reg in self.event_0.registration_ids))
+
+    def test_ticket_price_with_currency_conversion(self):
+        def _prepare_currency(self, currency_name):
+            currency = self.env['res.currency'].with_context(active_test=False).search(
+                [('name', '=', currency_name)]
+            )
+            currency.action_unarchive()
+            return currency
+
+        currency_VEF = _prepare_currency(self, 'VEF')
+        currency_USD = _prepare_currency(self, 'USD')
+
+        company_test = self.env['res.company'].create({
+            'name': 'TestCompany',
+            'country_id': self.env.ref('base.be').id,
+            'currency_id': currency_USD.id,
+        })
+        self.env.user.company_ids += company_test
+        self.env.user.company_id = company_test
+
+        pricelist_USD = self.env['product.pricelist'].create({
+            'name': 'pricelist_USD',
+            'currency_id': currency_USD.id,
+        })
+        pricelist_VEF = self.env['product.pricelist'].create({
+            'name': 'pricelist_VEF',
+            'currency_id': currency_VEF.id,
+        })
+
+        event_product = self.env['product.template'].create({
+            'name': 'Event Product',
+            'list_price': 10.0,
+            'taxes_id': False,
+        })
+
+        event = self.env['event.event'].create({
+            'name': 'New Event',
+            'date_begin': '2020-02-02',
+            'date_end': '2020-04-04',
+        })
+        event_ticket = self.env['event.event.ticket'].create({
+            'name': 'VIP',
+            'price': 1000.0,
+            'event_id': event.id,
+            'product_id': event_product.product_variant_id.id,
+        })
+
+        so = self.env['sale.order'].create({
+            'partner_id': self.env.user.partner_id.id,
+            'pricelist_id': pricelist_USD.id,
+        })
+        self.env['sale.order.line'].create({
+            'product_id': event_product.product_variant_id.id,
+            'order_id': so.id,
+            'event_id': event.id,
+            'event_ticket_id': event_ticket.id,
+        })
+        self.assertEqual(so.amount_total, event_ticket.price)
+
+        so.pricelist_id = pricelist_VEF
+        so.action_update_prices()
+
+        self.assertAlmostEqual(
+            so.amount_total,
+            currency_USD._convert(
+                event_ticket.price, currency_VEF, self.env.user.company_id, so.date_order
+            ),
+            delta=1,
+        )
 
     def test_ticket_price_with_pricelist_and_tax(self):
         self.env.user.partner_id.country_id = False

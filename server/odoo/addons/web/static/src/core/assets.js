@@ -10,7 +10,13 @@ import { session } from "@web/session";
  * functions. This is done in order to be able to make a test environment.
  * Modules should only use the methods exported below.
  */
-export const assets = {};
+export const assets = {
+    retries: {
+        count: 3,
+        delay: 5000,
+        extraDelay: 2500,
+    },
+};
 
 class AssetsLoadingError extends Error {}
 
@@ -47,7 +53,7 @@ export const _loadJS = (assets.loadJS = memoize(function loadJS(url) {
  * @param {string} url the url of the stylesheet
  * @returns {Promise<true>} resolved when the stylesheet has been loaded
  */
-export const _loadCSS = (assets.loadCSS = memoize(function loadCSS(url) {
+export const _loadCSS = (assets.loadCSS = memoize(function loadCSS(url, retryCount = 0) {
     if (document.querySelector(`link[href="${url}"]`)) {
         // Already in the DOM and wasn't loaded through this function
         // Unfortunately there is no way to check whether a link has loaded
@@ -59,13 +65,20 @@ export const _loadCSS = (assets.loadCSS = memoize(function loadCSS(url) {
     linkEl.type = "text/css";
     linkEl.rel = "stylesheet";
     linkEl.href = url;
-    document.head.appendChild(linkEl);
-    return new Promise(function (resolve, reject) {
+    const promise = new Promise((resolve, reject) => {
         linkEl.addEventListener("load", () => resolve(true));
-        linkEl.addEventListener("error", () => {
-            reject(new AssetsLoadingError(`The loading of ${url} failed`));
+        linkEl.addEventListener("error", async () => {
+            if (retryCount < assets.retries.count) {
+                await new Promise(resolve => setTimeout(resolve, assets.retries.delay + assets.retries.extraDelay * retryCount));
+                linkEl.remove();
+                loadCSS(url, retryCount + 1).then(resolve).catch(reject);
+            } else {
+                reject(new AssetsLoadingError(`The loading of ${url} failed`));
+            }
         });
     });
+    document.head.appendChild(linkEl);
+    return promise;
 }));
 
 /**
@@ -87,7 +100,9 @@ let defaultApp;
 export const _loadXML = (assets.loadXML = function loadXML(xml, app = defaultApp) {
     const doc = new DOMParser().parseFromString(xml, "text/xml");
     if (doc.querySelector("parsererror")) {
-        throw doc.querySelector("parsererror div").textContent.split(":")[0];
+        // The generated error XML is non-standard so we log the full content to
+        // ensure that the relevant info is actually logged.
+        throw new Error(doc.querySelector("parsererror").textContent.trim());
     }
 
     for (const element of doc.querySelectorAll("templates > [t-name][owl]")) {
@@ -181,7 +196,7 @@ export const _getBundle = (assets.getBundle = memoize(async function getBundle(b
  *
  * @returns {Promise}
  */
-export const _loadBundle = (assets.loadBundle = memoize(async function loadBundle(desc) {
+export const _loadBundle = (assets.loadBundle = async function loadBundle(desc) {
     // Load css in parallel
     const promiseCSS = Promise.all((desc.cssLibs || []).map(assets.loadCSS)).then(() => {
         if (desc.cssContents && desc.cssContents.length) {
@@ -230,7 +245,7 @@ export const _loadBundle = (assets.loadBundle = memoize(async function loadBundl
             );
         }
     }
-}));
+});
 
 export const loadJS = function (url) {
     return assets.loadJS(url);

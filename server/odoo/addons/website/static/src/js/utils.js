@@ -22,9 +22,20 @@ function loadAnchors(url, body) {
             resolve();
         }
     }).then(function (response) {
-        return _.map($(response).find('[id][data-anchor=true]'), function (el) {
+        const anchors = _.map($(response).find('[id][data-anchor=true]'), function (el) {
             return '#' + el.id;
         });
+        // Always suggest the top and the bottom of the page as internal link
+        // anchor even if the header and the footer are not in the DOM. Indeed,
+        // the "scrollTo" function handles the scroll towards those elements
+        // even when they are not in the DOM.
+        if (!anchors.includes('#top')) {
+            anchors.unshift('#top');
+        }
+        if (!anchors.includes('#bottom')) {
+            anchors.push('#bottom');
+        }
+        return anchors;
     }).catch(error => {
         console.debug(error);
         return [];
@@ -239,6 +250,28 @@ function websiteDomain(self) {
     return ['|', ['website_id', '=', false], ['website_id', '=', websiteID]];
 }
 
+/**
+ * Checks if the 2 given URLs are the same, to prevent redirecting uselessly
+ * from one to another.
+ * It will consider naked URL and `www` URL as the same URL.
+ * It will consider `https` URL `http` URL as the same URL.
+ *
+ * @param {string} url1
+ * @param {string} url2
+ * @returns {Boolean}
+ */
+function isHTTPSorNakedDomainRedirection(url1, url2) {
+    try {
+        url1 = new URL(url1).host;
+        url2 = new URL(url2).host;
+    } catch {
+        // Incorrect URL, `false` URL..
+        return false;
+    }
+    return url1 === url2 ||
+           url1.replace(/^www\./, '') === url2.replace(/^www\./, '');
+}
+
 function sendRequest(route, params) {
     function _addInput(form, name, value) {
         let param = document.createElement('input');
@@ -382,6 +415,53 @@ function generateGMapLink(dataset) {
         + '&ie=UTF8&iwloc=&output=embed';
 }
 
+/**
+ * Returns the parsed data coming from the data-for element for the given form.
+ *
+ * @param {string} formId
+ * @param {HTMLElement} parentEl
+ * @returns {Object|undefined} the parsed data
+ */
+function getParsedDataFor(formId, parentEl) {
+    const dataForEl = parentEl.querySelector(`[data-for='${formId}']`);
+    if (!dataForEl) {
+        return;
+    }
+    return JSON.parse(dataForEl.dataset.values
+        // replaces `True` by `true` if they are after `,` or `:` or `[`
+        .replace(/([,:\[]\s*)True/g, '$1true')
+        // replaces `False` and `None` by `""` if they are after `,` or `:` or `[`
+        .replace(/([,:\[]\s*)(False|None)/g, '$1""')
+        // replaces the `'` by `"` if they are before `,` or `:` or `]` or `}`
+        .replace(/'(\s*[,:\]}])/g, '"$1')
+        // replaces the `'` by `"` if they are after `{` or `[` or `,` or `:`
+        .replace(/([{\[:,]\s*)'/g, '$1"')
+    );
+}
+
+/**
+ * Deep clones children or parses a string into elements, with or without
+ * <script> elements.
+ *
+ * @param {DocumentFragment|HTMLElement|String} content
+ * @param {Boolean} [keepScripts=false] - whether to keep script tags or not.
+ * @returns {DocumentFragment}
+ */
+function cloneContentEls(content, keepScripts = false) {
+    let copyFragment;
+    if (typeof content === "string") {
+        copyFragment = new Range().createContextualFragment(content);
+    } else {
+        copyFragment = new DocumentFragment();
+        const els = [...content.children].map(el => el.cloneNode(true));
+        copyFragment.append(...els);
+    }
+    if (!keepScripts) {
+        copyFragment.querySelectorAll("script").forEach(scriptEl => scriptEl.remove());
+    }
+    return copyFragment;
+}
+
 return {
     loadAnchors: loadAnchors,
     autocompleteWithPages: autocompleteWithPages,
@@ -389,8 +469,11 @@ return {
     prompt: prompt,
     sendRequest: sendRequest,
     websiteDomain: websiteDomain,
+    isHTTPSorNakedDomainRedirection: isHTTPSorNakedDomainRedirection,
     svgToPNG: svgToPNG,
     generateGMapIframe: generateGMapIframe,
     generateGMapLink: generateGMapLink,
+    getParsedDataFor: getParsedDataFor,
+    cloneContentEls: cloneContentEls,
 };
 });

@@ -184,8 +184,15 @@ export class PropertyTags extends Component {
      *
      * @param {string} newLabel
      */
-    onTagCreate(newLabel) {
+    async onTagCreate(newLabel) {
         if (!newLabel || !newLabel.length) {
+            return;
+        }
+
+        if (!await this.props.checkDefinitionWriteAccess()) {
+            this.notification.add(_lt("You need to be able to edit parent first to add property tags"), {
+                type: "warning",
+            });
             return;
         }
 
@@ -218,7 +225,7 @@ export class PropertyTags extends Component {
      *
      * If we use the component for the tag configuration, clicking on "delete"
      * will remove the tags from the available tags. If we use the component
-     * the the tag selection, it will unselect the tag.
+     * the tag selection, it will unselect the tag.
      *
      * @param {string} deleteTag, ID of the tag to delete
      */
@@ -287,6 +294,7 @@ PropertyTags.components = {
 };
 
 PropertyTags.props = {
+    id: { type: String, optional: true },
     selectedTags: {}, // Tags value visible in the tags list
     tags: {}, // Tags definition visible in the dropdown
     // Define the behavior of the delete button on the tags, either
@@ -295,6 +303,7 @@ PropertyTags.props = {
     deleteAction: { type: String },
     readonly: { type: Boolean, optional: true },
     canChangeTags: { type: Boolean, optional: true },
+    checkDefinitionWriteAccess: { type: Function, optional: true },
     // Select a new value
     onValueChange: { type: Function, optional: true },
     // Change the tags definition (can also receive a second

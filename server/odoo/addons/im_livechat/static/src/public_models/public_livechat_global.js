@@ -4,6 +4,9 @@ import { registerModel } from '@mail/model/model_core';
 import { attr, many, one } from '@mail/model/model_field';
 import { clear } from '@mail/model/model_field_command';
 
+import { session } from "@web/session";
+import legacySession from "web.session";
+
 import { qweb } from 'web.core';
 import { Markup } from 'web.utils';
 import {getCookie, setCookie, deleteCookie} from 'web.utils.cookies';
@@ -44,12 +47,18 @@ registerModel({
             await this._willStartChatbot();
         },
         async _willStart() {
-            const cookie = getCookie('im_livechat_session');
-            if (cookie) {
-                const channel = JSON.parse(cookie);
+            const strCookie = getCookie('im_livechat_session');
+            let isSessionCookieAvailable = Boolean(strCookie);
+            let cookie = JSON.parse(strCookie || '{}');
+            if (isSessionCookieAvailable && cookie.visitor_uid !== session.user_id) {
+                this.leaveSession();
+                isSessionCookieAvailable = false;
+                cookie = {};
+            }
+            if (cookie.id) {
                 const history = await this.messaging.rpc({
                     route: '/mail/chat_history',
-                    params: { uuid: channel.uuid, limit: 100 },
+                    params: { uuid: cookie.uuid, limit: 100 },
                 });
                 history.reverse();
                 this.update({ history });
@@ -57,6 +66,8 @@ registerModel({
                     message.body = Markup(message.body);
                 }
                 this.update({ isAvailableForMe: true });
+            } else if (isSessionCookieAvailable) {
+                this.update({ history: [], isAvailableForMe: true });
             } else {
                 const result = await this.messaging.rpc({
                     route: '/im_livechat/init',
@@ -67,7 +78,11 @@ registerModel({
                 }
                 this.update({ rule: result.rule });
             }
-            return this.loadQWebTemplate();
+            const proms = [this.loadQWebTemplate()];
+            if (!session.is_frontend) {
+                proms.push(legacySession.load_translations(["im_livechat"]));
+            }
+            return Promise.all(proms);
         },
         /**
          * This override handles the following use cases:
@@ -129,6 +144,29 @@ registerModel({
                 this.chatbot.restoreSession();
             }
         },
+
+        getVisitorUserId() {
+            const cookie = JSON.parse(getCookie("im_livechat_session") || "{}");
+            if ("visitor_uid" in cookie) {
+                return cookie.visitor_uid;
+            }
+            return session.user_id;
+        },
+
+        /**
+         * Called when the visitor leaves the livechat chatter the first time (first click on X button)
+         * this will deactivate the mail_channel, notify operator that visitor has left the channel.
+         */
+        leaveSession() {
+            const cookie = getCookie('im_livechat_session');
+            if (cookie) {
+                const channel = JSON.parse(cookie);
+                if (channel.uuid) {
+                    this.messaging.rpc({ route: '/im_livechat/visitor_leave_session', params: { uuid: channel.uuid } });
+                }
+                deleteCookie('im_livechat_session');
+            }
+        },
     },
     fields: {
         HISTORY_LIMIT: attr({
@@ -187,6 +225,9 @@ registerModel({
                 if (!this.publicLivechat) {
                     return clear();
                 }
+                if (!this.publicLivechat.operator) {
+                    return clear();
+                }
                 return this.lastMessage.authorId !== this.publicLivechat.operator.id;
             },
             default: false,
@@ -221,6 +262,12 @@ registerModel({
         messages: many('PublicLivechatMessage'),
         notificationHandler: one('PublicLivechatGlobalNotificationHandler', {
             inverse: 'publicLivechatGlobalOwner',
+            compute() {
+                if (this.publicLivechat && !this.publicLivechat.isTemporary) {
+                    return {};
+                }
+                return clear();
+            }
         }),
         options: attr({
             default: {},

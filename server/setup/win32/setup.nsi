@@ -59,7 +59,7 @@ Unicode True
 !endif
 
 !ifndef PYTHONVERSION
-	!define PYTHONVERSION '3.7.4'
+	!define PYTHONVERSION '3.10.11'
 !endif
 
 !ifndef SERVICENAME
@@ -174,10 +174,12 @@ LangString DESC_PostgreSQL_Username ${LANG_ENGLISH} "Username"
 LangString DESC_PostgreSQL_Password ${LANG_ENGLISH} "Password"
 LangString Profile_AllInOne ${LANG_ENGLISH} "Odoo Server And PostgreSQL Server"
 LangString Profile_Server ${LANG_ENGLISH} "Odoo Server Only"
-LangString Profile_LocalProxyMode ${LANG_ENGLISH} "Local Proxy Mode"
+LangString Profile_IOT ${LANG_ENGLISH} "Odoo IoT"
 LangString TITLE_Odoo_Server ${LANG_ENGLISH} "Odoo Server"
 LangString TITLE_PostgreSQL ${LANG_ENGLISH} "PostgreSQL Database"
-LangString TITLE_LocalProxyMode ${LANG_ENGLISH} "Local Proxy Mode"
+LangString TITLE_IOT ${LANG_ENGLISH} "Odoo IoT"
+LangString TITLE_Nginx ${LANG_ENGLISH} "Nginx WebServer"
+LangString TITLE_Ghostscript ${LANG_ENGLISH} "Ghostscript interpreter"
 LangString DESC_FinishPageText ${LANG_ENGLISH} "Start Odoo"
 
 ; French
@@ -197,27 +199,25 @@ LangString DESC_PostgreSQL_Username ${LANG_FRENCH} "Utilisateur"
 LangString DESC_PostgreSQL_Password ${LANG_FRENCH} "Mot de passe"
 LangString Profile_AllInOne ${LANG_FRENCH} "Serveur Odoo Et Serveur PostgreSQL"
 LangString Profile_Server ${LANG_FRENCH} "Seulement Le Serveur Odoo"
-LangString Profile_LocalProxyMode ${LANG_FRENCH} "Mode Proxy Local"
+LangString Profile_IOT ${LANG_FRENCH} "Odoo IoT"
 LangString TITLE_Odoo_Server ${LANG_FRENCH} "Serveur Odoo"
 LangString TITLE_PostgreSQL ${LANG_FRENCH} "Installation du serveur de base de données PostgreSQL"
-LangString TITLE_LocalProxyMode ${LANG_FRENCH} "Mode Proxy Local"
+LangString TITLE_IOT ${LANG_FRENCH} "Odoo IoT"
+LangString TITLE_Nginx ${LANG_FRENCH} "Installation du serveur web Nginx"
+LangString TITLE_Ghostscript ${LANG_FRENCH} "Installation de l'interpréteur Ghostscript"
 LangString DESC_FinishPageText ${LANG_FRENCH} "Démarrer Odoo"
 
 InstType /NOCUSTOM
 InstType $(Profile_AllInOne)
 InstType $(Profile_Server)
-InstType $(Profile_LocalProxyMode)
+InstType $(Profile_IOT)
 
 Section $(TITLE_Odoo_Server) SectionOdoo_Server
     SectionIn 1 2 3
 
     # Installing winpython
     SetOutPath "$INSTDIR\python"
-    ${If} ${RunningX64}
-        File /r /x "__pycache__" "${TOOLSDIR}\WinPy64\python-${PYTHONVERSION}.amd64\*"
-    ${Else}
-        File /r /x "__pycache__" "${TOOLSDIR}\WinPy32\python-${PYTHONVERSION}\*"
-    ${EndIf}
+    File /r /x "__pycache__" "${TOOLSDIR}\WinPy64\python-${PYTHONVERSION}.amd64\*"
 
     SetOutPath "$INSTDIR\nssm"
     File /r /x "src" "${TOOLSDIR}\nssm-2.24\*"
@@ -230,11 +230,7 @@ Section $(TITLE_Odoo_Server) SectionOdoo_Server
 
     # Install Visual C redistribuable files
     DetailPrint "Installing Visual C++ redistributable files"
-    ${If} ${RunningX64}
-        nsExec::Exec '"$INSTDIR\vcredist\vc_redist.x64.exe" /q'
-    ${Else}
-        nsExec::Exec '"$INSTDIR\vcredist\vc_redist.x86.exe" /q'
-    ${EndIf}
+    nsExec::Exec '"$INSTDIR\vcredist\vc_redist.x64.exe" /q'
 
     SetOutPath "$INSTDIR\thirdparty"
     File /r "${STATIC_PATH}\wkhtmltopdf\*"
@@ -247,6 +243,8 @@ Section $(TITLE_Odoo_Server) SectionOdoo_Server
     # Fix the addons path
     WriteIniStr "$INSTDIR\server\odoo.conf" "options" "addons_path" "$INSTDIR\server\odoo\addons"
     WriteIniStr "$INSTDIR\server\odoo.conf" "options" "bin_path" "$INSTDIR\thirdparty"
+    # Set data_dir
+    WriteIniStr "$INSTDIR\server\odoo.conf" "options" "data_dir" "$INSTDIR\sessions"
 
     # if we're going to install postgresql force it's path,
     # otherwise we consider it's always done and/or correctly tune by users
@@ -256,18 +254,13 @@ Section $(TITLE_Odoo_Server) SectionOdoo_Server
 
     # Productivity Apps
     WriteIniStr "$INSTDIR\server\odoo.conf" "options" "default_productivity_apps" "True"
-     
     DetailPrint "Installing Windows service"
-    nsExec::ExecTOLog '"$INSTDIR\python\python.exe" "$INSTDIR\server\odoo-bin" --stop-after-init --logfile "$INSTDIR\server\odoo.log" -s'
-    ${If} ${RunningX64}
-      nsExec::ExecToLog '"$INSTDIR\nssm\win64\nssm.exe" install ${SERVICENAME} "$INSTDIR\python\python.exe"'
-      nsExec::ExecToLog '"$INSTDIR\nssm\win64\nssm.exe" set ${SERVICENAME} AppDirectory "$\"$INSTDIR\python$\""'
-      nsExec::ExecToLog '"$INSTDIR\nssm\win64\nssm.exe" set ${SERVICENAME} AppParameters "\"$INSTDIR\server\odoo-bin\" -c "\"$INSTDIR\server\odoo.conf\"'
-    ${Else}
-      nsExec::ExecToLog '"$INSTDIR\nssm\win32\nssm.exe" install ${SERVICENAME} "$INSTDIR\python\python.exe" '
-      nsExec::ExecToLog '"$INSTDIR\nssm\win32\nssm.exe" set ${SERVICENAME} AppDirectory "$\"$INSTDIR\python$\""'
-      nsExec::ExecToLog '"$INSTDIR\nssm\win32\nssm.exe" set ${SERVICENAME} AppParameters "\"$INSTDIR\server\odoo-bin\" -c "\"$INSTDIR\server\odoo.conf\"'
-    ${EndIf}
+    nsExec::ExecTOLog '"$INSTDIR\python\python.exe" "$INSTDIR\server\odoo-bin" --stop-after-init -c "$INSTDIR\server\odoo.conf" --logfile "$INSTDIR\server\odoo.log" -s'
+    nsExec::ExecToLog '"$INSTDIR\nssm\win64\nssm.exe" install ${SERVICENAME} "$INSTDIR\python\python.exe"'
+    nsExec::ExecToLog '"$INSTDIR\nssm\win64\nssm.exe" set ${SERVICENAME} AppDirectory "$\"$INSTDIR\python$\""'
+    nsExec::ExecToLog '"$INSTDIR\nssm\win64\nssm.exe" set ${SERVICENAME} AppParameters "\"$INSTDIR\server\odoo-bin\" -c "\"$INSTDIR\server\odoo.conf\"'
+    nsExec::ExecToLog '"$INSTDIR\nssm\win64\nssm.exe" set ${SERVICENAME} ObjectName "LOCALSERVICE"'
+    AccessControl::GrantOnFile  "$INSTDIR" "LOCALSERVICE" "FullAccess"
 
     Call RestartOdooService
 SectionEnd
@@ -278,11 +271,7 @@ Section $(TITLE_PostgreSQL) SectionPostgreSQL
     VAR /GLOBAL postgresql_exe_filename
     VAR /GLOBAL postgresql_url
 
-    ${If} ${RunningX64}
-        StrCpy $postgresql_exe_filename "postgresql-12.4-1-windows-x64.exe"
-    ${Else}
-        StrCpy $postgresql_exe_filename "postgresql-10.14-1-windows.exe"
-    ${EndIf}
+    StrCpy $postgresql_exe_filename "postgresql-12.4-1-windows-x64.exe"
 
     StrCpy $postgresql_url "https://get.enterprisedb.com/postgresql/$postgresql_exe_filename"
     nsExec::Exec 'net user openpgsvc /delete'
@@ -309,16 +298,71 @@ Section $(TITLE_PostgreSQL) SectionPostgreSQL
         --serverport $TextPostgreSQLPort'
 SectionEnd
 
-Section $(TITLE_LocalProxyMode) LocalProxy
+Section $(TITLE_IOT) IOT
     SectionIn 3
-    DetailPrint "Configuring Local Proxy Mode"
-    WriteIniStr "$INSTDIR\server\odoo.conf" "options" "server_wide_modules" "base,web,hw_l10n_eg_eta"
+    DetailPrint "Configuring TITLE_IOT"
+    WriteIniStr "$INSTDIR\server\odoo.conf" "options" "server_wide_modules" "web,hw_posbox_homepage,hw_drivers"
     WriteIniStr "$INSTDIR\server\odoo.conf" "options" "list_db" "False"
-    WriteIniStr "$INSTDIR\server\odoo.conf" "options" "max_cron_thread" "0"
+    WriteIniStr "$INSTDIR\server\odoo.conf" "options" "max_cron_threads" "0"
     nsExec::ExecToStack '"$INSTDIR\python\python.exe" "$INSTDIR\server\odoo-bin" genproxytoken'
     pop $0
     pop $ProxyTokenPwd
     Call RestartOdooService
+SectionEnd
+
+
+Section $(TITLE_Nginx) Nginx
+    SectionIn 3
+    SetOutPath '$TEMP'
+    VAR /GLOBAL nginx_zip_filename
+    VAR /GLOBAL nginx_url
+
+    # need unzip plugin:
+    # https://nsis.sourceforge.io/mediawiki/images/5/5a/NSISunzU.zip
+    StrCpy $nginx_zip_filename "nginx-1.22.0.zip"
+    StrCpy $nginx_url "https://nginx.org/download/$nginx_zip_filename"
+
+    DetailPrint "Downloading Nginx"
+    inetc::get "$nginx_url" "$TEMP\$nginx_zip_filename" /POPUP
+    DetailPrint "Temp dir: $TEMP\$nginx_zip_filename"
+    DetailPrint "Unzip Nginx"
+    nsisunz::UnzipToLog "$TEMP\$nginx_zip_filename" "$INSTDIR"
+
+    Pop $0
+    StrCmp $0 "success" ok
+      DetailPrint "$0" ;print error message to log
+    ok:
+
+    FindFirst $0 $1 "$INSTDIR\nginx*"
+    DetailPrint "Setting up nginx"
+    SetOutPath "$INSTDIR\$1\conf"
+    CreateDirectory $INSTDIR\$1\temp
+    CreateDirectory $INSTDIR\$1\logs
+    FindClose $0
+    File "conf\nginx\nginx.conf"
+    # Temporary certs for the first start
+    File "..\..\odoo\addons\point_of_sale\tools\posbox\overwrite_after_init\etc\ssl\certs\nginx-cert.crt"
+    File "..\..\odoo\addons\point_of_sale\tools\posbox\overwrite_after_init\etc\ssl\private\nginx-cert.key"
+SectionEnd
+
+Section $(TITLE_Ghostscript) SectionGhostscript
+    SectionIn 3
+    SetOutPath '$TEMP'
+    VAR /GLOBAL ghostscript_exe_filename
+    VAR /GLOBAL ghostscript_url
+
+    StrCpy $ghostscript_exe_filename "gs10012w64.exe"
+    StrCpy $ghostscript_url "https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs10012/$ghostscript_exe_filename"
+
+    DetailPrint "Downloading Ghostscript"
+    inetc::get "$ghostscript_url" "$TEMP\$ghostscript_exe_filename" /POPUP
+    DetailPrint "Temp dir: $TEMP\$ghostscript_exe_filename"
+    
+    Rmdir /r "INSTDIR\Ghostscript"
+    DetailPrint "Installing Ghostscript"
+    ExecWait '"$TEMP\$ghostscript_exe_filename" \
+        /S \
+        /D=$INSTDIR\Ghostscript'
 SectionEnd
 
 Section -Post
@@ -347,30 +391,29 @@ Section "Uninstall"
     Pop $R0
     ReadRegStr $0 HKLM "${UNINSTALL_REGISTRY_KEY_SERVER}" "UninstallString"
     ExecWait '"$0" /S'
+    ExecWait '"$INSTDIR\Ghostscript\uninstgs.exe" /S'
 
     nsExec::Exec "net stop ${SERVICENAME}"
     nsExec::Exec "sc delete ${SERVICENAME}"
     sleep 2
 
     Rmdir /r "$INSTDIR\server"
+    Rmdir /r "$INSTDIR\sessions"
     Rmdir /r "$INSTDIR\thirdparty"
     Rmdir /r "$INSTDIR\python"
     Rmdir /r "$INSTDIR\nssm"
+    FindFirst $0 $1 "$INSTDIR\nginx*"
+    Rmdir /R "$INSTDIR\$1"
+    FindClose $0
     DeleteRegKey HKLM "${UNINSTALL_REGISTRY_KEY}"
 SectionEnd
 
 Function .onInit
     VAR /GLOBAL previous_install_dir
-    ${If} ${RunningX64}
-        SetRegView 64
-    ${EndIf}
+    SetRegView 64
     ReadRegStr $previous_install_dir HKLM "${REGISTRY_KEY}" "Install_Dir"
     ${If} $previous_install_dir == ""
-        ${If} ${RunningX64}
-            StrCpy $INSTDIR "$PROGRAMFILES64\Odoo ${VERSION}"
-        ${Else}
-            StrCpy $INSTDIR "$PROGRAMFILES\Odoo ${VERSION}"
-        ${EndIf}
+        StrCpy $INSTDIR "$PROGRAMFILES64\Odoo ${VERSION}"
         WriteRegStr HKLM "${REGISTRY_KEY}" "Install_dir" "$INSTDIR"
     ${EndIf}
 
@@ -503,7 +546,7 @@ Function ShowProxyTokenDialogPage
             Abort
         ${EndIf}
 
-        ${NSD_CreateLabel} 0 0 100% 25% "Here is your access token for the Odoo Local Proxy, please write it down in a safe place, you will need it to configure the proxy"
+        ${NSD_CreateLabel} 0 0 100% 25% "Here is your access token for the Odoo IOT, please write it down in a safe place, you will need it to configure the IOT"
         Pop $ProxyTokenLabel
 
         ${NSD_CreateText} 0 30% 100% 13u $ProxyTokenPwd

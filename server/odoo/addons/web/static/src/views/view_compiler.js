@@ -7,7 +7,7 @@ import {
     createTextNode,
     getTag,
 } from "@web/core/utils/xml";
-import { toStringExpression } from "./utils";
+import { toStringExpression, BUTTON_CLICK_PARAMS } from "./utils";
 
 /**
  * @typedef Compiler
@@ -18,24 +18,6 @@ import { toStringExpression } from "./utils";
 
 import { xml } from "@odoo/owl";
 
-const BUTTON_CLICK_PARAMS = [
-    "name",
-    "type",
-    "args",
-    "context",
-    "close",
-    "confirm",
-    "special",
-    "effect",
-    "help",
-    "modifiers",
-    // WOWL SAD: is adding the support for debounce attribute here justified or should we
-    // just override compileButton in kanban compiler to add the debounce?
-    "debounce",
-    // WOWL JPP: is adding the support for not oppening the dialog of confirmation in the settings view
-    // This should be refactor someday
-    "noSaveDialog",
-];
 const BUTTON_STRING_PROPS = ["string", "size", "title", "icon", "id"];
 const INTERP_REGEXP = /(\{\{|#\{)(.*?)(\}{1,2})/g;
 
@@ -217,13 +199,24 @@ export class ViewCompiler {
         this.id = 1;
         /** @type {Compiler[]} */
         this.compilers = [
-            { selector: "a[type],a[data-type]", fn: this.compileButton },
-            { selector: "button", fn: this.compileButton, doNotCopyAttributes: true },
+            {
+                selector: "a[type]:not([data-bs-toggle]),a[data-type]:not([data-bs-toggle])",
+                fn: this.compileButton,
+            },
+            {
+                selector: "button:not([data-bs-toggle])",
+                fn: this.compileButton,
+                doNotCopyAttributes: true,
+            },
             { selector: "field", fn: this.compileField },
             { selector: "widget", fn: this.compileWidget },
         ];
         this.templates = templates;
         this.ctx = { readonly: "props.readonly" };
+
+        this.owlDirectiveRegexesWhitelist = this.constructor.OWL_DIRECTIVE_WHITELIST.map(
+            (d) => new RegExp(d)
+        );
         this.setup();
     }
 
@@ -260,6 +253,7 @@ export class ViewCompiler {
     compile(key, params = {}) {
         const child = this.compileNode(this.templates[key], params);
         const newRoot = createElement("t", [child]);
+        newRoot.setAttribute("t-translation", "off");
         return newRoot;
     }
 
@@ -276,6 +270,7 @@ export class ViewCompiler {
             return createTextNode(node.nodeValue);
         }
 
+        this.validateNode(node);
         let invisible;
         if (evalInvisible) {
             invisible = getModifier(node, "invisible");
@@ -379,6 +374,10 @@ export class ViewCompiler {
         field.setAttribute("name", `'${fieldName}'`);
         field.setAttribute("record", `props.record`);
         field.setAttribute("fieldInfo", `props.archInfo.fieldNodes['${fieldId}']`);
+        field.setAttribute(
+            "readonly",
+            `props.archInfo.activeActions?.edit === false and !props.record.isNew`
+        );
 
         if (el.hasAttribute("widget")) {
             field.setAttribute("type", `'${el.getAttribute("widget")}'`);
@@ -393,7 +392,7 @@ export class ViewCompiler {
      * @returns {Element}
      */
     compileGenericNode(el, params) {
-        const compiled = createElement(el.nodeName);
+        const compiled = createElement(el.nodeName.toLowerCase());
         const metaAttrs = ["modifiers", "attrs", "invisible", "readonly"];
         for (const attr of el.attributes) {
             if (metaAttrs.includes(attr.name)) {
@@ -447,7 +446,19 @@ export class ViewCompiler {
     isAlwaysInvisible(invisibleModifer, params) {
         return !params.enableInvisible && typeof invisibleModifer === "boolean" && invisibleModifer;
     }
+
+    validateNode(node) {
+        // detect attributes not in whitelist, starting with t-
+        const attributes = Object.values(node.attributes).map((attr) => attr.name);
+        const regexes = this.owlDirectiveRegexesWhitelist;
+        for (const attr of attributes) {
+            if (attr.startsWith("t-") && !regexes.some((regex) => regex.test(attr))) {
+                console.warn(`Forbidden directive ${attr} used in arch`);
+            }
+        }
+    }
 }
+ViewCompiler.OWL_DIRECTIVE_WHITELIST = [];
 
 let templateIds = Object.create(null);
 /**
@@ -458,10 +469,11 @@ let templateIds = Object.create(null);
  * @returns {Record<string, string>}
  */
 export function useViewCompiler(ViewCompiler, rawArch, templates, params) {
-    if (!templateIds[rawArch]) {
-        templateIds[rawArch] = {};
+    const k = `${ViewCompiler.name}/${rawArch}`;
+    if (!templateIds[k]) {
+        templateIds[k] = {};
     }
-    const compiledTemplates = templateIds[rawArch];
+    const compiledTemplates = templateIds[k];
     const compiler = new ViewCompiler(templates);
     for (const key in templates) {
         if (!compiledTemplates[key]) {

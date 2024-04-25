@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from . import assets
+from . import base_partner_merge
 from . import ir_actions_server
 from . import ir_asset
 from . import ir_attachment
@@ -18,6 +19,7 @@ from . import website_menu
 from . import website_page
 from . import website_rewrite
 from . import ir_rule
+from . import ir_ui_menu
 from . import ir_ui_view
 from . import res_company
 from . import res_partner

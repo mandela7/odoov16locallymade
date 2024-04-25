@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 
 
 class AccountAnalyticAccount(models.Model):
@@ -15,23 +15,26 @@ class AccountAnalyticAccount(models.Model):
         compute='_compute_vendor_bill_count',
     )
 
+    debit = fields.Monetary(groups='account.group_account_readonly')
+    credit = fields.Monetary(groups='account.group_account_readonly')
+
     @api.depends('line_ids')
     def _compute_invoice_count(self):
         sale_types = self.env['account.move'].get_sale_types(include_receipts=True)
 
         query = self.env['account.move.line']._search([
-            ('move_id.state', '=', 'posted'),
+            ('parent_state', '=', 'posted'),
             ('move_id.move_type', 'in', sale_types),
         ])
         query.add_where(
-            'account_move_line.analytic_distribution ?| array[%s]',
-            [str(account_id) for account_id in self.ids],
+            'account_move_line.analytic_distribution ?| %s',
+            [[str(account_id) for account_id in self.ids]],
         )
 
         query.order = None
         query_string, query_param = query.select(
             'jsonb_object_keys(account_move_line.analytic_distribution) as account_id',
-            'COUNT(DISTINCT(move_id)) as move_count',
+            'COUNT(DISTINCT(account_move_line.move_id)) as move_count',
         )
         query_string = f"{query_string} GROUP BY jsonb_object_keys(account_move_line.analytic_distribution)"
 
@@ -45,18 +48,18 @@ class AccountAnalyticAccount(models.Model):
         purchase_types = self.env['account.move'].get_purchase_types(include_receipts=True)
 
         query = self.env['account.move.line']._search([
-            ('move_id.state', '=', 'posted'),
+            ('parent_state', '=', 'posted'),
             ('move_id.move_type', 'in', purchase_types),
         ])
         query.add_where(
-            'account_move_line.analytic_distribution ?| array[%s]',
-            [str(account_id) for account_id in self.ids],
+            'account_move_line.analytic_distribution ?| %s',
+            [[str(account_id) for account_id in self.ids]],
         )
 
         query.order = None
         query_string, query_param = query.select(
             'jsonb_object_keys(account_move_line.analytic_distribution) as account_id',
-            'COUNT(DISTINCT(move_id)) as move_count',
+            'COUNT(DISTINCT(account_move_line.move_id)) as move_count',
         )
         query_string = f"{query_string} GROUP BY jsonb_object_keys(account_move_line.analytic_distribution)"
 
@@ -70,15 +73,15 @@ class AccountAnalyticAccount(models.Model):
         query = self.env['account.move.line']._search([('move_id.move_type', 'in', self.env['account.move'].get_sale_types())])
         query.order = None
         query.add_where('analytic_distribution ? %s', [str(self.id)])
-        query_string, query_param = query.select('DISTINCT move_id')
+        query_string, query_param = query.select('DISTINCT account_move_line.move_id')
         self._cr.execute(query_string, query_param)
         move_ids = [line.get('move_id') for line in self._cr.dictfetchall()]
         result = {
             "type": "ir.actions.act_window",
             "res_model": "account.move",
             "domain": [('id', 'in', move_ids)],
-            "context": {"create": False},
-            "name": "Customer Invoices",
+            "context": {"create": False, 'default_move_type': 'out_invoice'},
+            "name": _("Customer Invoices"),
             'view_mode': 'tree,form',
         }
         return result
@@ -88,15 +91,15 @@ class AccountAnalyticAccount(models.Model):
         query = self.env['account.move.line']._search([('move_id.move_type', 'in', self.env['account.move'].get_purchase_types())])
         query.order = None
         query.add_where('analytic_distribution ? %s', [str(self.id)])
-        query_string, query_param = query.select('DISTINCT move_id')
+        query_string, query_param = query.select('DISTINCT account_move_line.move_id')
         self._cr.execute(query_string, query_param)
         move_ids = [line.get('move_id') for line in self._cr.dictfetchall()]
         result = {
             "type": "ir.actions.act_window",
             "res_model": "account.move",
             "domain": [('id', 'in', move_ids)],
-            "context": {"create": False},
-            "name": "Vendor Bills",
+            "context": {"create": False, 'default_move_type': 'in_invoice'},
+            "name": _("Vendor Bills"),
             'view_mode': 'tree,form',
         }
         return result

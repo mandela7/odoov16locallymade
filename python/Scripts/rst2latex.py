@@ -1,4 +1,4 @@
-#!c:\odoobuild\winpy64\python-3.7.7.amd64\python.exe
+#!C:\odoobuild\WinPy64\python-3.10.11.amd64\python.exe
 
 # $Id: rst2latex.py 5905 2009-04-16 12:04:49Z milde $
 # Author: David Goodger <goodger@python.org>

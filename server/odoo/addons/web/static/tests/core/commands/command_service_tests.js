@@ -15,6 +15,7 @@ import {
     click,
     destroy,
     getFixture,
+    makeDeferred,
     mount,
     nextTick,
     patchWithCleanup,
@@ -167,6 +168,33 @@ QUnit.test("useCommand hook when the activeElement change", async (assert) => {
         [...target.querySelectorAll(".o_command")].map((e) => e.textContent),
         ["Lose the throne", "I'm taking the throne"]
     );
+});
+
+QUnit.test("useCommand hook with isAvailable", async (assert) => {
+    let available = false;
+    class MyComponent extends TestComponent {
+        setup() {
+            useCommand("Take the throne", () => {}, {
+                isAvailable: () => {
+                    return available;
+                },
+            });
+        }
+    }
+    await mount(MyComponent, target, { env });
+
+    triggerHotkey("control+k");
+    await nextTick();
+    assert.containsOnce(target, ".o_command_palette");
+    assert.containsNone(target, ".o_command");
+
+    triggerHotkey("escape");
+    await nextTick();
+    available = true;
+    triggerHotkey("control+k");
+    await nextTick();
+    assert.containsOnce(target, ".o_command_palette");
+    assert.containsOnce(target, ".o_command");
 });
 
 QUnit.test("command with hotkey", async (assert) => {
@@ -1115,3 +1143,63 @@ QUnit.test("uses openPalette to modify the config used by the command palette", 
     );
     assert.deepEqual(target.querySelector(".o_command_palette_search input").value, "Command");
 });
+
+QUnit.test(
+    "ensure that calling openPalette multiple times successfully loads the last config for the command palette",
+    async (assert) => {
+        const providePromise1 = makeDeferred();
+        const providePromise2 = makeDeferred();
+        const action = () => {};
+
+        await mount(TestComponent, target, { env });
+
+        const provide = [
+            async () => {
+                await providePromise1;
+                return [
+                    {
+                        name: "Command1",
+                        action,
+                    },
+                ];
+            },
+            async () => {
+                await providePromise2;
+                return [
+                    {
+                        name: "Command2",
+                        action,
+                    },
+                ];
+            },
+        ];
+        const configCustom1 = {
+            searchValue: "Command",
+            providers: [{ provide: provide[0] }],
+        };
+        const configCustom2 = {
+            searchValue: "Command",
+            providers: [{ provide: provide[1] }],
+        };
+
+        env.services.command.openPalette(configCustom1);
+        await nextTick();
+        assert.containsNone(target, ".o_command_palette");
+        env.services.command.openPalette(configCustom2);
+        await nextTick();
+        assert.containsNone(target, ".o_command_palette");
+        providePromise1.resolve();
+        await nextTick();
+        // First config should not be loaded since a second config was sent.
+        assert.containsNone(target, ".o_command_palette");
+        providePromise2.resolve();
+        await nextTick();
+        // Second config should be loaded properly.
+        assert.containsN(target, ".o_command", 1);
+        assert.deepEqual(
+            [...target.querySelectorAll(".o_command span:first-child")].map((el) => el.textContent),
+            ["Command2"]
+        );
+        assert.deepEqual(target.querySelector(".o_command_palette_search input").value, "Command");
+    }
+);

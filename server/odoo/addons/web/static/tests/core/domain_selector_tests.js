@@ -9,7 +9,7 @@ import { registry } from "@web/core/registry";
 import { uiService } from "@web/core/ui/ui_service";
 import { viewService } from "@web/views/view_service";
 import { makeTestEnv } from "../helpers/mock_env";
-import { click, editSelect, getFixture, mount, triggerEvent } from "../helpers/utils";
+import { click, editInput, editSelect, getFixture, mount, triggerEvent } from "../helpers/utils";
 import { makeFakeLocalizationService } from "../helpers/mock_services";
 
 import { Component, xml } from "@odoo/owl";
@@ -181,21 +181,33 @@ QUnit.module("Components", (hooks) => {
     QUnit.test("building a domain with a datetime", async (assert) => {
         assert.expect(4);
 
+        class Parent extends Component {
+            setup() {
+                this.value = `[("datetime", "=", "2017-03-27 15:42:00")]`;
+            }
+            onUpdate(newValue) {
+                assert.strictEqual(
+                    newValue,
+                    `[("datetime", "=", "2017-02-26 15:42:00")]`,
+                    "datepicker value should have changed"
+                );
+                this.value = newValue;
+                this.render();
+            }
+        }
+        Parent.components = { DomainSelector };
+        Parent.template = xml`
+            <DomainSelector
+                resModel="'partner'"
+                value="value"
+                readonly="false"
+                isDebugMode="true"
+                update="(newValue) => this.onUpdate(newValue)"
+            />
+        `;
+
         // Create the domain selector and its mock environment
-        await mountComponent(DomainSelector, {
-            props: {
-                resModel: "partner",
-                value: `[("datetime", "=", "2017-03-27 15:42:00")]`,
-                readonly: false,
-                update: (newValue) => {
-                    assert.strictEqual(
-                        newValue,
-                        `[("datetime", "=", "2017-02-26 15:42:00")]`,
-                        "datepicker value should have changed"
-                    );
-                },
-            },
-        });
+        await mountComponent(Parent);
 
         // Check that there is a datepicker to choose the date
         assert.containsOnce(target, ".o_datepicker", "there should be a datepicker");
@@ -241,8 +253,9 @@ QUnit.module("Components", (hooks) => {
             document.body.querySelector(`.bootstrap-datetimepicker-widget [data-action=close]`)
         );
 
-        // The input field should display an empty value. NB: this could be improved, but OK for now
-        assert.equal(target.querySelector(".o_datepicker_input").value, "");
+        // The input field should continue displaying 'Invalid DateTime'.
+        // The value is still invalid.
+        assert.equal(target.querySelector(".o_datepicker_input").value, "Invalid DateTime");
         assert.verifySteps([]);
     });
 
@@ -272,8 +285,6 @@ QUnit.module("Components", (hooks) => {
     });
 
     QUnit.test("editing a domain with `parent` key", async (assert) => {
-        assert.expect(1);
-
         // Create the domain selector and its mock environment
         await mountComponent(DomainSelector, {
             props: {
@@ -284,10 +295,11 @@ QUnit.module("Components", (hooks) => {
             },
         });
         assert.strictEqual(
-            target.lastElementChild.innerHTML,
-            "This domain is not supported.",
+            target.lastElementChild.textContent,
+            " This domain is not supported. Reset domain",
             "an error message should be displayed because of the `parent` key"
         );
+        assert.containsOnce(target, "button:contains(Reset domain)");
     });
 
     QUnit.test("creating a domain with a default option", async (assert) => {
@@ -536,5 +548,103 @@ QUnit.module("Components", (hooks) => {
         assert.strictEqual(target.querySelector(".o_field_selector_chain_part").innerText, "State");
         assert.strictEqual(target.querySelector(".o_domain_leaf_operator_select").value, "0"); // option "="
         assert.strictEqual(target.querySelector(".o_domain_leaf_value_input").value, "abc");
+    });
+
+    QUnit.test("show correct operator", async (assert) => {
+        serverData.models.partner.fields.state = {
+            string: "State",
+            type: "selection",
+            selection: [
+                ["abc", "ABC"],
+                ["def", "DEF"],
+                ["ghi", "GHI"],
+            ],
+        };
+
+        await mountComponent(DomainSelector, {
+            props: {
+                resModel: "partner",
+                value: `[['state', 'in', ['abc']]]`,
+                readonly: false,
+            },
+        });
+
+        const select = target.querySelector(".o_domain_leaf_operator_select");
+        assert.strictEqual(select.options[select.options.selectedIndex].text, "in");
+    });
+
+    QUnit.test("multi selection", async (assert) => {
+        serverData.models.partner.fields.state = {
+            string: "State",
+            type: "selection",
+            selection: [
+                ["a", "A"],
+                ["b", "B"],
+                ["c", "C"],
+            ],
+        };
+
+        class Parent extends Component {
+            setup() {
+                this.value = `[("state", "in", ["a", "b", "c"])]`;
+            }
+            onUpdate(newValue) {
+                this.value = newValue;
+                this.render();
+            }
+        }
+        Parent.components = { DomainSelector };
+        Parent.template = xml`
+            <DomainSelector
+                resModel="'partner'"
+                value="value"
+                readonly="false"
+                update="(newValue) => this.onUpdate(newValue)"
+            />
+        `;
+
+        // Create the domain selector and its mock environment
+        const comp = await mountComponent(Parent);
+
+        assert.containsOnce(target, ".o_domain_leaf_value_input");
+        assert.strictEqual(comp.value, `[("state", "in", ["a", "b", "c"])]`);
+        assert.strictEqual(
+            target.querySelector(".o_domain_leaf_value_input").value,
+            `["a", "b", "c"]`
+        );
+
+        await editInput(target, ".o_domain_leaf_value_input", `[]`);
+        assert.strictEqual(comp.value, `[("state", "in", [])]`);
+
+        await editInput(target, ".o_domain_leaf_value_input", `["b"]`);
+        assert.strictEqual(comp.value, `[("state", "in", ["b"])]`);
+    });
+
+    QUnit.test("updating path should also update operator if invalid", async (assert) => {
+        await mountComponent(DomainSelector, {
+            props: {
+                resModel: "partner",
+                value: `[("id", "<", 0)]`,
+                readonly: false,
+                update: (domain) => {
+                    assert.strictEqual(domain, `[("foo", "=", "")]`);
+                },
+            },
+        });
+
+        await click(target, ".o_field_selector");
+        await click(target, ".o_field_selector_popover .o_field_selector_item[data-name=foo]");
+    });
+
+    QUnit.test("do not crash with connector '!'", async (assert) => {
+        class Parent extends Component {
+            setup() {
+                this.domain = `["!", ("foo", "=", "abc")]`;
+            }
+        }
+        Parent.components = { DomainSelector };
+        Parent.template = xml`<DomainSelector resModel="'partner'" value="domain" readonly="false"/>`;
+        await mountComponent(Parent);
+        assert.containsOnce(target, ".o_domain_node.o_domain_leaf");
     });
 });

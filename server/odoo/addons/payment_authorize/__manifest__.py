@@ -6,6 +6,7 @@
     'category': 'Accounting/Payment Providers',
     'sequence': 350,
     'summary': "An payment provider covering the US, Australia, and Canada.",
+    'description': " ",  # Non-empty string to avoid loading the README file.
     'depends': ['payment'],
     'data': [
         'views/payment_authorize_templates.xml',
@@ -14,7 +15,7 @@
 
         'data/payment_provider_data.xml',
     ],
-    'application': True,
+    'application': False,
     'post_init_hook': 'post_init_hook',
     'uninstall_hook': 'uninstall_hook',
     'assets': {

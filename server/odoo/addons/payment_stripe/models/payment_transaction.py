@@ -54,15 +54,25 @@ class PaymentTransaction(models.Model):
         :return: The Checkout Session
         :rtype: dict
         """
+        def get_linked_pmts(linked_pms_):
+            linked_pmts_ = linked_pms_
+            card_pms_ = [
+                self.env.ref(f'payment.payment_icon_cc_{pm_code_}', raise_if_not_found=False)
+                for pm_code_ in ('visa', 'mastercard', 'american_express', 'discover')
+            ]
+            card_pms_ = [pm_ for pm_ in card_pms_ if pm_ is not None]  # Remove deleted card PMs.
+            if any(pm_.name.lower() in linked_pms_ for pm_ in card_pms_):
+                linked_pmts_ += ['card']
+            return linked_pmts_
+
         # Filter payment method types by available payment method
-        existing_pms = [pm.name.lower() for pm in self.env['payment.icon'].search([])]
+        existing_pms = [pm.name.lower() for pm in self.env['payment.icon'].search([])] + ['card']
         linked_pms = [pm.name.lower() for pm in self.provider_id.payment_icon_ids]
         pm_filtered_pmts = filter(
-            lambda pmt: pmt.name == 'card'
             # If the PM (payment.icon) record related to a PMT doesn't exist, don't filter out the
             # PMT because the user couldn't even have linked it to the provider in the first place.
-            or (pmt.name in linked_pms or pmt.name not in existing_pms),
-            PAYMENT_METHOD_TYPES
+            lambda pmt: pmt.name in get_linked_pmts(linked_pms) or pmt.name not in existing_pms,
+            PAYMENT_METHOD_TYPES,
         )
         # Filter payment method types by country code
         country_code = self.partner_country_id and self.partner_country_id.code.lower()
@@ -125,6 +135,7 @@ class PaymentTransaction(models.Model):
                 'checkout/sessions', payload={
                     **common_session_values,
                     'mode': 'setup',
+                    'currency': self.currency_id.name,
                     'success_url': return_url,
                     'cancel_url': return_url,
                     'setup_intent_data[description]': self.reference,
@@ -148,7 +159,7 @@ class PaymentTransaction(models.Model):
                 'description': f'Odoo Partner: {self.partner_id.name} (id: {self.partner_id.id})',
                 'email': self.partner_email or None,
                 'name': self.partner_name,
-                'phone': self.partner_phone or None,
+                'phone': self.partner_phone and self.partner_phone[:20] or None,
             }
         )
         return customer
@@ -193,6 +204,8 @@ class PaymentTransaction(models.Model):
             "payment request response for transaction with reference %s:\n%s",
             self.reference, pprint.pformat(payment_intent)
         )
+        if not payment_intent:  # The PI might be missing if Stripe failed to create it.
+            return  # There is nothing to process; the transaction is in error at this point.
         self.stripe_payment_intent = payment_intent['id']
 
         # Handle the payment request response
@@ -218,9 +231,10 @@ class PaymentTransaction(models.Model):
                 'payment_intents',
                 payload=self._stripe_prepare_payment_intent_payload(payment_by_token=True),
                 offline=self.operation == 'offline',
+                # Prevent multiple offline payments by token (e.g., due to a cursor rollback).
                 idempotency_key=payment_utils.generate_idempotency_key(
                     self, scope='payment_intents_token'
-                ),  # Prevent multiple offline payments by token (e.g., due to a cursor rollback).
+                ) if self.operation == 'offline' else None,
             )
         else:  # 'online_direct' (express checkout).
             response = self.provider_id._stripe_make_request(
@@ -231,7 +245,14 @@ class PaymentTransaction(models.Model):
         if 'error' not in response:
             payment_intent = response
         else:  # A processing error was returned in place of the payment intent
+            # The request failed and no error was raised because we are in an offline payment flow.
+            # Extract the error from the response, log it, and set the transaction in error to let
+            # the calling module handle the issue without rolling back the cursor.
             error_msg = response['error'].get('message')
+            _logger.warning(
+                "The creation of the payment intent failed.\n"
+                "Stripe gave us the following info about the problem:\n'%s'", error_msg
+            )
             self._set_error("Stripe: " + _(
                 "The communication with the API failed.\n"
                 "Stripe gave us the following info about the problem:\n'%s'", error_msg

@@ -284,7 +284,10 @@ class Website(models.Model):
         return pricelist
 
     def sale_product_domain(self):
-        return expression.AND([self._product_domain(), self.get_current_website().website_domain()])
+        website_domain = self.get_current_website().website_domain()
+        if not self.env.user._is_internal():
+            website_domain = expression.AND([website_domain, [('is_published', '=', True)]])
+        return expression.AND([self._product_domain(), website_domain])
 
     def _product_domain(self):
         return [('sale_ok', '=', True)]
@@ -372,7 +375,10 @@ class Website(models.Model):
             previous_fiscal_position = sale_order_sudo.fiscal_position_id
             previous_pricelist = sale_order_sudo.pricelist_id
 
+            # Reset the session pricelist according to logged partner pl
+            request.session.pop('website_sale_current_pl', None)
             pricelist_id = self._get_current_pricelist_id(partner_sudo)
+            request.session['website_sale_current_pl'] = pricelist_id
 
             # change the partner, and trigger the computes (fpos)
             sale_order_sudo.write({
@@ -462,7 +468,7 @@ class Website(models.Model):
 
         # If the current user is the website public user, the fiscal position
         # is computed according to geolocation.
-        if request.website.partner_id.id == partner_sudo.id:
+        if request and request.website.partner_id.id == partner_sudo.id:
             country_code = request.geoip.get('country_code')
             if country_code:
                 country_id = self.env['res.country'].search([('code', '=', country_code)], limit=1).id

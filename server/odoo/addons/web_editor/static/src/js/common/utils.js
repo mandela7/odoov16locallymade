@@ -22,10 +22,12 @@ const EDITOR_COLOR_CSS_VARIABLES = [...COLOR_PALETTE_COMPATIBILITY_COLOR_NAMES];
 for (let i = 1; i <= 5; i++) {
     EDITOR_COLOR_CSS_VARIABLES.push(`o-color-${i}`);
     EDITOR_COLOR_CSS_VARIABLES.push(`o-cc${i}-bg`);
-    EDITOR_COLOR_CSS_VARIABLES.push(`o-cc${i}-h1`);
+    EDITOR_COLOR_CSS_VARIABLES.push(`o-cc${i}-headings`);
     EDITOR_COLOR_CSS_VARIABLES.push(`o-cc${i}-text`);
     EDITOR_COLOR_CSS_VARIABLES.push(`o-cc${i}-btn-primary`);
+    EDITOR_COLOR_CSS_VARIABLES.push(`o-cc${i}-btn-primary-text`);
     EDITOR_COLOR_CSS_VARIABLES.push(`o-cc${i}-btn-secondary`);
+    EDITOR_COLOR_CSS_VARIABLES.push(`o-cc${i}-btn-secondary-text`);
     EDITOR_COLOR_CSS_VARIABLES.push(`o-cc${i}-btn-primary-border`);
     EDITOR_COLOR_CSS_VARIABLES.push(`o-cc${i}-btn-secondary-border`);
 }
@@ -77,6 +79,13 @@ const DEFAULT_PALETTE = {
     '4': '#FFFFFF',
     '5': '#383E45',
 };
+/**
+ * Set of all the data attributes relative to the background images.
+ */
+const BACKGROUND_IMAGE_ATTRIBUTES = new Set([
+    "originalId", "originalSrc", "mimetype", "resizeWidth", "glFilter", "quality", "bgSrc",
+    "filterOptions",
+]);
 
 /**
  * Computes the number of "px" needed to make a "rem" unit. Subsequent calls
@@ -148,7 +157,7 @@ function _convertNumericToUnit(value, unitFrom, unitTo, cssProp, $target) {
  * @returns {Array|null}
  */
 function _getNumericAndUnit(value) {
-    const m = value.trim().match(/^(-?[0-9.]+)([A-Za-z% -]*)$/);
+    const m = value.trim().match(/^(-?[0-9.]+(?:e[+|-]?[0-9]+)?)\s*([A-Za-z%-]*)$/);
     if (!m) {
         return null;
     }
@@ -167,6 +176,23 @@ function _getNumericAndUnit(value) {
 function _areCssValuesEqual(value1, value2, cssProp, $target) {
     // String comparison first
     if (value1 === value2) {
+        return true;
+    }
+
+    // In case the values are a size, they might be made of two parts.
+    if (cssProp && cssProp.endsWith('-size')) {
+        // Avoid re-splitting each part during their individual comparison.
+        const pseudoPartProp = cssProp + '-part';
+        const re = /-?[0-9.]+(?:e[+|-]?[0-9]+)?\s*[A-Za-z%-]+|auto/g;
+        const parts1 = value1.match(re);
+        const parts2 = value2.match(re);
+        for (const index of [0, 1]) {
+            const part1 = parts1 && parts1.length > index ? parts1[index] : 'auto';
+            const part2 = parts2 && parts2.length > index ? parts2[index] : 'auto';
+            if (!_areCssValuesEqual(part1, part2, pseudoPartProp, $target)) {
+                return false;
+            }
+        }
         return true;
     }
 
@@ -389,6 +415,50 @@ function _getColorClass(el, colorNames, prefix) {
     const prefixedColorNames = _computeColorClasses(colorNames, prefix);
     return el.classList.value.split(' ').filter(cl => prefixedColorNames.includes(cl)).join(' ');
 }
+/**
+ * Add one or more new attributes related to background images in the
+ * BACKGROUND_IMAGE_ATTRIBUTES set.
+ *
+ * @param {...string} newAttributes The new attributes to add in the
+ * BACKGROUND_IMAGE_ATTRIBUTES set.
+ */
+function _addBackgroundImageAttributes(...newAttributes) {
+    BACKGROUND_IMAGE_ATTRIBUTES.add(...newAttributes);
+}
+/**
+ * Check if an attribute is in the BACKGROUND_IMAGE_ATTRIBUTES set.
+ *
+ * @param {string} attribute The attribute that has to be checked.
+ */
+function _isBackgroundImageAttribute(attribute) {
+    return BACKGROUND_IMAGE_ATTRIBUTES.has(attribute);
+}
+/**
+ * Checks if an element supposedly marked with the o_editable_media class should
+ * in fact be editable (checks if its environment looks like a non editable
+ * environment whose media should be editable).
+ *
+ * TODO: the name of this function is voluntarily bad to reflect the fact that
+ * this system should be improved. The combination of o_not_editable,
+ * o_editable, getContentEditableAreas, getReadOnlyAreas and other concepts
+ * related to what should be editable or not should be reviewed.
+ *
+ * @returns {boolean}
+ */
+function _shouldEditableMediaBeEditable(mediaEl) {
+    // Some sections of the DOM are contenteditable="false" (for
+    // example with the help of the o_not_editable class) but have
+    // inner media that should be editable (the fact the container
+    // is not is to prevent adding text in between those medias).
+    // This case is complex and the solution to support it is not
+    // perfect: we mark those media with a class and check that the
+    // first non editable ancestor is in fact in an editable parent.
+    const parentEl = mediaEl.parentElement;
+    const nonEditableAncestorRootEl = parentEl && parentEl.closest('[contenteditable="false"]');
+    return nonEditableAncestorRootEl
+        && nonEditableAncestorRootEl.parentElement
+        && nonEditableAncestorRootEl.parentElement.isContentEditable;
+}
 
 return {
     COLOR_PALETTE_COMPATIBILITY_COLOR_NAMES: COLOR_PALETTE_COMPATIBILITY_COLOR_NAMES,
@@ -412,5 +482,8 @@ return {
     generateHTMLId: _generateHTMLId,
     getColorClass: _getColorClass,
     setEditableWindow: _setEditableWindow,
+    addBackgroundImageAttributes: _addBackgroundImageAttributes,
+    isBackgroundImageAttribute: _isBackgroundImageAttribute,
+    shouldEditableMediaBeEditable: _shouldEditableMediaBeEditable,
 };
 });

@@ -2,7 +2,7 @@
 
 from os import getenv
 from odoo.tests import tagged
-from .test_static import TestHttpStatic, TestHttpStaticCache
+from . import test_static
 
 
 # Small configuration to run the tests against a web server.
@@ -10,8 +10,8 @@ from .test_static import TestHttpStatic, TestHttpStaticCache
 WEB_SERVER_URL = getenv('WEB_SERVER_URL', 'http://localhost:80')
 
 
-@tagged('webserver', '-standard', '-at-install')
-class TestHttpStaticWebServer(TestHttpStatic, TestHttpStaticCache):
+@tagged('webserver', '-standard', '-at_install')
+class TestHttpStaticWebServer(test_static.TestHttpStatic, test_static.TestHttpStaticCache):
     @classmethod
     def base_url(cls):
         return WEB_SERVER_URL

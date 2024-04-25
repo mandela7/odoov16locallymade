@@ -11,10 +11,11 @@ import threading
 import time
 from email.utils import getaddresses
 from urllib.parse import urlparse
+import html as htmllib
 
 import idna
 import markupsafe
-from lxml import etree
+from lxml import etree, html
 from lxml.html import clean
 from werkzeug import urls
 
@@ -30,11 +31,13 @@ _logger = logging.getLogger(__name__)
 
 safe_attrs = clean.defs.safe_attrs | frozenset(
     ['style',
-     'data-o-mail-quote',  # quote detection
+     'data-o-mail-quote', 'data-o-mail-quote-node',  # quote detection
      'data-oe-model', 'data-oe-id', 'data-oe-field', 'data-oe-type', 'data-oe-expression', 'data-oe-translation-initial-sha', 'data-oe-nodeid',
+     'data-last-history-steps',
      'data-publish', 'data-id', 'data-res_id', 'data-interval', 'data-member_id', 'data-scroll-background-ratio', 'data-view-id',
      'data-class', 'data-mimetype', 'data-original-src', 'data-original-id', 'data-gl-filter', 'data-quality', 'data-resize-width',
      'data-shape', 'data-shape-colors', 'data-file-name', 'data-original-mimetype',
+     'data-oe-protected',  # editor
      'data-behavior-props', 'data-prop-name',  # knowledge commands
      ])
 SANITIZE_TAGS = {
@@ -73,10 +76,6 @@ class _Cleaner(clean.Cleaner):
     sanitize_style = False
 
     def __call__(self, doc):
-        # perform quote detection before cleaning and class removal
-        for el in doc.iter(tag=etree.Element):
-            self.tag_quote(el)
-
         super(_Cleaner, self).__call__(doc)
 
         # if we keep attributes but still remove classes
@@ -88,74 +87,6 @@ class _Cleaner(clean.Cleaner):
         if not self.style and self.sanitize_style:
             for el in doc.iter(tag=etree.Element):
                 self.parse_style(el)
-
-    def tag_quote(self, el):
-        def _create_new_node(tag, text, tail=None, attrs=None):
-            new_node = etree.Element(tag)
-            new_node.text = text
-            new_node.tail = tail
-            if attrs:
-                for key, val in attrs.items():
-                    new_node.set(key, val)
-            return new_node
-
-        def _tag_matching_regex_in_text(regex, node, tag='span', attrs=None):
-            text = node.text or ''
-            if not re.search(regex, text):
-                return
-
-            child_node = None
-            idx, node_idx = 0, 0
-            for item in re.finditer(regex, text):
-                new_node = _create_new_node(tag, text[item.start():item.end()], None, attrs)
-                if child_node is None:
-                    node.text = text[idx:item.start()]
-                    new_node.tail = text[item.end():]
-                    node.insert(node_idx, new_node)
-                else:
-                    child_node.tail = text[idx:item.start()]
-                    new_node.tail = text[item.end():]
-                    node.insert(node_idx, new_node)
-                child_node = new_node
-                idx = item.end()
-                node_idx = node_idx + 1
-
-        el_class = el.get('class', '') or ''
-        el_id = el.get('id', '') or ''
-
-        # gmail or yahoo // # outlook, html // # msoffice
-        if 'gmail_extra' in el_class or \
-                'divRplyFwdMsg' in el_id or \
-                ('SkyDrivePlaceholder' in el_class or 'SkyDrivePlaceholder' in el_class):
-            el.set('data-o-mail-quote', '1')
-            if el.getparent() is not None:
-                el.getparent().set('data-o-mail-quote-container', '1')
-
-        if (el.tag == 'hr' and ('stopSpelling' in el_class or 'stopSpelling' in el_id)) or \
-           'yahoo_quoted' in el_class:
-            # Quote all elements after this one
-            el.set('data-o-mail-quote', '1')
-            for sibling in el.itersiblings(preceding=False):
-                sibling.set('data-o-mail-quote', '1')
-
-        # html signature (-- <br />blah)
-        signature_begin = re.compile(r"((?:(?:^|\n)[-]{2}[\s]?$))")
-        if el.text and el.find('br') is not None and re.search(signature_begin, el.text):
-            el.set('data-o-mail-quote', '1')
-            if el.getparent() is not None:
-                el.getparent().set('data-o-mail-quote-container', '1')
-
-        # text-based quotes (>, >>) and signatures (-- Signature)
-        text_complete_regex = re.compile(r"((?:\n[>]+[^\n\r]*)+|(?:(?:^|\n)[-]{2}[\s]?[\r\n]{1,2}[\s\S]+))")
-        if not el.get('data-o-mail-quote'):
-            _tag_matching_regex_in_text(text_complete_regex, el, 'span', {'data-o-mail-quote': '1'})
-
-        if el.tag == 'blockquote':
-            # remove single node
-            el.set('data-o-mail-quote-node', '1')
-            el.set('data-o-mail-quote', '1')
-        if el.getparent() is not None and (el.getparent().get('data-o-mail-quote') or el.getparent().get('data-o-mail-quote-container')) and not el.getparent().get('data-o-mail-quote-node'):
-            el.set('data-o-mail-quote', '1')
 
     def strip_class(self, el):
         if el.attrib.get('class'):
@@ -176,82 +107,184 @@ class _Cleaner(clean.Cleaner):
                 del el.attrib['style']
 
 
-def html_sanitize(src, silent=True, sanitize_tags=True, sanitize_attributes=False, sanitize_style=False, sanitize_form=True, strip_style=False, strip_classes=False):
+def tag_quote(el):
+    def _create_new_node(tag, text, tail=None, attrs=None):
+        new_node = etree.Element(tag)
+        new_node.text = text
+        new_node.tail = tail
+        if attrs:
+            for key, val in attrs.items():
+                new_node.set(key, val)
+        return new_node
+
+    def _tag_matching_regex_in_text(regex, node, tag='span', attrs=None):
+        text = node.text or ''
+        if not re.search(regex, text):
+            return
+
+        child_node = None
+        idx, node_idx = 0, 0
+        for item in re.finditer(regex, text):
+            new_node = _create_new_node(tag, text[item.start():item.end()], None, attrs)
+            if child_node is None:
+                node.text = text[idx:item.start()]
+                new_node.tail = text[item.end():]
+                node.insert(node_idx, new_node)
+            else:
+                child_node.tail = text[idx:item.start()]
+                new_node.tail = text[item.end():]
+                node.insert(node_idx, new_node)
+            child_node = new_node
+            idx = item.end()
+            node_idx = node_idx + 1
+
+    el_class = el.get('class', '') or ''
+    el_id = el.get('id', '') or ''
+
+    # gmail or yahoo // # outlook, html // # msoffice
+    if 'gmail_extra' in el_class or \
+            'divRplyFwdMsg' in el_id or \
+            ('SkyDrivePlaceholder' in el_class or 'SkyDrivePlaceholder' in el_class):
+        el.set('data-o-mail-quote', '1')
+        if el.getparent() is not None:
+            el.getparent().set('data-o-mail-quote-container', '1')
+
+    if (el.tag == 'hr' and ('stopSpelling' in el_class or 'stopSpelling' in el_id)) or \
+       'yahoo_quoted' in el_class:
+        # Quote all elements after this one
+        el.set('data-o-mail-quote', '1')
+        for sibling in el.itersiblings(preceding=False):
+            sibling.set('data-o-mail-quote', '1')
+
+    # html signature (-- <br />blah)
+    signature_begin = re.compile(r"((?:(?:^|\n)[-]{2}[\s]?$))")
+    if el.text and el.find('br') is not None and re.search(signature_begin, el.text):
+        el.set('data-o-mail-quote', '1')
+        if el.getparent() is not None:
+            el.getparent().set('data-o-mail-quote-container', '1')
+
+    # text-based quotes (>, >>) and signatures (-- Signature)
+    text_complete_regex = re.compile(r"((?:\n[>]+[^\n\r]*)+|(?:(?:^|\n)[-]{2}[\s]?[\r\n]{1,2}[\s\S]+))")
+    if not el.get('data-o-mail-quote'):
+        _tag_matching_regex_in_text(text_complete_regex, el, 'span', {'data-o-mail-quote': '1'})
+
+    if el.tag == 'blockquote':
+        # remove single node
+        el.set('data-o-mail-quote-node', '1')
+        el.set('data-o-mail-quote', '1')
+    if el.getparent() is not None and (el.getparent().get('data-o-mail-quote') or el.getparent().get('data-o-mail-quote-container')) and not el.getparent().get('data-o-mail-quote-node'):
+        el.set('data-o-mail-quote', '1')
+
+
+def html_normalize(src, filter_callback=None):
+    """ Normalize `src` for storage as an html field value.
+
+    The string is parsed as an html tag soup, made valid, then decorated for
+    "email quote" detection, and prepared for an optional filtering.
+    The filtering step (e.g. sanitization) should be performed by the
+    `filter_callback` function (to avoid multiple parsing operations, and
+    normalize the result).
+
+    :param src: the html string to normalize
+    :param filter_callback: optional callable taking a single `etree._Element`
+        document parameter, to be called during normalization in order to
+        filter the output document
+    """
+
     if not src:
         return src
+
     src = ustr(src, errors='replace')
     # html: remove encoding attribute inside tags
     doctype = re.compile(r'(<[^>]*\s)(encoding=(["\'][^"\']*?["\']|[^\s\n\r>]+)(\s[^>]*|/)?>)', re.IGNORECASE | re.DOTALL)
     src = doctype.sub(u"", src)
 
-    logger = logging.getLogger(__name__ + '.html_sanitize')
-
-    # html encode mako tags <% ... %> to decode them later and keep them alive, otherwise they are stripped by the cleaner
-    src = src.replace(u'<%', misc.html_escape(u'<%'))
-    src = src.replace(u'%>', misc.html_escape(u'%>'))
-
-    kwargs = {
-        'page_structure': True,
-        'style': strip_style,              # True = remove style tags/attrs
-        'sanitize_style': sanitize_style,  # True = sanitize styling
-        'forms': sanitize_form,            # True = remove form tags
-        'remove_unknown_tags': False,
-        'comments': False,
-        'processing_instructions': False
-    }
-    if sanitize_tags:
-        kwargs.update(SANITIZE_TAGS)
-
-    if sanitize_attributes:  # We keep all attributes in order to keep "style"
-        if strip_classes:
-            current_safe_attrs = safe_attrs - frozenset(['class'])
-        else:
-            current_safe_attrs = safe_attrs
-        kwargs.update({
-            'safe_attrs_only': True,
-            'safe_attrs': current_safe_attrs,
-        })
-    else:
-        kwargs.update({
-            'safe_attrs_only': False,  # keep oe-data attributes + style
-            'strip_classes': strip_classes,  # remove classes, even when keeping other attributes
-        })
-
     try:
-        # some corner cases make the parser crash (such as <SCRIPT/XSS SRC=\"http://ha.ckers.org/xss.js\"></SCRIPT> in test_mail)
-        cleaner = _Cleaner(**kwargs)
-        cleaned = cleaner.clean_html(src)
-        assert isinstance(cleaned, str)
-        # MAKO compatibility: $, { and } inside quotes are escaped, preventing correct mako execution
-        cleaned = cleaned.replace(u'%24', u'$')
-        cleaned = cleaned.replace(u'%7B', u'{')
-        cleaned = cleaned.replace(u'%7D', u'}')
-        cleaned = cleaned.replace(u'%20', u' ')
-        cleaned = cleaned.replace(u'%5B', u'[')
-        cleaned = cleaned.replace(u'%5D', u']')
-        cleaned = cleaned.replace(u'%7C', u'|')
-        cleaned = cleaned.replace(u'&lt;%', u'<%')
-        cleaned = cleaned.replace(u'%&gt;', u'%>')
-        # html considerations so real html content match database value
-        cleaned.replace(u'\xa0', u'&nbsp;')
+        src = src.replace('--!>', '-->')
+        src = re.sub(r'(<!-->|<!--->)', '<!-- -->', src)
+        # On the specific case of Outlook desktop it adds unnecessary '<o:.*></o:.*>' tags which are parsed
+        # in '<p></p>' which may alter the appearance (eg. spacing) of the mail body
+        src = re.sub(r'</?o:.*?>', '', src)
+        doc = html.fromstring(src)
     except etree.ParserError as e:
+        # HTML comment only string, whitespace only..
         if 'empty' in str(e):
             return u""
+        raise
+
+    # perform quote detection before cleaning and class removal
+    if doc is not None:
+        for el in doc.iter(tag=etree.Element):
+            tag_quote(el)
+
+    if filter_callback:
+        doc = filter_callback(doc)
+
+    src = html.tostring(doc, encoding='unicode')
+
+    # this is ugly, but lxml/etree tostring want to put everything in a
+    # 'div' that breaks the editor -> remove that
+    if src.startswith('<div>') and src.endswith('</div>'):
+        src = src[5:-6]
+
+    # html considerations so real html content match database value
+    src = src.replace(u'\xa0', u'&nbsp;')
+
+    return src
+
+
+def html_sanitize(src, silent=True, sanitize_tags=True, sanitize_attributes=False, sanitize_style=False, sanitize_form=True, strip_style=False, strip_classes=False):
+    if not src:
+        return src
+
+    logger = logging.getLogger(__name__ + '.html_sanitize')
+
+    def sanitize_handler(doc):
+        kwargs = {
+            'page_structure': True,
+            'style': strip_style,              # True = remove style tags/attrs
+            'sanitize_style': sanitize_style,  # True = sanitize styling
+            'forms': sanitize_form,            # True = remove form tags
+            'remove_unknown_tags': False,
+            'comments': False,
+            'processing_instructions': False
+        }
+        if sanitize_tags:
+            kwargs.update(SANITIZE_TAGS)
+
+        if sanitize_attributes:  # We keep all attributes in order to keep "style"
+            if strip_classes:
+                current_safe_attrs = safe_attrs - frozenset(['class'])
+            else:
+                current_safe_attrs = safe_attrs
+            kwargs.update({
+                'safe_attrs_only': True,
+                'safe_attrs': current_safe_attrs,
+            })
+        else:
+            kwargs.update({
+                'safe_attrs_only': False,  # keep oe-data attributes + style
+                'strip_classes': strip_classes,  # remove classes, even when keeping other attributes
+            })
+
+        cleaner = _Cleaner(**kwargs)
+        cleaner(doc)
+        return doc
+
+    try:
+        sanitized = html_normalize(src, filter_callback=sanitize_handler)
+    except etree.ParserError:
         if not silent:
             raise
         logger.warning(u'ParserError obtained when sanitizing %r', src, exc_info=True)
-        cleaned = u'<p>ParserError when sanitizing</p>'
+        sanitized = '<p>ParserError when sanitizing</p>'
     except Exception:
         if not silent:
             raise
         logger.warning(u'unknown error obtained when sanitizing %r', src, exc_info=True)
-        cleaned = u'<p>Unknown error when sanitizing</p>'
+        sanitized = '<p>Unknown error when sanitizing</p>'
 
-    # this is ugly, but lxml/etree tostring want to put everything in a 'div' that breaks the editor -> remove that
-    if cleaned.startswith(u'<div>') and cleaned.endswith(u'</div>'):
-        cleaned = cleaned[5:-6]
-
-    return markupsafe.Markup(cleaned)
+    return markupsafe.Markup(sanitized)
 
 # ----------------------------------------------------------
 # HTML/Text management
@@ -282,7 +315,7 @@ def is_html_empty(html_content):
     """
     if not html_content:
         return True
-    tag_re = re.compile(r'\<\s*\/?(?:p|div|span|br|b|i|font)(?:(?=\s+\w*)[^/>]*|\s*)/?\s*\>')
+    tag_re = re.compile(r'\<\s*\/?(?:p|div|section|span|br|b|i|font)(?:(?=\s+\w*)[^/>]*|\s*)/?\s*\>')
     return not bool(re.sub(tag_re, '', html_content).strip())
 
 def html_keep_url(text):
@@ -309,6 +342,7 @@ def html_to_inner_content(html):
     processed = re.sub(HTML_NEWLINES_REGEX, ' ', html)
     processed = re.sub(HTML_TAGS_REGEX, '', processed)
     processed = re.sub(r' {2,}|\t', ' ', processed)
+    processed = htmllib.unescape(processed)
     processed = processed.strip()
     return processed
 
@@ -364,6 +398,7 @@ def html2plaintext(html, body_id=None, encoding='utf-8'):
     html = html.replace('&gt;', '>')
     html = html.replace('&lt;', '<')
     html = html.replace('&amp;', '&')
+    html = html.replace('&nbsp;', u'\N{NO-BREAK SPACE}')
 
     # strip all lines
     html = '\n'.join([x.strip() for x in html.splitlines()])
@@ -458,7 +493,8 @@ def append_content_to_html(html, content, plaintext=True, preserve=False, contai
 
 def prepend_html_content(html_body, html_content):
     """Prepend some HTML content at the beginning of an other HTML content."""
-    html_content = type(html_content)(re.sub(r'(?i)(</?(?:html|body|head|!\s*DOCTYPE)[^>]*>)', '', html_content))
+    replacement = re.sub(r'(?i)(</?(?:html|body|head|!\s*DOCTYPE)[^>]*>)', '', html_content)
+    html_content = markupsafe.Markup(replacement) if isinstance(html_content, markupsafe.Markup) else replacement
     html_content = html_content.strip()
 
     body_match = re.search(r'<body[^>]*>', html_body) or re.search(r'<html[^>]*>', html_body)
@@ -480,7 +516,6 @@ mail_header_msgid_re = re.compile('<[^<>]+>')
 
 email_addr_escapes_re = re.compile(r'[\\"]')
 
-
 def generate_tracking_message_id(res_id):
     """Returns a string that can be used in the Message-ID RFC822 header field
 
@@ -498,14 +533,47 @@ def email_split_tuples(text):
     """ Return a list of (name, email) address tuples found in ``text`` . Note
     that text should be an email header or a stringified email list as it may
     give broader results than expected on actual text. """
+    def _parse_based_on_spaces(pair):
+        """ With input 'name email@domain.com' (missing quotes for a formatting)
+        getaddresses returns ('', 'name email@domain.com). This when having no
+        name and an email a fallback to enhance parsing is to redo a getaddresses
+        by replacing spaces by commas. The new email will be split into sub pairs
+        allowing to find the email and name parts, allowing to make a new name /
+        email pair. Emails should not contain spaces thus this is coherent with
+        email formation. """
+        name, email = pair
+        if not name and email and ' ' in email:
+            inside_pairs = getaddresses([email.replace(' ', ',')])
+            name_parts, found_email = [], False
+            for pair in inside_pairs:
+                if pair[1] and '@' not in pair[1]:
+                    name_parts.append(pair[1])
+                if pair[1] and '@' in pair[1]:
+                    found_email = pair[1]
+            name, email = (' '.join(name_parts), found_email) if found_email else (name, email)
+        return (name, email)
+
     if not text:
         return []
-    return [(addr[0], addr[1]) for addr in getaddresses([text])
-                # getaddresses() returns '' when email parsing fails, and
-                # sometimes returns emails without at least '@'. The '@'
-                # is strictly required in RFC2822's `addr-spec`.
-                if addr[1]
-                if '@' in addr[1]]
+
+    # found valid pairs, filtering out failed parsing
+    valid_pairs = [
+        (addr[0], addr[1]) for addr in getaddresses([text])
+        # getaddresses() returns '' when email parsing fails, and
+        # sometimes returns emails without at least '@'. The '@'
+        # is strictly required in RFC2822's `addr-spec`.
+        if addr[1] and '@' in addr[1]
+    ]
+    # corner case: returning '@gmail.com'-like email (see test_email_split)
+    if any(pair[1].startswith('@') for pair in valid_pairs):
+        filtered = [
+            found_email for found_email in email_re.findall(text)
+            if found_email and not found_email.startswith('@')
+        ]
+        if filtered:
+            valid_pairs = [('', found_email) for found_email in filtered]
+
+    return list(map(_parse_based_on_spaces, valid_pairs))
 
 def email_split(text):
     """ Return a list of the email addresses found in ``text`` """
@@ -521,17 +589,32 @@ def email_split_and_format(text):
     return [formataddr((name, email)) for (name, email) in email_split_tuples(text)]
 
 def email_normalize(text, strict=True):
-    """ Sanitize and standardize email address entries.
-        A normalized email is considered as :
-        - having a left part + @ + a right part (the domain can be without '.something')
-        - being lower case
-        - having no name before the address. Typically, having no 'Name <>'
-        Ex:
-        - Possible Input Email : 'Name <NaMe@DoMaIn.CoM>'
-        - Normalized Output Email : 'name@domain.com'
+    """ Sanitize and standardize email address entries. As of rfc5322 section
+    3.4.1 local-part is case-sensitive. However most main providers do consider
+    the local-part as case insensitive. With the introduction of smtp-utf8
+    within odoo, this assumption is certain to fall short for international
+    emails. We now consider that
 
-    :param bool strict: text should contain exactly one email (default behavior
-      and unique behavior before Odoo16);
+      * if local part is ascii: normalize still 'lower' ;
+      * else: use as it, SMTP-UF8 is made for non-ascii local parts;
+
+    Concerning domain part of the address, as of v14 international domain (IDNA)
+    are handled fine. The domain is always lowercase, lowering it is fine as it
+    is probably an error. With the introduction of IDNA, there is an encoding
+    that allow non-ascii characters to be encoded to ascii ones, using 'idna.encode'.
+
+    A normalized email is considered as :
+    - having a left part + @ + a right part (the domain can be without '.something')
+    - having no name before the address. Typically, having no 'Name <>'
+    Ex:
+    - Possible Input Email : 'Name <NaMe@DoMaIn.CoM>'
+    - Normalized Output Email : 'name@domain.com'
+
+    :param boolean strict: if True, text should contain a single email
+      (default behavior in stable 14+). If more than one email is found no
+      normalized email is returned. If False the first found candidate is used
+      e.g. if email is 'tony@e.com, "Tony2" <tony2@e.com>', result is either
+      False (strict=True), either 'tony@e.com' (strict=False).
 
     :return: False if no email found (or if more than 1 email found when being
       in strict mode); normalized email otherwise;
@@ -539,7 +622,30 @@ def email_normalize(text, strict=True):
     emails = email_split(text)
     if not emails or (strict and len(emails) != 1):
         return False
-    return emails[0].lower()
+
+    local_part, at, domain = emails[0].rpartition('@')
+    try:
+        local_part.encode('ascii')
+    except UnicodeEncodeError:
+        pass
+    else:
+        local_part = local_part.lower()
+
+    return local_part + at + domain.lower()
+
+def email_normalize_all(text):
+    """ Tool method allowing to extract email addresses from a text input and returning
+    normalized version of all found emails. If no email is found, a void list
+    is returned.
+
+    e.g. if email is 'tony@e.com, "Tony2" <tony2@e.com' returned result is ['tony@e.com, tony2@e.com']
+
+    :return list: list of normalized emails found in text
+    """
+    if not text:
+        return []
+    emails = email_split(text)
+    return list(filter(None, [email_normalize(email) for email in emails]))
 
 def email_domain_extract(email):
     """ Extract the company domain to be used by IAP services notably. Domain

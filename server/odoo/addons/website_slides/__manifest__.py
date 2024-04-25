@@ -78,6 +78,8 @@ Featuring
             'website_slides/static/src/js/slide_category_one2many.js',
             'website_slides/static/src/js/components/**/*.js',
             'website_slides/static/src/components/**/*.xml',
+            'website_slides/static/src/js/tours/slides_tour.js',
+            'website_slides/static/src/client_actions/website_preview/website_preview.js',
         ],
         'web.assets_frontend': [
             'website_slides/static/src/scss/website_slides.scss',
@@ -101,7 +103,6 @@ Featuring
             'website_slides/static/src/js/slides_course_quiz_finish.js',
             'website_slides/static/src/js/slides_course_tag_add.js',
             'website_slides/static/src/js/slides_course_unsubscribe.js',
-            'website_slides/static/src/js/tours/slides_tour.js',
             'website_slides/static/src/js/portal_chatter.js',
             'website_slides/static/src/xml/website_slides_sidebar.xml',
             'website_slides/static/src/xml/website_slides_upload.xml',

@@ -9,16 +9,17 @@
 # Kim Asplund <kim.asplund@gmail.com>, 2022
 # Simon S, 2022
 # Martin Trigaux, 2022
-# Anders Wallenquist <anders.wallenquist@vertel.se>, 2022
+# Anders Wallenquist <anders.wallenquist@vertel.se>, 2024
+# Lasse L, 2024
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:02+0000\n"
+"POT-Creation-Date: 2024-02-06 13:32+0000\n"
 "PO-Revision-Date: 2022-09-22 05:53+0000\n"
-"Last-Translator: Anders Wallenquist <anders.wallenquist@vertel.se>, 2022\n"
-"Language-Team: Swedish (https://www.transifex.com/odoo/teams/41243/sv/)\n"
+"Last-Translator: Lasse L, 2024\n"
+"Language-Team: Swedish (https://app.transifex.com/odoo/teams/41243/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -26,6 +27,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: mrp_subcontracting
+#. odoo-python
 #: code:addons/mrp_subcontracting/controllers/portal.py:0
 #, python-format
 msgid "All"
@@ -34,7 +36,7 @@ msgstr "Alla"
 #. module: mrp_subcontracting
 #: model:ir.model,name:mrp_subcontracting.model_report_mrp_report_bom_structure
 msgid "BOM Overview Report"
-msgstr ""
+msgstr "Översiktsrapport för Materiallista"
 
 #. module: mrp_subcontracting
 #: model:ir.model,name:mrp_subcontracting.model_mrp_bom
@@ -74,6 +76,9 @@ msgid ""
 "company. Note that standard subcontracting routes will be adapted so as to "
 "take these into account automatically."
 msgstr ""
+"Markera denna ruta för att skapa en ny särskild underleverantörsplats för "
+"detta företag. Observera att standardrutterna för underleverantörer kommer "
+"att anpassas så att de automatiskt tar hänsyn till dessa."
 
 #. module: mrp_subcontracting
 #: model:ir.model.fields,help:mrp_subcontracting.field_product_supplierinfo__is_subcontractor
@@ -89,7 +94,7 @@ msgstr "Bolag"
 #. module: mrp_subcontracting
 #: model_terms:ir.ui.view,arch_db:mrp_subcontracting.mrp_subcontracting_move_tree_view
 msgid "Consumed"
-msgstr ""
+msgstr "Förbrukad"
 
 #. module: mrp_subcontracting
 #: model:ir.model,name:mrp_subcontracting.model_res_partner
@@ -137,6 +142,7 @@ msgid "Display Action Record Components"
 msgstr ""
 
 #. module: mrp_subcontracting
+#. odoo-python
 #: code:addons/mrp_subcontracting/controllers/portal.py:0
 #: model_terms:ir.ui.view,arch_db:mrp_subcontracting.subcontracting_portal_production_form_view
 #, python-format
@@ -156,9 +162,10 @@ msgstr ""
 #. module: mrp_subcontracting
 #: model:ir.model.fields.selection,name:mrp_subcontracting.selection__stock_picking__display_action_record_components__hide
 msgid "Hide"
-msgstr ""
+msgstr "Dölj"
 
 #. module: mrp_subcontracting
+#. odoo-python
 #: code:addons/mrp_subcontracting/models/stock_location.py:0
 #, python-format
 msgid ""
@@ -184,7 +191,7 @@ msgstr ""
 #. module: mrp_subcontracting
 #: model:ir.model.fields,field_description:mrp_subcontracting.field_stock_location__is_subcontracting_location
 msgid "Is a Subcontracting Location?"
-msgstr ""
+msgstr "Är en underleverantörsplats?"
 
 #. module: mrp_subcontracting
 #: model:ir.model.fields,help:mrp_subcontracting.field_mrp_production__bom_product_ids
@@ -194,18 +201,27 @@ msgid ""
 msgstr ""
 
 #. module: mrp_subcontracting
+#. odoo-python
+#: code:addons/mrp_subcontracting/models/stock_picking.py:0
+#, python-format
+msgid "Locations to update"
+msgstr ""
+
+#. module: mrp_subcontracting
 #: model:ir.model.fields,field_description:mrp_subcontracting.field_res_partner__production_ids
 #: model:ir.model.fields,field_description:mrp_subcontracting.field_res_users__production_ids
 msgid "MRP Productions for which the Partner is the subcontractor"
 msgstr ""
 
 #. module: mrp_subcontracting
+#. odoo-python
 #: code:addons/mrp_subcontracting/models/stock_warehouse.py:0
 #, python-format
 msgid "Make To Order"
-msgstr ""
+msgstr "Tillverka efter beställning"
 
 #. module: mrp_subcontracting
+#. odoo-python
 #: code:addons/mrp_subcontracting/models/stock_move_line.py:0
 #, python-format
 msgid ""
@@ -216,7 +232,7 @@ msgstr ""
 #. module: mrp_subcontracting
 #: model:ir.model.fields.selection,name:mrp_subcontracting.selection__stock_picking__display_action_record_components__mandatory
 msgid "Mandatory"
-msgstr ""
+msgstr "Obligatoriskt"
 
 #. module: mrp_subcontracting
 #: model_terms:ir.ui.view,arch_db:mrp_subcontracting.subcontracting_portal_production_form_view
@@ -226,36 +242,40 @@ msgstr "Tillverkningsorder"
 #. module: mrp_subcontracting
 #: model_terms:ir.ui.view,arch_db:mrp_subcontracting.subcontracting_portal_production_form_view
 msgid "Manufacturing Reference"
-msgstr ""
+msgstr "Referens för tillverkning"
 
 #. module: mrp_subcontracting
 #: model:ir.model.fields,field_description:mrp_subcontracting.field_stock_picking__move_line_nosuggest_ids
 msgid "Move Line Nosuggest"
-msgstr ""
+msgstr "Flytta Rad Nosuggest"
 
 #. module: mrp_subcontracting
+#. odoo-python
 #: code:addons/mrp_subcontracting/controllers/portal.py:0
 #, python-format
 msgid "Name"
 msgstr "Namn"
 
 #. module: mrp_subcontracting
+#. odoo-python
 #: code:addons/mrp_subcontracting/controllers/portal.py:0
 #, python-format
 msgid "Newest"
 msgstr "Senaste"
 
 #. module: mrp_subcontracting
+#. odoo-python
 #: code:addons/mrp_subcontracting/models/stock_picking.py:0
 #, python-format
 msgid "Nothing to record"
 msgstr ""
 
 #. module: mrp_subcontracting
+#. odoo-python
 #: code:addons/mrp_subcontracting/models/stock_quant.py:0
 #, python-format
 msgid "Operation not supported"
-msgstr ""
+msgstr "Åtgärd stöds inte"
 
 #. module: mrp_subcontracting
 #: model_terms:ir.ui.view,arch_db:mrp_subcontracting.subcontracting_portal_production_form_view
@@ -265,7 +285,7 @@ msgstr "Operationer"
 #. module: mrp_subcontracting
 #: model:ir.model.fields,field_description:mrp_subcontracting.field_stock_picking__move_line_ids_without_package
 msgid "Operations without package"
-msgstr ""
+msgstr "Åtgärder utan paket"
 
 #. module: mrp_subcontracting
 #: model_terms:ir.ui.view,arch_db:mrp_subcontracting.portal_my_productions
@@ -273,6 +293,7 @@ msgid "Order"
 msgstr "Order"
 
 #. module: mrp_subcontracting
+#. odoo-python
 #: code:addons/mrp_subcontracting/models/stock_move.py:0
 #, python-format
 msgid ""
@@ -308,12 +329,14 @@ msgid "Quants"
 msgstr "Kvantiteter"
 
 #. module: mrp_subcontracting
+#. odoo-python
 #: code:addons/mrp_subcontracting/models/stock_move.py:0
 #, python-format
 msgid "Raw Materials for %s"
 msgstr ""
 
 #. module: mrp_subcontracting
+#. odoo-python
 #: code:addons/mrp_subcontracting/controllers/portal.py:0
 #, python-format
 msgid "Ready"
@@ -341,6 +364,7 @@ msgid "Reserved"
 msgstr "Reserverad"
 
 #. module: mrp_subcontracting
+#. odoo-python
 #: code:addons/mrp_subcontracting/models/stock_warehouse.py:0
 #: code:addons/mrp_subcontracting/models/stock_warehouse.py:0
 #: model:ir.model.fields,field_description:mrp_subcontracting.field_stock_warehouse__subcontracting_route_id
@@ -349,6 +373,7 @@ msgid "Resupply Subcontractor"
 msgstr ""
 
 #. module: mrp_subcontracting
+#. odoo-python
 #: code:addons/mrp_subcontracting/models/stock_warehouse.py:0
 #: code:addons/mrp_subcontracting/models/stock_warehouse.py:0
 #: model:stock.route,name:mrp_subcontracting.route_resupply_subcontractor_mto
@@ -364,7 +389,7 @@ msgstr ""
 #. module: mrp_subcontracting
 #: model:ir.model,name:mrp_subcontracting.model_stock_return_picking
 msgid "Return Picking"
-msgstr ""
+msgstr "Plockning av returer"
 
 #. module: mrp_subcontracting
 #: model_terms:ir.ui.view,arch_db:mrp_subcontracting.portal_my_productions
@@ -372,12 +397,14 @@ msgid "Scheduled Date"
 msgstr "Schemalagt datum"
 
 #. module: mrp_subcontracting
+#. odoo-python
 #: code:addons/mrp_subcontracting/models/stock_warehouse.py:0
 #, python-format
 msgid "Sequence Resupply Subcontractor"
 msgstr ""
 
 #. module: mrp_subcontracting
+#. odoo-python
 #: code:addons/mrp_subcontracting/models/stock_warehouse.py:0
 #, python-format
 msgid "Sequence subcontracting"
@@ -415,6 +442,7 @@ msgid "Stock Rule"
 msgstr "Lagerregel"
 
 #. module: mrp_subcontracting
+#. odoo-python
 #: code:addons/mrp_subcontracting/models/stock_move.py:0
 #, python-format
 msgid "Subcontract"
@@ -431,19 +459,22 @@ msgid "Subcontracted"
 msgstr ""
 
 #. module: mrp_subcontracting
+#. odoo-python
 #: code:addons/mrp_subcontracting/models/mrp_production.py:0
 #, python-format
 msgid "Subcontracted manufacturing orders cannot be merged."
 msgstr ""
 
 #. module: mrp_subcontracting
+#. odoo-python
 #: code:addons/mrp_subcontracting/models/stock_warehouse.py:0
 #: model:ir.model.fields.selection,name:mrp_subcontracting.selection__mrp_bom__type__subcontract
 #, python-format
 msgid "Subcontracting"
-msgstr ""
+msgstr "Underleverantörer"
 
 #. module: mrp_subcontracting
+#. odoo-python
 #: code:addons/mrp_subcontracting/models/res_company.py:0
 #: model:ir.model.fields,field_description:mrp_subcontracting.field_res_company__subcontracting_location_id
 #, python-format
@@ -481,13 +512,14 @@ msgid "Subcontracting Resupply Operation Type"
 msgstr ""
 
 #. module: mrp_subcontracting
-#. openerp-web
+#. odoo-javascript
 #: code:addons/mrp_subcontracting/static/src/components/bom_overview_special_line/mrp_bom_overview_special_line.xml:0
 #, python-format
 msgid "Subcontracting:"
 msgstr ""
 
 #. module: mrp_subcontracting
+#. odoo-python
 #: code:addons/mrp_subcontracting/report/mrp_report_bom_structure.py:0
 #, python-format
 msgid "Subcontracting: %s"
@@ -537,12 +569,23 @@ msgid "There are currently no productions for your account."
 msgstr ""
 
 #. module: mrp_subcontracting
+#. odoo-python
+#: code:addons/mrp_subcontracting/models/stock_picking.py:0
+#, python-format
+msgid ""
+"There shouldn't be multiple productions to record for the same subcontracted"
+" move."
+msgstr ""
+
+#. module: mrp_subcontracting
+#. odoo-python
 #: code:addons/mrp_subcontracting/models/mrp_production.py:0
 #, python-format
 msgid "This MO isn't related to a subcontracted move"
 msgstr ""
 
 #. module: mrp_subcontracting
+#. odoo-python
 #: code:addons/mrp_subcontracting/models/stock_move.py:0
 #, python-format
 msgid "To subcontract, use a planned transfer."
@@ -575,8 +618,11 @@ msgid ""
 "Wizard in case of consumption in warning/strict and more component has been "
 "used for a MO (related to the bom)"
 msgstr ""
+"Wizard vid konsumtion i varning/strikt och mer komponent har använts för ett"
+" MO (relaterat till bom)"
 
 #. module: mrp_subcontracting
+#. odoo-python
 #: code:addons/mrp_subcontracting/models/mrp_bom.py:0
 #, python-format
 msgid ""
@@ -585,46 +631,53 @@ msgid ""
 msgstr ""
 
 #. module: mrp_subcontracting
+#. odoo-python
 #: code:addons/mrp_subcontracting/models/stock_location.py:0
 #, python-format
 msgid "You cannot alter the company's subcontracting location"
 msgstr ""
 
 #. module: mrp_subcontracting
-#: code:addons/mrp_subcontracting/models/stock_location.py:0
-#, python-format
-msgid ""
-"You cannot change the subcontracting location as it is still linked to a "
-"subcontractor partner"
-msgstr ""
-
-#. module: mrp_subcontracting
+#. odoo-python
 #: code:addons/mrp_subcontracting/models/mrp_production.py:0
 #, python-format
 msgid "You cannot write on fields %s in mrp.production."
 msgstr ""
 
 #. module: mrp_subcontracting
+#. odoo-python
+#: code:addons/mrp_subcontracting/models/stock_picking.py:0
+#, python-format
+msgid "You might want to update the locations of this transfer's operations"
+msgstr ""
+"Du kanske vill uppdatera platserna för den här överföringens verksamheter"
+
+#. module: mrp_subcontracting
+#. odoo-python
 #: code:addons/mrp_subcontracting/models/mrp_production.py:0
 #, python-format
 msgid "You must enter a serial number for %s"
 msgstr ""
 
 #. module: mrp_subcontracting
+#. odoo-python
 #: code:addons/mrp_subcontracting/models/mrp_production.py:0
 #, python-format
 msgid "You must enter a serial number for each line of %s"
 msgstr ""
 
 #. module: mrp_subcontracting
+#. odoo-python
 #: code:addons/mrp_subcontracting/models/mrp_production.py:0
 #, python-format
 msgid ""
 "You must indicate a non-zero amount consumed for at least one of your "
 "components"
 msgstr ""
+"Du måste ange en förbrukad mängd som inte är noll för minst en av dina "
+"komponenter"
 
 #. module: mrp_subcontracting
 #: model_terms:ir.ui.view,arch_db:mrp_subcontracting.subcontracting_portal_production_form_view
 msgid "e.g. PO0032"
-msgstr ""
+msgstr "t.ex. PO0032"

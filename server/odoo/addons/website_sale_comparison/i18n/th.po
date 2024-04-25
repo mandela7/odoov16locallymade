@@ -3,20 +3,21 @@
 # 	* website_sale_comparison
 # 
 # Translators:
-# Amin Cheloh <nineamin@hotmail.com>, 2022
+# Amin Cheloh <amincheloh@gmail.com>, 2022
 # Odoo Thaidev <odoothaidev@gmail.com>, 2022
 # Khwunchai Jaengsawang <khwunchai.j@ku.th>, 2022
 # Martin Trigaux, 2022
 # Wichanon Jamwutthipreecha, 2022
+# Rasareeyar Lappiam, 2024
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:26+0000\n"
+"POT-Creation-Date: 2022-12-15 12:45+0000\n"
 "PO-Revision-Date: 2022-09-22 05:57+0000\n"
-"Last-Translator: Wichanon Jamwutthipreecha, 2022\n"
-"Language-Team: Thai (https://www.transifex.com/odoo/teams/41243/th/)\n"
+"Last-Translator: Rasareeyar Lappiam, 2024\n"
+"Language-Team: Thai (https://app.transifex.com/odoo/teams/41243/th/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -45,7 +46,7 @@ msgstr ""
 #. module: website_sale_comparison
 #: model_terms:ir.ui.view,arch_db:website_sale_comparison.product_compare
 msgid "<i class=\"fa fa-shopping-cart me-2\"/>Add to Cart"
-msgstr ""
+msgstr "<i class=\"fa fa-shopping-cart me-2\"/>หยิบลงตะกร้า"
 
 #. module: website_sale_comparison
 #: model_terms:ir.ui.view,arch_db:website_sale_comparison.product_product
@@ -53,9 +54,9 @@ msgid "<i class=\"fa fa-trash\" role=\"img\" aria-label=\"Remove\"/>"
 msgstr "<i class=\"fa fa-trash\" role=\"img\" aria-label=\"ลบออก\"/>"
 
 #. module: website_sale_comparison
-#: model_terms:ir.ui.view,arch_db:website_sale_comparison.product_attributes_body
+#: model_terms:ir.ui.view,arch_db:website_sale_comparison.product_add_to_compare
 msgid "<span class=\"fa fa-exchange me-2\"/>Compare"
-msgstr ""
+msgstr "<span class=\"fa fa-exchange me-2\"/>เปรียบเทียบ"
 
 #. module: website_sale_comparison
 #: model_terms:ir.ui.view,arch_db:website_sale_comparison.product_compare
@@ -81,7 +82,7 @@ msgstr "หมวดหมู่คุณลักษณะ"
 #. module: website_sale_comparison
 #: model_terms:ir.ui.view,arch_db:website_sale_comparison.snippet_options
 msgid "Bottom of Page"
-msgstr ""
+msgstr "ด้านล่างของหน้า"
 
 #. module: website_sale_comparison
 #: model:ir.model.fields,field_description:website_sale_comparison.field_product_attribute__category_id
@@ -94,18 +95,18 @@ msgid "Category Name"
 msgstr "ชื่อหมวดหมู่"
 
 #. module: website_sale_comparison
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_sale_comparison/static/src/xml/comparison.xml:0
 #: code:addons/website_sale_comparison/static/src/xml/comparison.xml:0
 #: model_terms:ir.ui.view,arch_db:website_sale_comparison.add_to_compare
-#: model_terms:ir.ui.view,arch_db:website_sale_comparison.product_attributes_body
+#: model_terms:ir.ui.view,arch_db:website_sale_comparison.product_add_to_compare
 #: model_terms:ir.ui.view,arch_db:website_sale_comparison.snippet_options
 #, python-format
 msgid "Compare"
 msgstr "เปรียบเทียบ"
 
 #. module: website_sale_comparison
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_sale_comparison/static/src/js/website_sale_comparison.js:0
 #: model_terms:ir.ui.view,arch_db:website_sale_comparison.product_compare
 #, python-format
@@ -116,6 +117,11 @@ msgstr "เปรียบเทียบสินค้า"
 #: model_terms:ir.ui.view,arch_db:website_sale_comparison.product_compare
 msgid "Contact Us"
 msgstr "ติดต่อเรา"
+
+#. module: website_sale_comparison
+#: model_terms:ir.actions.act_window,help:website_sale_comparison.product_attribute_category_action
+msgid "Create a new attribute category"
+msgstr "สร้างหมวดหมู่แอตทริบิวต์ใหม่"
 
 #. module: website_sale_comparison
 #: model:ir.model.fields,field_description:website_sale_comparison.field_product_attribute_category__create_uid
@@ -149,6 +155,15 @@ msgid "General Features"
 msgstr "ฟีเจอร์ทั่วไป"
 
 #. module: website_sale_comparison
+#: model_terms:ir.actions.act_window,help:website_sale_comparison.product_attribute_category_action
+msgid ""
+"Group attributes by category that will appear in the specification\n"
+"                part of a product page."
+msgstr ""
+"จัดกลุ่มแอตทริบิวต์ตามหมวดหมู่ที่จะแสดงในส่วน\n"
+"                ข้อกำหนดของหน้าผลิตภัณฑ์"
+
+#. module: website_sale_comparison
 #: model:ir.model.fields,field_description:website_sale_comparison.field_product_attribute_category__id
 msgid "ID"
 msgstr "ไอดี"
@@ -174,7 +189,7 @@ msgid "None"
 msgstr "ไม่มี"
 
 #. module: website_sale_comparison
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_sale_comparison/static/src/xml/comparison.xml:0
 #: code:addons/website_sale_comparison/static/src/xml/comparison.xml:0
 #, python-format
@@ -239,7 +254,7 @@ msgstr "ตัวเปรียบเทียบร้านค้า"
 #. module: website_sale_comparison
 #: model_terms:ir.ui.view,arch_db:website_sale_comparison.snippet_options
 msgid "Specification"
-msgstr ""
+msgstr "ข้อมูลจำเพาะ"
 
 #. module: website_sale_comparison
 #: model_terms:ir.ui.view,arch_db:website_sale_comparison.product_attributes_body
@@ -253,7 +268,7 @@ msgid "Uncategorized"
 msgstr "ไม่ถูกจัดหมวด"
 
 #. module: website_sale_comparison
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_sale_comparison/static/src/xml/comparison.xml:0
 #: code:addons/website_sale_comparison/static/src/xml/comparison.xml:0
 #, python-format
@@ -266,7 +281,7 @@ msgid "Weight"
 msgstr "น้ำหนัก"
 
 #. module: website_sale_comparison
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_sale_comparison/static/src/xml/comparison.xml:0
 #, python-format
 msgid "You can compare max 4 products."

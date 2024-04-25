@@ -7,7 +7,7 @@ from markupsafe import Markup
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools import float_compare, is_html_empty
+from odoo.tools import float_compare, is_html_empty, clean_context
 
 
 class StockMove(models.Model):
@@ -131,13 +131,15 @@ class Repair(models.Model):
     invoice_state = fields.Selection(string='Invoice State', related='invoice_id.state')
     priority = fields.Selection([('0', 'Normal'), ('1', 'Urgent')], default='0', string="Priority")
 
+    @api.depends('product_id')
     def _compute_allowed_picking_type_ids(self):
         '''
             computes the ids of return picking types
         '''
         out_picking_types = self.env['stock.picking.type'].search_read(domain=[('code', '=', 'outgoing')],
                                                                           fields=['return_picking_type_id'], load='')
-        self.allowed_picking_type_ids = [pick_type['return_picking_type_id'] for pick_type in out_picking_types]
+        self.allowed_picking_type_ids = [
+            pt['return_picking_type_id'] for pt in out_picking_types if pt['return_picking_type_id']]
 
     @api.depends('partner_id')
     def _compute_default_address_id(self):
@@ -194,7 +196,7 @@ class Repair(models.Model):
         picking_warehouse = self.picking_id.location_dest_id.warehouse_id
         if location_warehouse and picking_warehouse and location_warehouse != picking_warehouse:
             return {
-                'warning': {'title': "Warning", 'message': "Note that the warehouse of the return and repair locations don't match!"},
+                'warning': {'title': _("Warning"), 'message': _("Note that the warehouses of the return and repair locations don't match!")},
             }
 
     @api.depends('product_id')
@@ -249,6 +251,8 @@ class Repair(models.Model):
         for order in self:
             if order.invoice_id and order.invoice_id.posted_before:
                 raise UserError(_('You can not delete a repair order which is linked to an invoice which has been posted once.'))
+            if order.state == 'done':
+                raise UserError(_('You cannot delete a completed repair order.'))
             if order.state not in ('draft', 'cancel'):
                 raise UserError(_('You can not delete a repair order once it has been confirmed. You must first cancel it.'))
 
@@ -276,8 +280,18 @@ class Repair(models.Model):
         if self.product_id.type == 'consu':
             return self.action_repair_confirm()
         precision = self.env['decimal.precision'].precision_get('Product Unit of Measure')
-        available_qty_owner = self.env['stock.quant']._get_available_quantity(self.product_id, self.location_id, self.lot_id, owner_id=self.partner_id, strict=True)
-        available_qty_noown = self.env['stock.quant']._get_available_quantity(self.product_id, self.location_id, self.lot_id, strict=True)
+        available_qty_owner = sum(self.env['stock.quant'].search([
+            ('product_id', '=', self.product_id.id),
+            ('location_id', '=', self.location_id.id),
+            ('lot_id', '=', self.lot_id.id),
+            ('owner_id', '=', self.partner_id.id),
+        ]).mapped('quantity'))
+        available_qty_noown = sum(self.env['stock.quant'].search([
+            ('product_id', '=', self.product_id.id),
+            ('location_id', '=', self.location_id.id),
+            ('lot_id', '=', self.lot_id.id),
+            ('owner_id', '=', False),
+        ]).mapped('quantity'))
         repair_qty = self.product_uom._compute_quantity(self.product_qty, self.product_id.uom_id)
         for available_qty in [available_qty_owner, available_qty_noown]:
             if float_compare(available_qty, repair_qty, precision_digits=precision) >= 0:
@@ -319,6 +333,8 @@ class Repair(models.Model):
         return True
 
     def action_repair_cancel(self):
+        if any(repair.state == 'done' for repair in self):
+            raise UserError(_("You cannot cancel a completed repair order."))
         invoice_to_cancel = self.filtered(lambda repair: repair.invoice_id.state == 'draft').invoice_id
         if invoice_to_cancel:
             invoice_to_cancel.button_cancel()
@@ -557,6 +573,9 @@ class Repair(models.Model):
         self._check_company()
         self.operations._check_company()
         self.fees_lines._check_company()
+        # Clean the context to get rid of residual default_* keys that could cause issues
+        # during the creation of stock.move.
+        self = self.with_context(clean_context(self._context))
         res = {}
         precision = self.env['decimal.precision'].precision_get('Product Unit of Measure')
         Move = self.env['stock.move']

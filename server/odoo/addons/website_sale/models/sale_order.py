@@ -55,9 +55,9 @@ class SaleOrder(models.Model):
 
     @api.model
     def _get_note_url(self):
-        website = self.env['website'].get_current_website()
-        if website:
-            return website.get_base_url()
+        website_id = self._context.get('website_id')
+        if website_id:
+            return self.env['website'].browse(website_id).get_base_url()
         return super()._get_note_url()
 
     @api.depends('order_line')
@@ -85,6 +85,13 @@ class SaleOrder(models.Model):
             else:
                 order.is_abandoned_cart = False
 
+    @api.depends('partner_id')
+    def _compute_payment_term_id(self):
+        super()._compute_payment_term_id()
+        for order in self:
+            if order.website_id:
+                order.payment_term_id = order.website_id.with_company(order.company_id).sale_get_payment_term(order.partner_id)
+
     def _search_abandoned_cart(self, operator, value):
         website_ids = self.env['website'].search_read(fields=['id', 'cart_abandoned_delay', 'partner_id'])
         deadlines = [[
@@ -103,6 +110,24 @@ class SaleOrder(models.Model):
         if (operator not in expression.NEGATIVE_TERM_OPERATORS and value) or (operator in expression.NEGATIVE_TERM_OPERATORS and not value):
             return abandoned_domain
         return expression.distribute_not(['!'] + abandoned_domain)  # negative domain
+
+    def _cart_update_order_line(self, product_id, quantity, order_line, **kwargs):
+        self.ensure_one()
+
+        if order_line and quantity <= 0:
+            # Remove zero or negative lines
+            order_line.unlink()
+            order_line = self.env['sale.order.line']
+        elif order_line:
+            # Update existing line
+            update_values = self._prepare_order_line_update_values(order_line, quantity, **kwargs)
+            if update_values:
+                self._update_cart_line_values(order_line, update_values)
+        elif quantity > 0:
+            # Create new line
+            order_line_values = self._prepare_order_line_values(product_id, quantity, **kwargs)
+            order_line = self.env['sale.order.line'].sudo().create(order_line_values)
+        return order_line
 
     def _cart_update_pricelist(self, pricelist_id=None, update_pricelist=False):
         self.ensure_one()
@@ -129,11 +154,8 @@ class SaleOrder(models.Model):
             raise UserError(_('It is forbidden to modify a sales order which is not in draft status.'))
 
         product = self.env['product.product'].browse(product_id).exists()
-        if not product or not product._is_add_to_cart_allowed():
+        if add_qty and (not product or not product._is_add_to_cart_allowed()):
             raise UserError(_("The given product does not exist therefore it cannot be added to cart."))
-
-        if product.lst_price == 0 and product.website_id.prevent_zero_price_sale:
-            raise UserError(_("The given product does not have a price therefore it cannot be added to cart."))
 
         if line_id is not False:
             order_line = self._cart_find_product_line(product_id, line_id, **kwargs)[:1]
@@ -173,19 +195,17 @@ class SaleOrder(models.Model):
             # the requested quantity update.
             warning = ''
 
-        if order_line and quantity <= 0:
-            # Remove zero or negative lines
-            order_line.unlink()
-            order_line = self.env['sale.order.line']
-        elif order_line:
-            # Update existing line
-            update_values = self._prepare_order_line_update_values(order_line, quantity, **kwargs)
-            if update_values:
-                self._update_cart_line_values(order_line, update_values)
-        elif quantity >= 0:
-            # Create new line
-            order_line_values = self._prepare_order_line_values(product_id, quantity, **kwargs)
-            order_line = self.env['sale.order.line'].sudo().create(order_line_values)
+        order_line = self._cart_update_order_line(product_id, quantity, order_line, **kwargs)
+
+        if (
+            order_line
+            and order_line.price_unit == 0
+            and self.website_id.prevent_zero_price_sale
+            and product.detailed_type not in self.env['product.template']._get_product_types_allow_zero_price()
+        ):
+            raise UserError(_(
+                "The given product does not have a price therefore it cannot be added to cart.",
+            ))
 
         return {
             'line_id': order_line.id,
@@ -326,6 +346,10 @@ class SaleOrder(models.Model):
                         product not in products and
                         (not product.company_id or product.company_id == line.company_id) and
                         product._is_variant_possible(parent_combination=combination)
+                        and (
+                            not self.website_id.prevent_zero_price_sale
+                            or product._get_contextual_price()
+                        )
                 )
 
         return random.sample(all_accessory_products, len(all_accessory_products))
@@ -413,7 +437,7 @@ class SaleOrder(models.Model):
 
     def _is_reorder_allowed(self):
         self.ensure_one()
-        return self.state == 'sale' and any(line._is_reorder_allowed() for line in self.order_line)
+        return self.state == 'sale' and any(line._is_reorder_allowed() for line in self.order_line if not line.display_type)
 
     def _filter_can_send_abandoned_cart_mail(self):
         self.website_id.ensure_one()
@@ -463,3 +487,20 @@ class SaleOrder(models.Model):
             # URL should always be relative, safety check
             action['url'] = f'/@{action["url"]}'
         return action
+
+    def _get_website_sale_extra_values(self):
+        """ Hook to provide additional rendering values for the cart template.
+        :return: additional values to be passed to the cart template
+        :rtype: dict
+        """
+        self.ensure_one()
+        return {}
+
+    def _get_lang(self):
+        res = super()._get_lang()
+
+        if self.website_id and request and request.is_frontend:
+            # Use request lang as cart lang if request comes from frontend
+            return request.env.lang
+
+        return res

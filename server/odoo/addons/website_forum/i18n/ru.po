@@ -13,21 +13,23 @@
 # Evgeniia Kotova, 2022
 # Иван Дроздов <hiraetari@gmail.com>, 2022
 # Ivan Kropotkin <yelizariev@itpp.dev>, 2022
-# ILMIR <karamov@it-projects.info>, 2022
 # Collex100, 2022
 # Martin Trigaux, 2022
 # Ekaterina <nawsikaya@bk.ru>, 2022
 # Сергей Шебанин <sergey@shebanin.ru>, 2022
 # Alena Vlasova, 2022
+# ILMIR <karamov@it-projects.info>, 2022
+# alenafairy, 2023
+# Wil Odoo, 2024
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:24+0000\n"
+"POT-Creation-Date: 2022-12-15 12:45+0000\n"
 "PO-Revision-Date: 2022-09-22 05:56+0000\n"
-"Last-Translator: Alena Vlasova, 2022\n"
-"Language-Team: Russian (https://www.transifex.com/odoo/teams/41243/ru/)\n"
+"Last-Translator: Wil Odoo, 2024\n"
+"Language-Team: Russian (https://app.transifex.com/odoo/teams/41243/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -35,35 +37,35 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #, python-format
 msgid " Flag"
-msgstr ""
+msgstr " Флаг"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #, python-format
 msgid " Flagged"
-msgstr ""
+msgstr " Отмеченные флажками"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_forum__total_answers
 #: model_terms:ir.ui.view,arch_db:website_forum.view_forum_post_list
 msgid "# Answers"
-msgstr ""
+msgstr "# Ответы"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_forum__total_favorites
 msgid "# Favorites"
-msgstr ""
+msgstr "# Избранное"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_forum__total_posts
 msgid "# Posts"
-msgstr ""
+msgstr "# Posts"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_forum__total_views
@@ -72,134 +74,156 @@ msgid "# Views"
 msgstr "# Просмотров"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to accept or refuse an answer."
-msgstr ""
+msgstr "%d карма, необходимая для принятия или отказа от ответа."
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to answer a question."
-msgstr ""
+msgstr "%d карма, необходимая для ответа на вопрос."
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to close or reopen a post."
-msgstr ""
+msgstr "%d карма, необходимая для закрытия или повторного открытия сообщения."
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to comment."
-msgstr ""
+msgstr "%d для комментирования требуется карма."
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to convert a comment to an answer."
-msgstr ""
+msgstr "%d карма, необходимая для преобразования комментария в ответ."
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to convert an answer to a comment."
-msgstr ""
+msgstr "%d карма, необходимая для преобразования ответа в комментарий."
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to convert your comment to an answer."
-msgstr ""
+msgstr "%d карма, необходимая для преобразования вашего комментария в ответ."
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to create a new Tag."
-msgstr ""
+msgstr "%d карма, необходимая для создания нового тега."
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to create a new question."
-msgstr ""
+msgstr "%d карма, необходимая для создания нового вопроса."
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to delete or reactivate a post."
-msgstr ""
+msgstr "%d карма, необходимая для удаления или повторной активации сообщения."
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to downvote."
-msgstr ""
+msgstr "%d карма, необходимая для понижения голоса."
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to edit a post."
-msgstr ""
+msgstr "%d карма, необходимая для редактирования сообщения."
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to flag a post."
-msgstr ""
+msgstr "%d карма, необходимая для того, чтобы отметить сообщение."
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/controllers/main.py:0
 #: code:addons/website_forum/controllers/main.py:0
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to mark a post as offensive."
 msgstr ""
+"%d карма, необходимая для того, чтобы отметить сообщение как оскорбительное."
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to post an image or link."
-msgstr ""
+msgstr "%d карма, необходимая для размещения изображения или ссылки."
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to refuse a post."
-msgstr ""
+msgstr "%d карма, необходимая для отказа от поста."
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to retag."
-msgstr ""
+msgstr "%d карма, необходимая для ретагирования."
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to unlink a comment."
 msgstr ""
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to unlink a post."
-msgstr ""
+msgstr "%d карма, необходимая для снятия ссылки с поста."
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to upvote."
-msgstr ""
+msgstr "%d карма, необходимая для upvote."
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to validate a post."
-msgstr ""
+msgstr "%d карма, необходимая для проверки сообщения."
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
@@ -239,14 +263,14 @@ msgid "0 Answers"
 msgstr ""
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/xml/public_templates.xml:0
 #, python-format
 msgid "45% of questions shared"
 msgstr "45% of из вопросов поделились"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/xml/public_templates.xml:0
 #, python-format
 msgid ""
@@ -262,6 +286,8 @@ msgid ""
 "<b class=\"d-block\">You have a pending post</b>\n"
 "                        Please wait for a moderator to validate your previous post to be allowed replying questions."
 msgstr ""
+"<b class=\"d-block\">У вас есть ожидающее сообщение</b>\n"
+"                        Пожалуйста, подождите, пока модератор подтвердит ваше предыдущее сообщение, чтобы получить возможность отвечать на вопросы."
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.moderation_display_post_answer
@@ -282,9 +308,11 @@ msgstr ""
 #: model_terms:forum.forum,faq:website_forum.forum_help
 #: model_terms:ir.ui.view,arch_db:website_forum.default_faq
 msgid ""
-"<b>Answers should not add or expand questions</b>. Insteadeither edit the "
+"<b>Answers should not add or expand questions</b>. Instead, either edit the "
 "question or add a comment."
 msgstr ""
+"<b>Ответы не должны дополнять или расширять вопросы</b>. Вместо этого либо "
+"отредактируйте вопрос, либо добавьте комментарий."
 
 #. module: website_forum
 #: model_terms:forum.forum,faq:website_forum.forum_help
@@ -305,6 +333,10 @@ msgid ""
 "to dilute the essence of questions and answers. For brief discussions please"
 " use commenting facility."
 msgstr ""
+"<b>Ответы не должны вызывать споров</b> Это сообщество вопросов и ответов не"
+" является дискуссионной группой. Пожалуйста, не устраивайте дебаты в своих "
+"ответах, так как они размывают суть вопросов и ответов. Для коротких "
+"обсуждений используйте возможность комментирования."
 
 #. module: website_forum
 #: model_terms:forum.forum,faq:website_forum.forum_help
@@ -329,6 +361,10 @@ msgid ""
 "include links to other questions or answers providing relevant additional "
 "information."
 msgstr ""
+"<b>Ответы не должны просто указывать на другие вопросы</b>. Вместо этого "
+"добавьте комментарий <i>\"Возможный дубликат...\"</i>. Однако не помешает "
+"включить ссылки на другие вопросы или ответы, содержащие соответствующую "
+"дополнительную информацию."
 
 #. module: website_forum
 #: model_terms:forum.forum,faq:website_forum.forum_help
@@ -352,6 +388,9 @@ msgid ""
 "You can search questions by their title or tags. It’s also OK to answer your"
 " own question."
 msgstr ""
+"<b>Прежде чем задавать вопрос, убедитесь, что вы искали похожие вопросы.</b>"
+" Вы можете искать вопросы по их названию или тегам. Также можно ответить на "
+"свой вопрос."
 
 #. module: website_forum
 #: model_terms:forum.forum,faq:website_forum.forum_help
@@ -360,6 +399,8 @@ msgid ""
 "<b>Please avoid asking questions that are too subjective and "
 "argumentative</b> or not relevant to this community."
 msgstr ""
+"<b>Пожалуйста, избегайте задавать слишком субъективные и спорные вопросы</b>"
+" или вопросы, не имеющие отношения к данному сообществу."
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.post_answer
@@ -369,6 +410,10 @@ msgid ""
 "            - no need to answer the same question twice. Also, please <b>don't forget to vote</b>\n"
 "            - it really helps to select the best questions and answers!"
 msgstr ""
+"<b>Пожалуйста, постарайтесь дать содержательный ответ.</b> Если вы хотите прокомментировать вопрос или ответ, просто\n"
+"           <b>воспользуйтесь инструментом комментирования.</b> Пожалуйста, помните, что вы всегда можете <b>пересмотреть свои ответы</b>\n"
+"            - нет необходимости отвечать на один и тот же вопрос дважды. Также, пожалуйста, <b>не забывайте голосовать</b>\n"
+"            - это очень помогает выбрать лучшие вопросы и ответы!"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
@@ -405,12 +450,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website_forum.default_faq
 #: model_terms:ir.ui.view,arch_db:website_forum.faq_karma
 msgid "<b>Why can other people edit my questions/answers?</b>"
-msgstr ""
+msgstr "<b>Почему другие люди могут редактировать мои вопросы/ответы?</b>"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.new_question
 msgid "<b>You already have a pending post.</b><br/>"
-msgstr ""
+msgstr "<b>У вас уже есть отложенное сообщение.</b><br/>"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.moderation_display_post_answer
@@ -447,7 +492,7 @@ msgstr ""
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.post_description_full
 msgid "<i class=\"fa fa-check fa-fw me-1\"/>Accept"
-msgstr ""
+msgstr "<i class=\"fa fa-check fa-fw me-1\"/>Принять"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.moderation_queue
@@ -460,7 +505,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website_forum.edit_post
 #: model_terms:ir.ui.view,arch_db:website_forum.new_question
 msgid "<i class=\"fa fa-check\"/> How to configure TPS and TVQ's canadian taxes?"
-msgstr ""
+msgstr "<i class=\"fa fa-check\"/> Как настроить канадские налоги в TPS и TVQ?"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.user_sidebar
@@ -485,12 +530,12 @@ msgstr ""
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_post_view_kanban
 msgid "<i class=\"fa fa-comments-o me-1\" title=\"Forum\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-comments-o me-1\" title=\"Forum\"/>"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_post_view_kanban
 msgid "<i class=\"fa fa-eye me-1\" title=\"Views\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-eye me-1\" title=\"Views\"/>"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.user_sidebar
@@ -507,7 +552,7 @@ msgstr ""
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.moderation_queue
 msgid "<i class=\"fa fa-flag\"/> Country"
-msgstr ""
+msgstr "<i class=\"fa fa-flag\"/> Страна"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_post_view_kanban
@@ -520,6 +565,8 @@ msgid ""
 "<i class=\"fa fa-pencil\"/>\n"
 "                                Edit<span class=\"d-none d-lg-inline\"> your answer</span>"
 msgstr ""
+"<i class=\"fa fa-pencil\"/>\n"
+"                                Отредактируйте<span class=\"d-none d-lg-inline\"> свой ответ</span>"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.user_sidebar
@@ -529,7 +576,7 @@ msgstr ""
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.post_description_full
 msgid "<i class=\"fa fa-reply me-1\"/>Answer"
-msgstr ""
+msgstr "<i class=\"fa fa-reply me-1\"/>Ответить"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.post_description_full
@@ -559,6 +606,8 @@ msgid ""
 "<i class=\"fa fa-thumbs-down text-danger ms-3\" role=\"img\" aria-"
 "label=\"Negative votes\" title=\"Negative votes\"/>"
 msgstr ""
+"<i class=\"fa fa-thumbs-down text-danger ms-3\" role=\"img\" aria-"
+"label=\"Negative votes\" title=\"Negative votes\"/>"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.user_profile_content
@@ -566,11 +615,13 @@ msgid ""
 "<i class=\"fa fa-thumbs-up text-success\" role=\"img\" aria-label=\"Positive"
 " votes\" title=\"Positive votes\"/>"
 msgstr ""
+"<i class=\"fa fa-thumbs-up text-success\" role=\"img\" aria-label=\"Positive"
+" votes\" title=\"Positive votes\"/>"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.post_description_full
 msgid "<i class=\"fa fa-times fa-fw me-1\"/>Reject"
-msgstr ""
+msgstr "<i class=\"fa fa-times fa-fw me-1\"/>Отклонить"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.edit_post
@@ -579,16 +630,18 @@ msgid ""
 "<i class=\"fa fa-times\"/> Good morning to all! Please, can someone help "
 "solve my tax computation problem in Canada? Thanks!"
 msgstr ""
+"<i class=\"fa fa-times\"/> Доброе утро всем! Пожалуйста, может ли кто-нибудь"
+" помочь решить мою проблему с исчислением налогов в Канаде? Спасибо!"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.moderation_queue
 msgid "<i class=\"fa fa-user\"/> User"
-msgstr ""
+msgstr "<i class=\"fa fa-user\"/> Пользователь"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.user_profile_content
 msgid "<small class=\"fw-bold\">Votes</small>"
-msgstr ""
+msgstr "<small class=\"fw-bold\">Голоса</small>"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.moderation_display_post_answer
@@ -670,18 +723,18 @@ msgstr ""
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.view_forum_forum_form
 msgid "<span class=\"o_stat_text\">Favorites</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">Избранное</span>"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.view_forum_forum_form
 #: model_terms:ir.ui.view,arch_db:website_forum.view_forum_post_form
 msgid "<span class=\"o_stat_text\">Go to <br/>Website</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">Перейти на сайт <br/></span>"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.view_forum_forum_form
 msgid "<span class=\"o_stat_text\">Posts</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">Посты</span>"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.post_answers
@@ -738,7 +791,7 @@ msgid "Accepting an answer"
 msgstr "Принятие ответа"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #: code:addons/website_forum/static/src/js/website_forum.js:0
@@ -782,6 +835,7 @@ msgstr ""
 "содержание форума."
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/controllers/main.py:0
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 #, python-format
@@ -802,12 +856,12 @@ msgstr "Все теги"
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_nav_header
 #: model_terms:ir.ui.view,arch_db:website_forum.new_question
 msgid "All Topics"
-msgstr ""
+msgstr "Все темы"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_nav_header
 msgid "All forums"
-msgstr ""
+msgstr "Все форумы"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_forum__allow_bump
@@ -826,6 +880,7 @@ msgid "Answer"
 msgstr "Ответ"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #: model:mail.message.subtype,description:website_forum.mt_answer_edit
 #: model:mail.message.subtype,name:website_forum.mt_answer_edit
@@ -891,7 +946,7 @@ msgstr "Отвечено"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.view_forum_post_search
 msgid "Answered Posts"
-msgstr ""
+msgstr "Отвеченные сообщения"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.view_forum_post_form
@@ -973,6 +1028,11 @@ msgid "Asking a question"
 msgstr "Задать вопрос"
 
 #. module: website_forum
+#: model:ir.model,name:website_forum.model_ir_attachment
+msgid "Attachment"
+msgstr "Вложение"
+
+#. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_forum__message_attachment_count
 #: model:ir.model.fields,field_description:website_forum.field_forum_post__message_attachment_count
 #: model:ir.model.fields,field_description:website_forum.field_forum_tag__message_attachment_count
@@ -1014,9 +1074,10 @@ msgstr "Назад"
 #: model_terms:ir.ui.view,arch_db:website_forum.header
 #: model_terms:ir.ui.view,arch_db:website_forum.new_question
 msgid "Back to Question"
-msgstr ""
+msgstr "Назад к вопросу"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/controllers/main.py:0
 #: code:addons/website_forum/controllers/main.py:0
 #, python-format
@@ -1050,7 +1111,7 @@ msgid "Bumped on"
 msgstr "Столкнулся на"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/xml/public_templates.xml:0
 #, python-format
 msgid "By sharing you answer, you will get additional"
@@ -1122,6 +1183,11 @@ msgid "Can Upvote"
 msgstr "Можно поставить плюс"
 
 #. module: website_forum
+#: model:ir.model.fields,field_description:website_forum.field_forum_post__can_use_full_editor
+msgid "Can Use Full Editor"
+msgstr "Можно использовать полный редактор"
+
+#. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_post__can_view
 msgid "Can View"
 msgstr "Можно просматривать"
@@ -1155,28 +1221,28 @@ msgid "Chief Commentator"
 msgstr "Главный комментатор"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/tours/website_forum.js:0
 #, python-format
 msgid "Click here to accept this answer."
 msgstr "Кликните тут, чтобы принять этот ответ."
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/tours/website_forum.js:0
 #, python-format
 msgid "Click to answer."
-msgstr ""
+msgstr "Нажмите, чтобы ответить."
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/tours/website_forum.js:0
 #, python-format
 msgid "Click to post your answer."
 msgstr "Нажмите, чтобы опубликовать ответ."
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/tours/website_forum.js:0
 #, python-format
 msgid "Click to post your question."
@@ -1230,7 +1296,7 @@ msgstr "Закрыто"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.mark_as_offensive
 msgid "Closing"
-msgstr ""
+msgstr "Закрывается"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_post_reason__name
@@ -1262,8 +1328,6 @@ msgstr "Комментировать эту публикацию..."
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_p_2
 #: model:gamification.challenge,name:website_forum.challenge_commentator
-#: model:gamification.challenge.line,name:website_forum.line_chief_commentator
-#: model:gamification.challenge.line,name:website_forum.line_commentator
 #: model:gamification.goal.definition,name:website_forum.definition_commentator
 msgid "Commentator"
 msgstr "Комментатор"
@@ -1280,7 +1344,6 @@ msgid "Complete own biography"
 msgstr "Заполнить собственную биографию"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_configure_profile
 #: model:gamification.goal.definition,name:website_forum.definition_configure_profile
 #: model_terms:gamification.badge,description:website_forum.badge_p_1
 msgid "Completed own biography"
@@ -1289,7 +1352,7 @@ msgstr "Заполнил собственную биографию"
 #. module: website_forum
 #: model:forum.post.reason,name:website_forum.reason_7
 msgid "Contains offensive or malicious remarks"
-msgstr ""
+msgstr "Содержит оскорбительные или злобные высказывания"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_post__content
@@ -1344,11 +1407,11 @@ msgid "Create a new forum post"
 msgstr "Создать новый пост"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/tours/website_forum.js:0
 #, python-format
 msgid "Create a new post in this forum by clicking on the button."
-msgstr ""
+msgstr "Создайте новое сообщение в этом форуме, нажав на кнопку."
 
 #. module: website_forum
 #: model_terms:ir.actions.act_window,help:website_forum.forum_tag_action
@@ -1390,7 +1453,6 @@ msgstr "Достоверный вопрос"
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_5
 #: model:gamification.challenge,name:website_forum.challenge_critic
-#: model:gamification.challenge.line,name:website_forum.line_critic
 #: model:gamification.goal.definition,name:website_forum.definition_critic
 msgid "Critic"
 msgstr "Критик"
@@ -1403,12 +1465,12 @@ msgstr "Дата"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_searchbar_input_snippet_options
 msgid "Date (high to low)"
-msgstr ""
+msgstr "Дата (от максимума к минимуму)"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_searchbar_input_snippet_options
 msgid "Date (low to high)"
-msgstr ""
+msgstr "Дата (от минимума к максимуму)"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_forum__default_order
@@ -1418,7 +1480,7 @@ msgstr "По умолчанию"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.view_forum_forum_form
 msgid "Default Sort"
-msgstr ""
+msgstr "Сортировка по умолчанию"
 
 #. module: website_forum
 #: model:ir.model.fields,help:website_forum.field_gamification_challenge__challenge_category
@@ -1445,7 +1507,7 @@ msgstr "Удалить свои сообщения"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.post_description_full
 msgid "Deleted"
-msgstr ""
+msgstr "Удалено"
 
 #. module: website_forum
 #: model_terms:gamification.badge,description:website_forum.badge_23
@@ -1469,7 +1531,7 @@ msgstr "Описание"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.view_forum_forum_form
 msgid "Description visible on website"
-msgstr ""
+msgstr "Описание на сайте"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.edit_post
@@ -1483,7 +1545,6 @@ msgstr "Отменить"
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_6
 #: model:gamification.challenge,name:website_forum.challenge_disciplined
-#: model:gamification.challenge.line,name:website_forum.line_disciplined
 #: model:gamification.goal.definition,name:website_forum.definition_disciplined
 msgid "Disciplined"
 msgstr "Упорядочено"
@@ -1491,7 +1552,7 @@ msgstr "Упорядочено"
 #. module: website_forum
 #: model:ir.model.fields.selection,name:website_forum.selection__forum_forum__mode__discussions
 msgid "Discussions (multiple answers)"
-msgstr ""
+msgstr "Обсуждения (несколько ответов)"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_forum__display_name
@@ -1515,7 +1576,7 @@ msgstr "Против"
 #. module: website_forum
 #: model:forum.post.reason,name:website_forum.reason_1
 msgid "Duplicate post"
-msgstr ""
+msgstr "Дублирующий пост"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.post_answers
@@ -1526,7 +1587,7 @@ msgstr "Редактировать"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.header
 msgid "Edit Answer"
-msgstr ""
+msgstr "Изменить ответ"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_nav_header
@@ -1536,7 +1597,7 @@ msgstr ""
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.header
 msgid "Edit Question"
-msgstr ""
+msgstr "Редактировать вопрос"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_forum__karma_edit_all
@@ -1556,20 +1617,19 @@ msgstr "Редактировать ваше сообщение"
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_7
 #: model:gamification.challenge,name:website_forum.challenge_editor
-#: model:gamification.challenge.line,name:website_forum.line_editor
 #: model:gamification.goal.definition,name:website_forum.definition_editor
 msgid "Editor"
 msgstr "Редактор"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_forum__karma_editor
+#: model:ir.model.fields,help:website_forum.field_forum_post__can_use_full_editor
 msgid "Editor Features: image and links"
 msgstr "Функции редактора: изображения и ссылки"
 
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_a_5
 #: model:gamification.challenge,name:website_forum.challenge_enlightened
-#: model:gamification.challenge.line,name:website_forum.line_enlightened
 #: model:gamification.goal.definition,name:website_forum.definition_enlightened
 msgid "Enlightened"
 msgstr "Проинформировано"
@@ -1605,19 +1665,16 @@ msgid "Favourite"
 msgstr "Избранное"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_favorite_question_1
 #: model:gamification.goal.definition,name:website_forum.definition_favorite_question_1
 msgid "Favourite Question (1)"
 msgstr "Избранный вопрос (1)"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_stellar_question_25
 #: model:gamification.goal.definition,name:website_forum.definition_stellar_question_25
 msgid "Favourite Question (25)"
 msgstr "Избранный вопрос (25)"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_favorite_question_5
 #: model:gamification.goal.definition,name:website_forum.definition_favorite_question_5
 msgid "Favourite Question (5)"
 msgstr "Избранный вопрос (5)"
@@ -1635,7 +1692,7 @@ msgstr "закладки"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.moderation_queue
 msgid "Filter by:"
-msgstr ""
+msgstr "Фильтр:"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_forum__relevancy_post_vote
@@ -1711,12 +1768,19 @@ msgid ""
 "For example, if you ask an interesting question or give a helpful answer, "
 "your input will be upvoted. On the other hand if the answer is misleading - "
 "it will be downvoted. Each vote in favor will generate 10 points, each vote "
-"against will subtract 10 points. There is a limit of 200 points that can be "
+"against will subtract 2 points. There is a limit of 200 points that can be "
 "accumulated for a question or answer per day. The table given at the end "
 "explains reputation point requirements for each type of moderation task."
 msgstr ""
+"Например, если вы зададите интересный вопрос или дадите полезный ответ, ваш "
+"вклад будет проголосован. С другой стороны, если ответ вводит в заблуждение "
+"- он будет проголосован ниже. Каждый голос \"за\" приносит 10 баллов, каждый"
+" голос \"против\" отнимает 2 балла. В день за вопрос или ответ может быть "
+"накоплено не более 200 баллов. В таблице, приведенной в конце, указаны "
+"требования к баллам репутации для каждого типа модераторских заданий."
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/website.py:0
 #: code:addons/website_forum/models/website.py:0
 #: model:ir.actions.act_url,name:website_forum.action_open_forum
@@ -1736,7 +1800,7 @@ msgstr "Форум"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_forum_view_form_add
 msgid "Forum Mode"
-msgstr ""
+msgstr "Режим форума"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_forum__name
@@ -1747,7 +1811,7 @@ msgstr "Название форума"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.snippet_options
 msgid "Forum Page"
-msgstr ""
+msgstr "Страница форума"
 
 #. module: website_forum
 #: model:ir.model,name:website_forum.model_forum_post
@@ -1758,7 +1822,7 @@ msgstr "Пост форума"
 #. module: website_forum
 #: model:ir.actions.act_window,name:website_forum.action_forum_post
 msgid "Forum Post Pages"
-msgstr ""
+msgstr "Страницы сообщений форума"
 
 #. module: website_forum
 #: model:ir.ui.menu,name:website_forum.menu_forum_post_pages
@@ -1789,11 +1853,11 @@ msgid "Gamification Challenge"
 msgstr "Соревнование для геймификации"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/tours/website_forum.js:0
 #, python-format
 msgid "Give your post title."
-msgstr ""
+msgstr "Дайте название своему посту."
 
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_a_3
@@ -1802,7 +1866,6 @@ msgid "Good Answer"
 msgstr "Хороший ответ"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_good_answer
 #: model:gamification.goal.definition,name:website_forum.definition_good_answer
 msgid "Good Answer (6)"
 msgstr "Хороший ответ (6)"
@@ -1825,7 +1888,6 @@ msgid "Great Answer"
 msgstr "Прекрасный ответ"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_great_answer
 #: model:gamification.goal.definition,name:website_forum.definition_great_answer
 msgid "Great Answer (15)"
 msgstr "Прекрасный ответ (15)"
@@ -1859,7 +1921,6 @@ msgid "Guru"
 msgstr "Специалист"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_guru
 #: model:gamification.goal.definition,name:website_forum.definition_guru
 msgid "Guru (15)"
 msgstr "Специалист (15)"
@@ -1885,7 +1946,7 @@ msgstr "Помощь"
 #: model_terms:forum.forum,faq:website_forum.forum_help
 #: model_terms:ir.ui.view,arch_db:website_forum.default_faq
 msgid "Here a table with the privileges and the karma level"
-msgstr ""
+msgstr "Вот таблица с привилегиями и уровнем кармы"
 
 #. module: website_forum
 #: model_terms:forum.forum,welcome_message:website_forum.forum_help
@@ -1941,7 +2002,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website_forum.default_faq
 #: model_terms:ir.ui.view,arch_db:website_forum.faq_karma
 msgid "If this approach is not for you, please respect the community."
-msgstr ""
+msgstr "Если такой подход не для вас, пожалуйста, уважайте сообщество."
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.mark_as_offensive
@@ -1964,6 +2025,11 @@ msgid ""
 "motivation is “I would like others to explain ______ to me”, then you are "
 "probably OK."
 msgstr ""
+"Если вы подходите под один из этих примеров или если ваша мотивация задать "
+"вопрос - \"я хотел бы принять участие в обсуждении ______\", то вам следует "
+"задавать его не здесь, а в наших списках рассылки. Однако если ваша "
+"мотивация - \"я хотел бы, чтобы другие объяснили мне, что такое ______\", то"
+" вы, вероятно, не против."
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.mark_as_offensive
@@ -2004,10 +2070,10 @@ msgstr "Изображение 512"
 #. module: website_forum
 #: model:forum.post.reason,name:website_forum.reason_13
 msgid "Inappropriate and unacceptable statements"
-msgstr ""
+msgstr "Неуместные и неприемлемые высказывания"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/tours/website_forum.js:0
 #, python-format
 msgid "Insert tags related to your question."
@@ -2016,7 +2082,7 @@ msgstr "Вставьте теги, связанные с вашим вопрос
 #. module: website_forum
 #: model:forum.post.reason,name:website_forum.reason_11
 msgid "Insulting and offensive language"
-msgstr ""
+msgstr "Оскорбительные и нецензурные выражения"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_post__user_favourite
@@ -2041,12 +2107,14 @@ msgid "Is the author's biography visible from his post"
 msgstr "Авторская биография видна из его публикации"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "It is not allowed to modify someone else's vote."
-msgstr ""
+msgstr "Запрещено изменять чужие голоса."
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "It is not allowed to vote for its own post."
@@ -2058,11 +2126,11 @@ msgid "Karma"
 msgstr "Карма"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #, python-format
 msgid "Karma Error"
-msgstr ""
+msgstr "Ошибка кармы"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.view_forum_forum_form
@@ -2112,7 +2180,7 @@ msgstr "Последнее изменение"
 #: model:ir.model.fields,field_description:website_forum.field_forum_forum__last_post_id
 #: model_terms:ir.ui.view,arch_db:website_forum.snippet_options
 msgid "Last Post"
-msgstr ""
+msgstr "Последний пост"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_post_options
@@ -2170,12 +2238,12 @@ msgstr "Основное вложение"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.post_answers
 msgid "Mark as Best Answer"
-msgstr ""
+msgstr "Отметить как лучший ответ"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.show_flag_validator
 msgid "Mark as Offensive"
-msgstr ""
+msgstr "Отметить как оскорбительное"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.mark_as_offensive
@@ -2186,7 +2254,7 @@ msgstr "Пометить как оскорбительное"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.moderation_queue
 msgid "Mark as spam"
-msgstr ""
+msgstr "Отметить как спам"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_forum__menu_id
@@ -2225,7 +2293,7 @@ msgstr "модерация"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.user_sidebar
 msgid "Moderation tools"
-msgstr ""
+msgstr "Инструменты модерации"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.post_answers
@@ -2254,7 +2322,7 @@ msgid "Most voted"
 msgstr "Больше всего голосов"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/xml/public_templates.xml:0
 #, python-format
 msgid ""
@@ -2292,7 +2360,7 @@ msgstr "Мои голоса"
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_nav_header
 #: model_terms:ir.ui.view,arch_db:website_forum.user_sidebar
 msgid "My profile"
-msgstr ""
+msgstr "Мой профиль"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_tag__name
@@ -2343,7 +2411,6 @@ msgid "Nice Answer"
 msgstr "Замечательный ответ"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_nice_answer
 #: model:gamification.goal.definition,name:website_forum.definition_nice_answer
 msgid "Nice Answer (4)"
 msgstr "Замечательный ответ (4)"
@@ -2372,7 +2439,7 @@ msgstr ""
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_all
 msgid "No forum is available yet."
-msgstr ""
+msgstr "Форум пока не доступен."
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.moderation_queue
@@ -2397,12 +2464,12 @@ msgstr "Не следовать ссылкам"
 #. module: website_forum
 #: model:forum.post.reason,name:website_forum.reason_4
 msgid "Not a real post"
-msgstr ""
+msgstr "Не настоящий пост"
 
 #. module: website_forum
 #: model:forum.post.reason,name:website_forum.reason_6
 msgid "Not relevant or out dated"
-msgstr ""
+msgstr "Неактуально или устарело"
 
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_q_2
@@ -2438,7 +2505,7 @@ msgstr "Количество помеченных публикаций"
 #: model:ir.model.fields,help:website_forum.field_forum_forum__message_needaction_counter
 #: model:ir.model.fields,help:website_forum.field_forum_post__message_needaction_counter
 #: model:ir.model.fields,help:website_forum.field_forum_tag__message_needaction_counter
-msgid "Number of messages which requires an action"
+msgid "Number of messages requiring action"
 msgstr "Количество сообщений, требующих действия"
 
 #. module: website_forum
@@ -2456,7 +2523,7 @@ msgstr "Количество публикаций в ожидании прове
 #. module: website_forum
 #: model:forum.post.reason,name:website_forum.reason_2
 msgid "Off-topic or not relevant"
-msgstr ""
+msgstr "Не по теме или не имеет отношения к делу"
 
 #. module: website_forum
 #: model:ir.model.fields.selection,name:website_forum.selection__forum_post__state__offensive
@@ -2469,7 +2536,7 @@ msgid "Offensive"
 msgstr "Оскорбительно"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #: model_terms:ir.ui.view,arch_db:website_forum.header
 #, python-format
@@ -2477,7 +2544,7 @@ msgid "Offensive Post"
 msgstr "Оскорбительное сообщение"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/xml/public_templates.xml:0
 #, python-format
 msgid "On average,"
@@ -2496,12 +2563,12 @@ msgstr "Параметры"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.view_forum_forum_form
 msgid "Order and Visibility"
-msgstr ""
+msgstr "Порядок и наглядность"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 msgid "Order by"
-msgstr ""
+msgstr "Сортировать по"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_all_oe_structure_forum_all_top
@@ -2511,7 +2578,6 @@ msgstr "Наши форумы"
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_23
 #: model:gamification.challenge,name:website_forum.challenge_peer_pressure
-#: model:gamification.challenge.line,name:website_forum.line_peer_pressure
 #: model:gamification.goal.definition,name:website_forum.definition_peer_pressure
 msgid "Peer Pressure"
 msgstr "Давление общественности"
@@ -2532,6 +2598,8 @@ msgid ""
 "Please wait for a moderator to validate your previous post before "
 "continuing."
 msgstr ""
+"Пожалуйста, подождите, пока модератор подтвердит ваше предыдущее сообщение, "
+"прежде чем продолжить."
 
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_q_1
@@ -2540,19 +2608,16 @@ msgid "Popular Question"
 msgstr "Популярный вопрос"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_popular_question
 #: model:gamification.goal.definition,name:website_forum.definition_popular_question
 msgid "Popular Question (150)"
 msgstr "Популярный вопрос (150)"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_notable_question
 #: model:gamification.goal.definition,name:website_forum.definition_notable_question
 msgid "Popular Question (250)"
 msgstr "Популярный вопрос (250)"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_famous_question
 #: model:gamification.goal.definition,name:website_forum.definition_famous_question
 msgid "Popular Question (500)"
 msgstr "Популярный вопрос (500)"
@@ -2578,7 +2643,7 @@ msgstr "Опубликовать ответ"
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_post__child_ids
 msgid "Post Answers"
-msgstr ""
+msgstr "Ответы на сообщения"
 
 #. module: website_forum
 #: model:ir.actions.act_window,name:website_forum.forum_post_reasons_action
@@ -2598,7 +2663,7 @@ msgstr "Публиковать коментарий"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.snippet_options
 msgid "Post Count"
-msgstr ""
+msgstr "Число сообщений"
 
 #. module: website_forum
 #: model:ir.model,name:website_forum.model_forum_post_vote
@@ -2626,6 +2691,7 @@ msgid "Posted 100 comments"
 msgstr "Опубликовано 100 комментариев"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "Posting answer on a [Deleted] or [Closed] question is not possible."
@@ -2661,24 +2727,26 @@ msgid ""
 "Signed In: Forum is visible for signed in users\n"
 "Some users: Forum and their content are hidden for non members of selected group"
 msgstr ""
+"Публичный: Форум является публичным\n"
+"Войти: Форум виден только зарегистрированным пользователям\n"
+"Некоторые пользователи: Форум и его содержимое скрыты для пользователей, не входящих в выбранную группу"
 
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_25
 #: model:gamification.challenge,name:website_forum.challenge_pundit
-#: model:gamification.challenge.line,name:website_forum.line_pundit
 #: model:gamification.goal.definition,name:website_forum.definition_pundit
 msgid "Pundit"
 msgstr "Эксперт"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/tours/website_forum.js:0
 #, python-format
 msgid "Put your answer here."
 msgstr "Поместите свой ответ здесь."
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/tours/website_forum.js:0
 #, python-format
 msgid "Put your question here."
@@ -2692,6 +2760,7 @@ msgid "Question"
 msgstr "Вопрос"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #: model:mail.message.subtype,description:website_forum.mt_question_edit
 #: model:mail.message.subtype,name:website_forum.mt_question_edit
@@ -2730,6 +2799,7 @@ msgid "Question set as favorite by 5 users"
 msgstr "Вопрос установили как любимый 5 пользователей"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/controllers/main.py:0
 #, python-format
 msgid "Question should not be empty."
@@ -2763,7 +2833,7 @@ msgstr "Вопросы"
 #. module: website_forum
 #: model:ir.model.fields.selection,name:website_forum.selection__forum_forum__mode__questions
 msgid "Questions (1 answer)"
-msgstr ""
+msgstr "Вопросы (1 ответ)"
 
 #. module: website_forum
 #: model:ir.model.fields,help:website_forum.field_forum_forum__mode
@@ -2771,18 +2841,21 @@ msgid ""
 "Questions mode: only one answer allowed\n"
 " Discussions mode: multiple answers allowed"
 msgstr ""
+"Режим вопросов: разрешен только один ответ\n"
+" Режим обсуждения: разрешено несколько ответов"
 
 #. module: website_forum
 #: model:forum.post.reason,name:website_forum.reason_15
 msgid "Racist and hate speech"
-msgstr ""
+msgstr "Расизм и разжигание ненависти"
 
 #. module: website_forum
 #: model:ir.ui.menu,name:website_forum.menu_forum_rank_global
 msgid "Ranks"
-msgstr ""
+msgstr "Ранги"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
@@ -2790,7 +2863,7 @@ msgid "Re: %s"
 msgstr "Re: %s "
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #, python-format
 msgid "Read the guidelines to know how to gain karma."
@@ -2799,7 +2872,7 @@ msgstr ""
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.display_post_question_block
 msgid "Read: #{question.name}"
-msgstr ""
+msgstr "Читать: #{question.name}"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_post__closed_reason_id
@@ -2854,10 +2927,11 @@ msgid "Reopen"
 msgstr "Возобновить"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/controllers/main.py:0
 #, python-format
 msgid "Reply should not be empty."
-msgstr ""
+msgstr "Ответ не должен быть пустым."
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_post__self_reply
@@ -2902,12 +2976,11 @@ msgstr "Ошибка доставки SMS"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.edit_post
 msgid "Save Changes"
-msgstr ""
+msgstr "Сохранить изменения"
 
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_26
 #: model:gamification.challenge,name:website_forum.challenge_scholar
-#: model:gamification.challenge.line,name:website_forum.line_scholar
 #: model:gamification.goal.definition,name:website_forum.definition_scholar
 msgid "Scholar"
 msgstr "Ученый"
@@ -2955,7 +3028,6 @@ msgstr "выбрать все"
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_a_8
 #: model:gamification.challenge,name:website_forum.challenge_self_learner
-#: model:gamification.challenge.line,name:website_forum.line_self_learner
 #: model:gamification.goal.definition,name:website_forum.definition_self_learner
 msgid "Self-Learner"
 msgstr "Самообучение"
@@ -2965,7 +3037,7 @@ msgstr "Самообучение"
 #: model:ir.model.fields,field_description:website_forum.field_forum_post__seo_name
 #: model:ir.model.fields,field_description:website_forum.field_forum_tag__seo_name
 msgid "Seo name"
-msgstr ""
+msgstr "Seo имя"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_forum__sequence
@@ -2973,7 +3045,7 @@ msgid "Sequence"
 msgstr "Нумерация"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/xml/public_templates.xml:0
 #, python-format
 msgid ""
@@ -3001,7 +3073,7 @@ msgstr ""
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 msgid "Showing results for"
-msgstr ""
+msgstr "Отображение результатов для"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.post_description_full
@@ -3022,31 +3094,31 @@ msgstr "Решено"
 #. module: website_forum
 #: model:ir.model.fields.selection,name:website_forum.selection__forum_forum__privacy__private
 msgid "Some users"
-msgstr ""
+msgstr "Некоторые пользователи"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #, python-format
 msgid "Sorry you must be logged in to perform this action"
 msgstr "Извините, вы должны войти для выполнения этого действия"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #, python-format
 msgid "Sorry you must be logged to flag a post"
 msgstr "Извините, вы должны войти, чтобы пометить сообщение"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #, python-format
 msgid "Sorry you must be logged to vote"
 msgstr "Извините, вы должны войти, чтобы голосовать"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #, python-format
 msgid "Sorry, anonymous users cannot choose correct answer."
@@ -3064,7 +3136,7 @@ msgid "Sorry, we could not find any <b>%s</b> result <b>%s</b> %s%s%s."
 msgstr ""
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #, python-format
 msgid "Sorry, you cannot vote for your own posts"
@@ -3073,12 +3145,12 @@ msgstr "К сожалению, вы не можете голосовать за 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.moderation_queue
 msgid "Spam all post"
-msgstr ""
+msgstr "Спам во всех сообщениях"
 
 #. module: website_forum
 #: model:forum.post.reason,name:website_forum.reason_8
 msgid "Spam or advertising"
-msgstr ""
+msgstr "Спам или реклама"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_post__state
@@ -3100,7 +3172,6 @@ msgstr "Студент"
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_31
 #: model:gamification.challenge,name:website_forum.challenge_supporter
-#: model:gamification.challenge.line,name:website_forum.line_supporter
 #: model:gamification.goal.definition,name:website_forum.definition_supporter
 msgid "Supporter"
 msgstr "Помощник"
@@ -3135,7 +3206,6 @@ msgstr ""
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_32
 #: model:gamification.challenge,name:website_forum.challenge_taxonomist
-#: model:gamification.challenge.line,name:website_forum.line_taxonomist
 #: model:gamification.goal.definition,name:website_forum.definition_taxonomist
 msgid "Taxonomist"
 msgstr "Таксономист"
@@ -3143,7 +3213,6 @@ msgstr "Таксономист"
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_a_1
 #: model:gamification.challenge,name:website_forum.challenge_teacher
-#: model:gamification.challenge.line,name:website_forum.line_teacher
 #: model:gamification.goal.definition,name:website_forum.definition_teacher
 msgid "Teacher"
 msgstr "Учитель"
@@ -3166,7 +3235,7 @@ msgstr ""
 "это поле обходной путь."
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/xml/public_templates.xml:0
 #, python-format
 msgid "Thanks for posting!"
@@ -3180,11 +3249,13 @@ msgid ""
 "The goal of this site is create a relevant knowledge base that would answer "
 "questions related to Odoo."
 msgstr ""
+"Цель этого сайта - создать актуальную базу знаний, которая будет отвечать на"
+" вопросы, связанные с Odoo."
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.post_description_full
 msgid "The question has been closed"
-msgstr ""
+msgstr "Вопрос закрыт"
 
 #. module: website_forum
 #: model_terms:forum.forum,faq:website_forum.forum_help
@@ -3196,6 +3267,11 @@ msgid ""
 " base content. Such privileges are granted based on user karma level: you "
 "will be able to do the same once your karma gets high enough."
 msgstr ""
+"Поэтому вопросы и ответы могут редактироваться опытными пользователями этого"
+" сайта как вики-страницы, чтобы улучшить общее качество содержимого базы "
+"знаний. Такие привилегии предоставляются в зависимости от уровня кармы "
+"пользователя: вы сможете делать то же самое, как только ваша карма станет "
+"достаточно высокой."
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_all_oe_structure_forum_all_top
@@ -3211,6 +3287,8 @@ msgid ""
 "This community is for professional and enthusiast users, partners and "
 "programmers. You can ask questions about:"
 msgstr ""
+"Это сообщество предназначено для профессиональных пользователей и "
+"энтузиастов, партнеров и программистов. Вы можете задать вопросы о:"
 
 #. module: website_forum
 #: model_terms:forum.forum,welcome_message:website_forum.forum_help
@@ -3251,14 +3329,14 @@ msgid "This forum has been archived."
 msgstr "Этот форум сохраняется в памяти."
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #, python-format
 msgid "This post can not be flagged"
 msgstr "Этот пост не может быть помечен"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #, python-format
 msgid "This post is already flagged"
@@ -3274,7 +3352,7 @@ msgstr ""
 #. module: website_forum
 #: model:forum.post.reason,name:website_forum.reason_14
 msgid "Threatening language"
-msgstr ""
+msgstr "Угрожающие высказывания"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_post__name
@@ -3290,6 +3368,7 @@ msgid "Title must not be empty"
 msgstr "Заголовок поста не может быть пустым"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/controllers/main.py:0
 #, python-format
 msgid "Title should not be empty."
@@ -3312,6 +3391,8 @@ msgid ""
 "To prevent your question from being flagged and possibly removed, avoid "
 "asking subjective questions where …"
 msgstr ""
+"Чтобы ваш вопрос не был отмечен и, возможно, удален, избегайте задавать "
+"субъективные вопросы, в которых .."
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.post_description_full
@@ -3321,17 +3402,17 @@ msgstr "Переключить статус закладки"
 #. module: website_forum
 #: model:forum.post.reason,name:website_forum.reason_9
 msgid "Too localized"
-msgstr ""
+msgstr "Слишком локализовано"
 
 #. module: website_forum
 #: model:forum.post.reason,name:website_forum.reason_3
 msgid "Too subjective and argumentative"
-msgstr ""
+msgstr "Слишком субъективно и спорно"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.tag
 msgid "Toolbar with button groups"
-msgstr ""
+msgstr "Панель инструментов с группами кнопок"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_nav_header
@@ -3341,18 +3422,18 @@ msgstr ""
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.view_forum_post_list
 msgid "Total Answers"
-msgstr ""
+msgstr "Всего Ответов"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.view_forum_forum_list
 msgid "Total Posts"
-msgstr ""
+msgstr "Всего записей"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.view_forum_forum_list
 #: model_terms:ir.ui.view,arch_db:website_forum.view_forum_post_list
 msgid "Total Views"
-msgstr ""
+msgstr "Всего просмотров"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_post__vote_count
@@ -3377,7 +3458,7 @@ msgstr "Не отвечено"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.question_dropdown
 msgid "Undelete"
-msgstr ""
+msgstr "Восстановить"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_forum__karma_comment_unlink_all
@@ -3392,12 +3473,12 @@ msgstr "Разорвать связь своих комментариев"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.post_answers
 msgid "Unmark as Best Answer"
-msgstr ""
+msgstr "Отметить как лучший ответ"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 msgid "Unsolved"
-msgstr ""
+msgstr "Нерешено"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_post__write_uid
@@ -3407,7 +3488,7 @@ msgstr "Обновлено"
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_post__write_date
 msgid "Updated on"
-msgstr ""
+msgstr "Обновлено"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_forum__karma_upvote
@@ -3415,25 +3496,21 @@ msgid "Upvote"
 msgstr "За"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_student
 #: model:gamification.goal.definition,name:website_forum.definition_student
 msgid "Upvoted question (1)"
 msgstr "Вопрос с плюсами (1)"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_great_question
 #: model:gamification.goal.definition,name:website_forum.definition_great_question
 msgid "Upvoted question (15)"
 msgstr "Вопрос с плюсами (15)"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_nice_question
 #: model:gamification.goal.definition,name:website_forum.definition_nice_question
 msgid "Upvoted question (4)"
 msgstr "Вопрос с плюсами (4)"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_good_question
 #: model:gamification.goal.definition,name:website_forum.definition_good_question
 msgid "Upvoted question (6)"
 msgstr "Вопрос с плюсами (6)"
@@ -3441,7 +3518,7 @@ msgstr "Вопрос с плюсами (6)"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.edit_post
 msgid "Use a clear, explicit and concise title"
-msgstr ""
+msgstr "Используйте четкое, ясное и лаконичное название"
 
 #. module: website_forum
 #: model:ir.model,name:website_forum.model_res_users
@@ -3452,7 +3529,7 @@ msgstr "Пользователь"
 #. module: website_forum
 #: model:ir.actions.act_window,name:website_forum.action_forum_favorites
 msgid "Users favorite posts"
-msgstr ""
+msgstr "Любимые посты пользователей"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.moderation_queue
@@ -3480,7 +3557,7 @@ msgstr "Представления"
 #. module: website_forum
 #: model:forum.post.reason,name:website_forum.reason_12
 msgid "Violent language"
-msgstr ""
+msgstr "Язык насилия"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_post_vote__vote
@@ -3591,20 +3668,27 @@ msgid ""
 "rough measure of the community trust to him/her. Various moderation tasks "
 "are gradually assigned to the users based on those points."
 msgstr ""
+"Если вопрос или ответ на него проголосовали, пользователь, опубликовавший "
+"их, получает некоторое количество баллов, которые называются \"баллами "
+"кармы\". Эти баллы служат приблизительной мерой доверия сообщества к нему. "
+"На основе этих баллов пользователям постепенно назначаются различные "
+"модераторские задания."
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 msgid "You already have a pending post"
-msgstr ""
+msgstr "У вас уже есть отложенное сообщение"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/xml/public_templates.xml:0
 #, python-format
 msgid "You can share your question once it has been validated"
 msgstr ""
+"Вы можете поделиться своим вопросом после того, как он будет подтвержден"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "You cannot create recursive forum posts."
@@ -3623,12 +3707,12 @@ msgstr ""
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.header
 msgid "You may now participate in our forums."
-msgstr ""
+msgstr "Теперь вы можете участвовать в наших форумах."
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.edit_post
 msgid "You need to have sufficient karma to edit tags"
-msgstr ""
+msgstr "У вас должно быть достаточно кармы, чтобы редактировать теги"
 
 #. module: website_forum
 #: model_terms:forum.forum,faq:website_forum.forum_help
@@ -3638,6 +3722,10 @@ msgid ""
 " that you face. Chatty, open-ended questions diminish the usefulness of this"
 " site and push other questions off the front page."
 msgstr ""
+"Вы должны задавать только практические вопросы, на которые можно ответить, "
+"основываясь на реальных проблемах, с которыми вы сталкиваетесь. Болтливые, "
+"открытые вопросы снижают полезность этого сайта и вытесняют другие вопросы с"
+" первой страницы."
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
@@ -3658,7 +3746,7 @@ msgstr "Ваш ответ"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.display_post_question_block
 msgid "Your favourite"
-msgstr ""
+msgstr "Ваш любимый"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.display_post_question_block
@@ -3688,7 +3776,7 @@ msgstr ""
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.header
 msgid "and join this Forum"
-msgstr ""
+msgstr "и присоединяйтесь к этому форуму"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.header
@@ -3728,17 +3816,17 @@ msgstr "против"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.view_forum_forum_form
 msgid "e.g. Help"
-msgstr ""
+msgstr "например, помощь"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_forum_view_form_add
 msgid "e.g. Technical Assistance"
-msgstr ""
+msgstr "например, техническая помощь"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.view_forum_post_form
 msgid "e.g. When should I plant my tomatoes?"
-msgstr ""
+msgstr "например, \"Когда сажать помидоры?"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.faq_karma
@@ -3781,7 +3869,7 @@ msgid "has been posted. Click here to access the question :"
 msgstr "был опубликован. Нажмите здесь, чтобы получить доступ к вопросу:"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/xml/public_templates.xml:0
 #, python-format
 msgid "here"
@@ -3807,7 +3895,7 @@ msgid "how to install Odoo on a specific infrastructure,"
 msgstr "как установить Odoo на конкретной инфраструктуре,"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/xml/public_templates.xml:0
 #, python-format
 msgid ""
@@ -3820,7 +3908,7 @@ msgstr ""
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 msgid "in your favourites"
-msgstr ""
+msgstr "в избранное"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
@@ -3830,7 +3918,7 @@ msgstr ""
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 msgid "in your posts"
-msgstr ""
+msgstr "в ваших постах"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.faq_karma
@@ -3840,7 +3928,7 @@ msgstr "вставьте текст ссылки, загрузите файлы"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 msgid "instead."
-msgstr ""
+msgstr "вместо этого."
 
 #. module: website_forum
 #: model_terms:forum.forum,faq:website_forum.forum_help
@@ -3849,7 +3937,7 @@ msgid "it is a rant disguised as a question: “______ sucks, am I right?”"
 msgstr "это громкие слова, замаскированные под вопрос: \"______ отстой, я прав?\""
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/xml/public_templates.xml:0
 #, python-format
 msgid "karma points"
@@ -3858,7 +3946,7 @@ msgstr "баллы кармы"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 msgid "matching \""
-msgstr ""
+msgstr "соответствие \""
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
@@ -3883,7 +3971,7 @@ msgid "on"
 msgstr "на"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/xml/public_templates.xml:0
 #, python-format
 msgid ""
@@ -3912,7 +4000,7 @@ msgstr "конкретные вопросы о Odoo сервисных пред�
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 msgid "tag"
-msgstr ""
+msgstr "тег"
 
 #. module: website_forum
 #: model_terms:forum.forum,faq:website_forum.forum_help
@@ -3952,7 +4040,7 @@ msgstr "проголосовать, добавить комментарий"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 msgid "using the"
-msgstr ""
+msgstr "используя"
 
 #. module: website_forum
 #: model_terms:forum.forum,faq:website_forum.forum_help
@@ -3976,7 +4064,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website_forum.author_box
 #: model_terms:ir.ui.view,arch_db:website_forum.user_sidebar
 msgid "xp"
-msgstr ""
+msgstr "xp"
 
 #. module: website_forum
 #: model_terms:forum.forum,faq:website_forum.forum_help

@@ -3,7 +3,7 @@
 
 {
     'name': 'Time Off',
-    'version': '1.5',
+    'version': '1.6',
     'category': 'Human Resources/Time Off',
     'sequence': 85,
     'summary': 'Allocate PTOs and follow leaves requests',
@@ -97,6 +97,9 @@ A synchronization with an internal agenda (Meetings of the CRM module) is also p
         ],
         'web.qunit_suite_tests': [
             'hr_holidays/static/tests/qunit_suite_tests/**/*.js',
+        ],
+        'web.assets_tests': [
+            '/hr_holidays/static/tests/tours/**/**.js'
         ],
     },
     'license': 'LGPL-3',

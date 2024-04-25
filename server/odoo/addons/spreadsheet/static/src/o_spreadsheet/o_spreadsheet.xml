@@ -27,7 +27,7 @@
       <div class="o-sheet-item o-list-sheets" t-on-click="listSheets">
         <t t-call="o-spreadsheet-Icon.LIST"/>
       </div>
-      <div class="o-all-sheets">
+      <div class="o-all-sheets flex-shrink-0 me-3">
         <t t-foreach="getVisibleSheets()" t-as="sheet" t-key="sheet.id">
           <div
             class="o-sheet-item o-sheet"
@@ -41,7 +41,7 @@
               t-esc="sheet.name"
               t-on-dblclick="(ev) => this.onDblClick(sheet.id, ev)"
             />
-            <span class="o-sheet-icon" t-on-click.stop="(ev) => this.onIconClick(sheet.id, ev)">
+            <span class="o-sheet-icon" t-on-click="(ev) => this.onIconClick(sheet.id, ev)">
               <t t-call="o-spreadsheet-Icon.TRIANGLE_DOWN"/>
             </span>
           </div>
@@ -51,7 +51,7 @@
       <t t-set="selectedStatistic" t-value="getSelectedStatistic()"/>
       <div
         t-if="selectedStatistic !== undefined"
-        class="o-selection-statistic"
+        class="o-selection-statistic text-truncate"
         t-on-click="listSelectionStatistics">
         <t t-esc="selectedStatistic"/>
         <span>
@@ -64,6 +64,7 @@
         position="menuState.position"
         menuItems="menuState.menuItems"
         onClose="() => this.menuState.isOpen=false"
+        menuId="menuState.menuId"
       />
     </div>
   </t>
@@ -75,7 +76,10 @@
   </t>
 
   <t t-name="o-spreadsheet-ColorPicker" owl="1">
-    <div class="o-color-picker" t-att-class="props.dropdownDirection || 'right'">
+    <div
+      class="o-color-picker"
+      t-att-class="props.dropdownDirection || 'right'"
+      t-att-style="colorPickerStyle">
       <div class="o-color-picker-section-name">Standard</div>
       <div class="colors-grid">
         <div
@@ -87,10 +91,10 @@
           t-on-click="() => this.onColorClick(color)"
           t-attf-style="background-color:{{color}};">
           <div
-            t-if="props.currentColor === color"
+            t-if="isSameColor(props.currentColor, color)"
             align="center"
             t-attf-style="color:{{getCheckMarkColor()}}">
-            &#10004;
+            ✓
           </div>
         </div>
       </div>
@@ -102,7 +106,9 @@
         <div
           class="o-color-picker-toggler o-color-picker-line-item"
           t-on-click.stop="toggleColorPicker">
-          <div align="center">+</div>
+          <div class="o-color-picker-toggler-sign">
+            <t t-call="o-spreadsheet-Icon.PLUS"/>
+          </div>
         </div>
         <div
           t-foreach="env.model.getters.getCustomColors()"
@@ -113,10 +119,10 @@
           t-attf-style="background-color:{{color}};"
           t-on-click="() => this.onColorClick(color)">
           <div
-            t-if="props.currentColor === color"
+            t-if="isSameColor(props.currentColor, color)"
             align="center"
             t-attf-style="color:{{getCheckMarkColor()}}">
-            &#10004;
+            ✓
           </div>
         </div>
       </div>
@@ -181,8 +187,12 @@
         t-on-mousedown="onMousedown"
         t-on-input="onInput"
         t-on-keyup="onKeyup"
-        t-on-click.stop="onClick"
+        t-on-click="onClick"
         t-on-blur="onBlur"
+        t-on-paste="onPaste"
+        t-on-compositionstart="onCompositionStart"
+        t-on-compositionend="onCompositionEnd"
+        t-on-contextmenu="onContextMenu"
       />
 
       <div
@@ -270,19 +280,16 @@
 
   <t t-name="o-spreadsheet-GridComposer" owl="1">
     <div class="o-grid-composer" t-att-style="containerStyle" t-ref="gridComposer">
-      <Composer
-        focus="props.focus"
-        inputStyle="composerStyle"
-        rect="composerState.rect"
-        delimitation="composerState.delimitation"
-        onComposerUnmounted="props.onComposerUnmounted"
-        onComposerContentFocused="props.onComposerContentFocused"
-      />
+      <Composer t-props="composerProps"/>
     </div>
   </t>
 
   <t t-name="o-spreadsheet-SpreadsheetDashboard" owl="1">
-    <div class="o-grid o-two-columns" tabindex="-1" t-on-wheel="onMouseWheel" t-on-copy="copy">
+    <div
+      class="o-grid o-two-columns"
+      tabindex="-1"
+      t-on-wheel="onMouseWheel"
+      t-on-click="onClosePopover">
       <div class="mx-auto h-100 position-relative" t-ref="grid" t-att-style="gridContainer">
         <GridOverlay
           onCellHovered.bind="onCellHovered"
@@ -300,14 +307,14 @@
         <div
           t-foreach="getClickableCells()"
           t-as="clickableCell"
-          t-key="clickableCell.cell.id"
+          t-key="clickableCell_index"
           class="o-dashboard-clickable-cell"
           t-on-click="() => this.selectClickableCell(clickableCell)"
           t-on-contextmenu.prevent=""
           t-att-style="getCellClickableStyle(clickableCell.coordinates)"
         />
+        <FilterIconsOverlay/>
       </div>
-      <FilterIconsOverlay/>
       <VerticalScrollBar/>
       <HorizontalScrollBar/>
       <div class="o-scrollbar corner"/>
@@ -321,11 +328,11 @@
   </t>
 
   <t t-name="o-spreadsheet-ChartJsComponent" owl="1">
-    <canvas class="o-figure-canvas" t-att-style="canvasStyle" t-ref="graphContainer"/>
+    <canvas class="o-figure-canvas w-100 h-100" t-att-style="canvasStyle" t-ref="graphContainer"/>
   </t>
 
   <t t-name="o-spreadsheet-ScorecardChart" owl="1">
-    <div class="o-scorecard" t-att-style="chartStyle">
+    <div class="o-scorecard w-100 h-100" t-att-style="chartStyle" t-ref="chart">
       <t t-set="textStyles" t-value="getTextStyles()"/>
       <div t-if="title" class="o-title-text" t-esc="title" t-att-style="textStyles.titleStyle"/>
       <div class="o-scorecard-content" t-att-style="chartContentStyle">
@@ -357,66 +364,63 @@
   </t>
 
   <t t-name="o-spreadsheet-FigureComponent" owl="1">
-    <div class="o-figure-wrapper" t-att-style="getContainerStyle()">
-      <div class="o-figure-overflow-wrapper">
-        <div
-          class="o-figure"
-          t-on-mousedown.stop="(ev) => this.onMouseDown(ev)"
-          t-att-style="getFigureStyle()"
-          t-att-class="{active: isSelected, 'o-dragging': dnd.isActive}"
-          t-ref="figure"
-          tabindex="0"
-          t-on-keydown.stop="(ev) => this.onKeyDown(ev)"
-          t-on-keyup.stop="">
-          <t
-            t-component="figureRegistry.get(this.props.figure.tag).Component"
-            t-key="this.props.figure.id"
-            sidePanelIsOpen="props.sidePanelIsOpen"
-            onFigureDeleted="props.onFigureDeleted"
-            figure="displayedFigure"
-          />
-        </div>
+    <div class="o-figure-wrapper pe-auto" t-att-style="wrapperStyle">
+      <div
+        class="o-figure w-100 h-100"
+        t-on-mousedown.stop="(ev) => this.onMouseDown(ev)"
+        t-ref="figure"
+        t-att-style="props.style"
+        tabindex="0"
+        t-on-keydown="(ev) => this.onKeyDown(ev)"
+        t-on-keyup.stop="">
+        <t
+          t-component="figureRegistry.get(props.figure.tag).Component"
+          t-key="props.figure.id"
+          onFigureDeleted="props.onFigureDeleted"
+          figure="props.figure"
+        />
       </div>
+      <div class="o-figure-border w-100 h-100 position-absolute pe-none" t-att-style="borderStyle"/>
       <t t-if="isSelected">
         <div
-          class="o-anchor o-top"
-          t-att-style="this.getAnchorPosition('top')"
-          t-on-mousedown.stop="(ev) => this.resize(0,-1, ev)"
+          class="o-fig-anchor o-top"
+          t-att-style="this.getResizerPosition('top')"
+          t-on-mousedown="(ev) => this.clickAnchor(0,-1, ev)"
         />
         <div
-          class="o-anchor o-topRight"
-          t-att-style="this.getAnchorPosition('top right')"
-          t-on-mousedown.stop="(ev) => this.resize(1,-1, ev)"
+          class="o-fig-anchor o-topRight"
+          t-att-style="this.getResizerPosition('top right')"
+          t-on-mousedown="(ev) => this.clickAnchor(1,-1, ev)"
         />
         <div
-          class="o-anchor o-right"
-          t-att-style="this.getAnchorPosition('right')"
-          t-on-mousedown.stop="(ev) => this.resize(1,0, ev)"
+          class="o-fig-anchor o-right"
+          t-att-style="this.getResizerPosition('right')"
+          t-on-mousedown="(ev) => this.clickAnchor(1,0, ev)"
         />
         <div
-          class="o-anchor o-bottomRight"
-          t-att-style="this.getAnchorPosition('bottom right', info)"
-          t-on-mousedown.stop="(ev) => this.resize(1,1, ev)"
+          class="o-fig-anchor o-bottomRight"
+          t-att-style="this.getResizerPosition('bottom right')"
+          t-on-mousedown="(ev) => this.clickAnchor(1,1, ev)"
         />
         <div
-          class="o-anchor o-bottom"
-          t-att-style="this.getAnchorPosition('bottom')"
-          t-on-mousedown.stop="(ev) => this.resize(0,1, ev)"
+          class="o-fig-anchor o-bottom"
+          t-att-style="this.getResizerPosition('bottom')"
+          t-on-mousedown="(ev) => this.clickAnchor(0,1, ev)"
         />
         <div
-          class="o-anchor o-bottomLeft"
-          t-att-style="this.getAnchorPosition('bottom left')"
-          t-on-mousedown.stop="(ev) => this.resize(-1,1, ev)"
+          class="o-fig-anchor o-bottomLeft"
+          t-att-style="this.getResizerPosition('bottom left')"
+          t-on-mousedown="(ev) => this.clickAnchor(-1,1, ev)"
         />
         <div
-          class="o-anchor o-left"
-          t-att-style="this.getAnchorPosition('left')"
-          t-on-mousedown.stop="(ev) => this.resize(-1,0, ev)"
+          class="o-fig-anchor o-left"
+          t-att-style="this.getResizerPosition('left')"
+          t-on-mousedown="(ev) => this.clickAnchor(-1,0, ev)"
         />
         <div
-          class="o-anchor o-topLeft"
-          t-att-style="this.getAnchorPosition('top left')"
-          t-on-mousedown.stop="(ev) => this.resize(-1,-1, ev)"
+          class="o-fig-anchor o-topLeft"
+          t-att-style="this.getResizerPosition('top left')"
+          t-on-mousedown="(ev) => this.clickAnchor(-1,-1, ev)"
         />
       </t>
     </div>
@@ -424,12 +428,13 @@
 
   <t t-name="o-spreadsheet-ChartFigure" owl="1">
     <div
-      class="o-chart-container"
+      class="o-chart-container w-100 h-100"
       t-ref="chartContainer"
-      t-on-contextmenu.prevent.stop="(ev) => !env.isDashboard() and this.onContextMenu(ev)">
+      t-on-contextmenu.prevent.stop="(ev) => !env.isDashboard() and !env.model.getters.isReadonly() and this.onContextMenu(ev)">
       <div class="o-chart-menu" t-if="!env.isDashboard()">
         <div
           class="o-chart-menu-item"
+          t-if="!env.model.getters.isReadonly()"
           t-on-click="showMenu"
           t-ref="menuButton"
           t-on-contextmenu.prevent.stop="showMenu">
@@ -453,18 +458,31 @@
 
   <t t-name="o-spreadsheet-FiguresContainer" owl="1">
     <div>
-      <t t-foreach="getVisibleFigures()" t-as="figure" t-key="figure.id">
-        <FigureComponent
-          sidePanelIsOpen="this.props.sidePanelIsOpen"
-          onFigureDeleted="this.props.onFigureDeleted"
-          figure="figure"
-        />
+      <t t-foreach="containers" t-as="container" t-key="container.type">
+        <div
+          class="o-figure-container position-absolute pe-none overflow-hidden"
+          t-att-style="container.style"
+          t-att-data-id="container.type + 'Container'">
+          <div
+            class="o-figure-viewport-inverse w-0 h-0 overflow-visible position-absolute"
+            t-att-style="container.inverseViewportStyle">
+            <t t-foreach="container.figures" t-as="figure" t-key="figure.id">
+              <FigureComponent
+                onFigureDeleted="this.props.onFigureDeleted"
+                figure="figure"
+                style="getFigureStyle(figure)"
+                onMouseDown="(ev) => this.startDraggingFigure(figure, ev)"
+                onClickAnchor="(dirX, dirY, ev) => this.startResize(figure, dirX, dirY, ev)"
+              />
+            </t>
+          </div>
+        </div>
       </t>
     </div>
   </t>
 
   <t t-name="o-spreadsheet-FilterIcon" owl="1">
-    <div class="o-filter-icon" t-att-style="style" t-on-click="props.onClick">
+    <div class="o-filter-icon" t-att-style="style" t-on-click.stop="props.onClick">
       <t t-if="props.isActive" t-call="o-spreadsheet-Icon.FILTER_ICON_ACTIVE"/>
       <t t-else="" t-call="o-spreadsheet-Icon.FILTER_ICON"/>
     </div>
@@ -486,7 +504,7 @@
 
   <t t-name="o-spreadsheet-FilterMenu" owl="1">
     <div class="o-filter-menu d-flex flex-column bg-white" t-on-wheel.stop="">
-      <div>
+      <div t-if="!isReadonly">
         <div class="o-filter-menu-item" t-on-click="() => this.sortFilterZone('ascending')">
           Sort ascending (A ⟶ Z)
         </div>
@@ -494,7 +512,7 @@
           Sort descending (Z ⟶ A)
         </div>
       </div>
-      <div class="o-separator"/>
+      <div class="o-separator" t-if="!isReadonly"/>
       <div class="o-filter-menu-actions">
         <div class="o-filter-menu-action-text" t-on-click="selectAll">Select all</div>
         <div class="o-filter-menu-action-text" t-on-click="clearAll">Clear</div>
@@ -568,7 +586,7 @@
       class="o-grid"
       tabindex="-1"
       t-att-class="{'o-two-columns': !props.sidePanelIsOpen}"
-      t-on-click="focus"
+      t-on-click="focusDefaultElement"
       t-on-keydown="onKeydown"
       t-on-wheel="onMouseWheel"
       t-ref="grid">
@@ -581,17 +599,15 @@
         onGridMoved.bind="moveCanvas"
         gridOverlayDimensions="gridOverlayDimensions"
         sidePanelIsOpen="props.sidePanelIsOpen"
-        onFigureDeleted.bind="focus"
+        onFigureDeleted.bind="focusDefaultElement"
       />
       <HeadersOverlay onOpenContextMenu="(type, x, y) => this.toggleContextMenu(type, x, y)"/>
-
-      <t t-if="env.model.getters.getEditionMode() !== 'inactive'">
-        <GridComposer
-          onComposerUnmounted="() => this.focus()"
-          onComposerContentFocused="props.onComposerContentFocused"
-          focus="props.focusComposer"
-        />
-      </t>
+      <GridComposer
+        onComposerContentFocused="props.onComposerContentFocused"
+        onComposerCellFocused="props.onGridComposerCellFocused"
+        focus="props.focusComposer"
+        onInputContextMenu.bind="onInputContextMenu"
+      />
       <canvas t-ref="canvas"/>
       <t
         t-foreach="env.model.getters.getClientsToDisplay()"
@@ -638,10 +654,10 @@
   <t t-name="o-spreadsheet-GridOverlay" owl="1">
     <div
       t-ref="gridOverlay"
-      class="o-grid-overlay"
+      class="o-grid-overlay overflow-hidden"
       t-att-style="props.gridOverlayDimensions"
       t-on-mousedown="onMouseDown"
-      t-on-dblclick="onDoubleClick"
+      t-on-dblclick.self="onDoubleClick"
       t-on-contextmenu="onContextMenu">
       <!-- TODO remove sidePanelIsOpen props. It is wrong.
       If you have a CF sidepanel open, selecting a figure should
@@ -662,7 +678,8 @@
       childHeight="cellPopover.Component.size.height"
       flipHorizontalOffset="cellPopover.cellWidth"
       flipVerticalOffset="cellPopover.cellHeight"
-      onMouseWheel="props.onMouseWheel">
+      onMouseWheel="props.onMouseWheel"
+      zIndex="zIndex">
       <t
         t-component="cellPopover.Component"
         t-props="{...cellPopover.props, onClosed : () => props.onClosePopover()}"
@@ -1144,11 +1161,8 @@
   </t>
 
   <t t-name="o-spreadsheet-Icon.PLUS" owl="1">
-    <svg class="o-icon">
-      <path
-        fill="#000000"
-        d="M8,0 L10,0 L10,8 L18,8 L18,10 L10,10 L10,18 L8,18 L8,10 L0,10 L0,8 L8,8"
-      />
+    <svg class="o-icon" viewBox="0 0 18 18">
+      <path d="M8,0 L10,0 L10,8 L18,8 L18,10 L10,10 L10,18 L8,18 L8,10 L0,10 L0,8 L8,8"/>
     </svg>
   </t>
   <t t-name="o-spreadsheet-Icon.LIST" owl="1">
@@ -1175,10 +1189,9 @@
       />
     </svg>
   </t>
-  /** Font Awesome by Dave Gandy
- *  http://fontawesome.io/
- *  https://fontawesome.com/license
- */
+  <!-- Font Awesome by Dave Gandy
+http://fontawesome.io/
+https://fontawesome.com/license -->
   <t t-name="o-spreadsheet-Icon.CARET_UP" owl="1">
     <svg class="caret-up" viewBox="0 0 320 512">
       <path
@@ -1353,7 +1366,7 @@
   </t>
 
   <t t-name="o-spreadsheet-LinkDisplay" owl="1">
-    <div class="o-link-tool">
+    <div class="o-link-tool d-flex align-items-center">
       <t t-set="link" t-value="cell.link"/>
       <!-- t-key to prevent owl from re-using the previous img element when the link changes.
     The wrong/previous image would be displayed while the new one loads -->
@@ -1439,7 +1452,7 @@
 
   <t t-name="o-spreadsheet-Menu" owl="1">
     <Popover
-      t-if="props.menuItems.length"
+      t-if="visibleMenuItems.length"
       position="props.position"
       childWidth="MENU_WIDTH"
       childHeight="menuHeight"
@@ -1453,7 +1466,7 @@
         t-on-wheel.stop=""
         t-on-click.stop=""
         t-on-contextmenu.prevent="">
-        <t t-foreach="props.menuItems" t-as="menuItem" t-key="menuItem.id">
+        <t t-foreach="visibleMenuItems" t-as="menuItem" t-key="menuItem.id">
           <t t-set="isMenuRoot" t-value="isRoot(menuItem)"/>
           <t t-set="isMenuEnabled" t-value="isEnabled(menuItem)"/>
           <div
@@ -1487,6 +1500,7 @@
         depth="props.depth + 1"
         onMenuClicked="props.onMenuClicked"
         onClose="() => this.close()"
+        menuId="props.menuId"
       />
     </Popover>
   </t>
@@ -1531,7 +1545,7 @@
           class="o-btn o-remove-selection"
           t-if="ranges.length > 1"
           t-on-click="() => this.removeInput(range.id)">
-          ✖
+          ✕
         </button>
       </div>
 
@@ -1539,7 +1553,7 @@
         <button class="o-btn-action o-add-selection" t-if="canAddRange" t-on-click="addEmptyInput">
           Add range
         </button>
-        <button class="o-btn-action o-selection-ok" t-if="hasFocus" t-on-click="disable">
+        <button class="o-btn-action o-selection-ok" t-if="hasFocus" t-on-click="confirm">
           Confirm
         </button>
       </div>
@@ -1606,7 +1620,7 @@
         <div class="o-with-color-picker">
           Select a color...
           <span
-            t-attf-style="border-color:{{props.definition.background}}"
+            t-att-style="props.definition.background ? `border-color: ${props.definition.background}` : 'border-bottom-style: hidden'"
             t-on-click.stop="toggleColorPicker">
             <t t-call="o-spreadsheet-Icon.FILL_COLOR"/>
           </span>
@@ -1683,7 +1697,7 @@
           Select a color...
           <span
             title="Background Color"
-            t-attf-style="border-color:{{props.definition.background}}"
+            t-att-style="props.definition.background ? `border-color: ${props.definition.background}` : 'border-bottom-style: hidden'"
             t-on-click.stop="() => this.toggleMenu('backgroundColor', ev)">
             <t t-call="o-spreadsheet-Icon.FILL_COLOR"/>
           </span>
@@ -1888,7 +1902,7 @@
         <div class="o-with-color-picker">
           Select a color...
           <span
-            t-attf-style="border-color:{{props.definition.background}}"
+            t-att-style="props.definition.background ? `border-color: ${props.definition.background}` : 'border-bottom-style: hidden'"
             t-on-click.stop="toggleColorPicker">
             <t t-call="o-spreadsheet-Icon.FILL_COLOR"/>
           </span>
@@ -1939,6 +1953,18 @@
               class="align-middle"
             />
             Stacked linechart
+          </label>
+        </div>
+        <div class="o-checkbox">
+          <label>
+            <input
+              type="checkbox"
+              name="cumulative"
+              t-att-checked="props.definition.cumulative"
+              t-on-change="onUpdateCumulative"
+              class="align-middle"
+            />
+            Cumulative data
           </label>
         </div>
       </div>
@@ -1997,7 +2023,7 @@
         <div class="o-with-color-picker">
           Select a color...
           <span
-            t-attf-style="border-color:{{props.definition.background}}"
+            t-att-style="props.definition.background ? `border-color: ${props.definition.background}` : 'border-bottom-style: hidden'"
             t-on-click.stop="toggleColorPicker">
             <t t-call="o-spreadsheet-Icon.FILL_COLOR"/>
           </span>
@@ -2151,14 +2177,14 @@
           Select a color...
           <span
             title="Background Color"
-            t-attf-style="border-color:{{props.definition.background}}"
+            t-att-style="props.definition.background ? `border-color: ${props.definition.background}` : 'border-bottom-style: hidden'"
             t-on-click.stop="() => this.openColorPicker('backgroundColor')">
             <t t-call="o-spreadsheet-Icon.FILL_COLOR"/>
           </span>
           <ColorPicker
             t-if="state.openedColorPicker === 'backgroundColor'"
             onColorPicked="(color) => this.setColor(color, 'backgroundColor')"
-            currentColor="props.definition.brackground"
+            currentColor="props.definition.background"
             t-key="backgroundColor"
           />
         </div>
@@ -2457,7 +2483,7 @@
                 t-on-click="() => this.changeRuleType('CellIsRule')">
                 <input
                   class="form-check-input o_radio_input"
-                  t-attf-checked="{{state.currentCFType === 'CellIsRule'}}"
+                  t-att-checked="state.currentCFType === 'CellIsRule'"
                   type="radio"
                   id="cellIsRule"
                   name="ruleType"
@@ -2470,7 +2496,7 @@
                 t-on-click="() => this.changeRuleType('ColorScaleRule')">
                 <input
                   class="form-check-input o_radio_input"
-                  t-attf-checked="{{state.currentCFType === 'ColorScaleRule'}}"
+                  t-att-checked="state.currentCFType === 'ColorScaleRule'"
                   type="radio"
                   id="colorScaleRule"
                   name="ruleType"
@@ -2486,7 +2512,7 @@
                 t-on-click="() => this.changeRuleType('IconSetRule')">
                 <input
                   class="form-check-input o_radio_input"
-                  t-attf-checked="{{state.currentCFType === 'IconSetRule'}}"
+                  t-att-checked="state.currentCFType === 'IconSetRule'"
                   type="radio"
                   id="iconSetRule"
                   name="ruleType"
@@ -2763,11 +2789,7 @@
   </t>
 
   <t t-name="o-spreadsheet-FindAndReplacePanel" owl="1">
-    <div
-      class="o-find-and-replace"
-      tabindex="0"
-      t-on-focusin="onFocusSidePanel"
-      t-ref="findAndReplace">
+    <div class="o-find-and-replace" tabindex="0" t-ref="findAndReplace">
       <div class="o-section">
         <div class="o-section-title">Search</div>
         <div class="o-input-search-container">
@@ -2867,7 +2889,7 @@
     <div class="o-sidePanel">
       <div class="o-sidePanelHeader">
         <div class="o-sidePanelTitle" t-esc="getTitle()"/>
-        <div class="o-sidePanelClose" t-on-click="() => this.props.onCloseSidePanel()">×</div>
+        <div class="o-sidePanelClose" t-on-click="() => this.props.onCloseSidePanel()">✕</div>
       </div>
       <div class="o-sidePanelBody">
         <t
@@ -2900,6 +2922,7 @@
           onClick="() => this.focusGrid()"
           onComposerContentFocused="(selection) => this.onTopBarComposerFocused(selection)"
           focusComposer="focusTopBarComposer"
+          dropdownMaxHeight="gridHeight"
         />
         <Grid
           sidePanelIsOpen="sidePanel.isOpen"
@@ -2941,6 +2964,7 @@
             position="state.menuState.position"
             menuItems="state.menuState.menuItems"
             onClose="() => this.closeMenus()"
+            onMenuClicked="() => this.props.onClick()"
           />
         </div>
         <div class="o-topbar-topright">
@@ -3012,6 +3036,7 @@
             </div>
             <div
               class="o-dropdown-content o-text-options  o-format-tool "
+              t-att-style="dropdownStyle"
               t-if="state.activeTool === 'formatTool'"
               t-on-click="setFormat">
               <t t-foreach="commonFormats" t-as="commonFormat" t-key="commonFormat.name">
@@ -3040,6 +3065,7 @@
             </div>
             <div
               class="o-dropdown-content o-text-options "
+              t-att-style="dropdownStyle"
               t-if="state.activeTool === 'fontSizeTool'"
               t-on-click="setSize">
               <t t-foreach="fontSizes" t-as="font" t-key="font_index">
@@ -3081,6 +3107,7 @@
               onColorPicked="(color) => this.setColor('textColor', color)"
               currentColor="textColor"
               t-key="textColor"
+              maxHeight="this.props.dropdownMaxHeight"
             />
           </div>
           <div class="o-divider"/>
@@ -3096,6 +3123,7 @@
               onColorPicked="(color) => this.setColor('fillColor', color)"
               currentColor="fillColor"
               t-key="fillColor"
+              maxHeight="this.props.dropdownMaxHeight"
             />
           </div>
           <div
@@ -3107,6 +3135,7 @@
             </span>
             <div
               class="o-dropdown-content o-border-dropdown"
+              t-att-style="dropdownStyle"
               t-if="state.activeTool === 'borderTool'">
               <div class="o-dropdown-line">
                 <span class="o-line-item" t-on-click="(ev) => this.setBorder('all', ev)">
@@ -3168,7 +3197,10 @@
               </t>
               <t t-call="o-spreadsheet-Icon.TRIANGLE_DOWN"/>
             </span>
-            <div t-if="state.activeTool === 'alignTool'" class="o-dropdown-content">
+            <div
+              t-if="state.activeTool === 'alignTool'"
+              class="o-dropdown-content"
+              t-att-style="dropdownStyle">
               <div class="o-dropdown-item" t-on-click="(ev) => this.toggleAlign('left', ev)">
                 <t t-call="o-spreadsheet-Icon.ALIGN_LEFT"/>
               </div>
@@ -3206,3 +3238,8 @@
     </div>
   </t>
 </odoo>
+<!--
+  __info__.version = '16.0.39';
+  __info__.date = '2024-04-18T16:53:41.980Z';
+  __info__.hash = 'ea5a526';
+-->

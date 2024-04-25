@@ -4,17 +4,18 @@
 # 
 # Translators:
 # Farid Fox, 2022
-# Malaz Abuidris <msea@odoo.com>, 2022
 # Martin Trigaux, 2022
+# Niyas Raphy, 2022
+# Malaz Abuidris <msea@odoo.com>, 2023
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-10 10:22+0000\n"
+"POT-Creation-Date: 2023-10-10 06:06+0000\n"
 "PO-Revision-Date: 2022-09-22 05:54+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
-"Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
+"Last-Translator: Malaz Abuidris <msea@odoo.com>, 2023\n"
+"Language-Team: Arabic (https://app.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -52,7 +53,7 @@ msgid "Active"
 msgstr "نشط"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
 #, python-format
@@ -60,7 +61,7 @@ msgid "Add"
 msgstr "إضافة"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/js/Screens/ProductScreen/ControlButtons/OrderlineNoteButton.js:0
 #, python-format
 msgid "Add Internal Note"
@@ -77,14 +78,14 @@ msgid "Add a new restaurant order printer"
 msgstr "إضافة طابعة طلبات جديدة"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/TipScreen.xml:0
 #, python-format
 msgid "Add a tip"
 msgstr "إضافة بقشيش "
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/FloorScreen.xml:0
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/FloorScreen.xml:0
 #, python-format
@@ -94,7 +95,7 @@ msgstr "إضافة زر"
 #. module: pos_restaurant
 #: model_terms:ir.ui.view,arch_db:pos_restaurant.res_config_settings_view_form
 msgid "Add internal notes on order lines for the kitchen"
-msgstr ""
+msgstr "إضافة ملاحظات داخلية في بنود الطلب للمطبخ "
 
 #. module: pos_restaurant
 #: model_terms:ir.ui.view,arch_db:pos_restaurant.res_config_settings_view_form
@@ -102,7 +103,7 @@ msgid "Add tip after payment (North America specific)"
 msgstr "إضافة بقشيش بعد الدفع (خاص بأمريكا الشمالية) "
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/PaymentScreen/PaymentScreenPaymentLines.xml:0
 #: code:addons/pos_restaurant/static/src/xml/Screens/PaymentScreen/PaymentScreenPaymentLines.xml:0
 #, python-format
@@ -121,17 +122,17 @@ msgstr ""
 #. module: pos_restaurant
 #: model_terms:ir.ui.view,arch_db:pos_restaurant.res_config_settings_view_form
 msgid "Allow Bill Splitting"
-msgstr ""
+msgstr "السماح بتقسيم الفاتورة "
 
 #. module: pos_restaurant
 #: model:ir.model.fields,help:pos_restaurant.field_pos_config__iface_orderline_notes
 msgid "Allow custom internal notes on Orderlines."
-msgstr "السماح بملاحظات العميل الداخلية في بنود الطلب. "
+msgstr "السماح بالملاحظات المخصصة الداخلية في بنود الطلب. "
 
 #. module: pos_restaurant
 #: model_terms:ir.ui.view,arch_db:pos_restaurant.res_config_settings_view_form
 msgid "Allow to print receipt before payment"
-msgstr ""
+msgstr "السماح بطباعة الإيصال قبل الدفع "
 
 #. module: pos_restaurant
 #: model:ir.model.fields,help:pos_restaurant.field_pos_config__iface_printbill
@@ -139,7 +140,7 @@ msgid "Allows to print the Bill before payment."
 msgstr "يسمح بطباعة الفاتورة قبل الدفع. "
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/TipScreen.xml:0
 #, python-format
 msgid "Amount"
@@ -167,14 +168,14 @@ msgid "Archived"
 msgstr "مؤرشف"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/js/Screens/FloorScreen/FloorScreen.js:0
 #, python-format
 msgid "Are you sure ?"
 msgstr "هل أنت متأكد؟"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/SplitBillScreen/SplitBillScreen.xml:0
 #: code:addons/pos_restaurant/static/src/xml/Screens/TipScreen.xml:0
 #, python-format
@@ -182,7 +183,7 @@ msgid "Back"
 msgstr "العودة"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/ChromeWidgets/BackToFloorButton.xml:0
 #: code:addons/pos_restaurant/static/src/xml/ChromeWidgets/BackToFloorButton.xml:0
 #, python-format
@@ -200,20 +201,19 @@ msgid "Background Image"
 msgstr "صورة الخلفية"
 
 #. module: pos_restaurant
-#: model:product.product,name:pos_restaurant.pos_food_bacon
 #: model:product.template,name:pos_restaurant.pos_food_bacon_product_template
 msgid "Bacon Burger"
 msgstr "برجر لحم مقدد "
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/ProductScreen/ControlButtons/PrintBillButton.xml:0
 #, python-format
 msgid "Bill"
 msgstr "فاتورة"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/BillScreen.xml:0
 #: model:ir.model.fields,field_description:pos_restaurant.field_pos_config__iface_printbill
 #, python-format
@@ -221,7 +221,7 @@ msgid "Bill Printing"
 msgstr "طباعة الفاتورة"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/SplitBillScreen/SplitBillScreen.xml:0
 #: model:ir.model.fields,field_description:pos_restaurant.field_pos_config__iface_splitbill
 #, python-format
@@ -229,7 +229,14 @@ msgid "Bill Splitting"
 msgstr "تقسيم الفاتورة"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
+#: code:addons/pos_restaurant/static/src/js/Screens/ProductScreen/ControlButtons/TableGuestsButton.js:0
+#, python-format
+msgid "Blocked action"
+msgstr "إجراء محجوب "
+
+#. module: pos_restaurant
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
@@ -239,26 +246,38 @@ msgid "Blue"
 msgstr "أزرق"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/multiprint.xml:0
 #, python-format
 msgid "CANCELLED"
 msgstr "ملغي"
 
 #. module: pos_restaurant
-#: model:product.product,name:pos_restaurant.pos_food_cheeseburger
+#. odoo-python
+#: code:addons/pos_restaurant/models/pos_config.py:0
+#, python-format
+msgid "Cash %s"
+msgstr "النقد %s "
+
+#. module: pos_restaurant
+#. odoo-python
+#: code:addons/pos_restaurant/models/pos_config.py:0
+#, python-format
+msgid "Cash Bar"
+msgstr "حانة الدفع النقدي "
+
+#. module: pos_restaurant
 #: model:product.template,name:pos_restaurant.pos_food_cheeseburger_product_template
 msgid "Cheese Burger"
 msgstr "شطيرة برغر بالجبن "
 
 #. module: pos_restaurant
-#: model:product.product,name:pos_restaurant.pos_food_chicken
 #: model:product.template,name:pos_restaurant.pos_food_chicken_product_template
 msgid "Chicken Curry Sandwich"
 msgstr "شطيرة دجاج بالكاري "
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
@@ -268,20 +287,18 @@ msgid "Close"
 msgstr "إغلاق "
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/PaymentScreen/PaymentScreen.xml:0
 #, python-format
 msgid "Close Tab"
 msgstr "إغلاق علامة التبويب "
 
 #. module: pos_restaurant
-#: model:product.product,name:pos_restaurant.pos_food_club
 #: model:product.template,name:pos_restaurant.pos_food_club_product_template
 msgid "Club Sandwich"
 msgstr "شطيرة كلوب "
 
 #. module: pos_restaurant
-#: model:product.product,name:pos_restaurant.coke
 #: model:product.template,name:pos_restaurant.coke_product_template
 msgid "Coca-Cola"
 msgstr "كوكاكولا"
@@ -311,7 +328,7 @@ msgid "Created on"
 msgstr "أنشئ في"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
 #, python-format
@@ -336,14 +353,14 @@ msgid "Drinks"
 msgstr "المشروبات "
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/js/ChromeWidgets/TicketButton.js:0
 #, python-format
 msgid "Due to a connection error, the orders are not synchronized."
-msgstr ""
+msgstr "الطلبات غير متزامنة بسبب خطأ في الاتصال. "
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
 #, python-format
@@ -366,10 +383,10 @@ msgstr ""
 #. module: pos_restaurant
 #: model_terms:ir.ui.view,arch_db:pos_restaurant.res_config_settings_view_form
 msgid "Early Receipt Printing"
-msgstr ""
+msgstr "طباعة الإيصال المبكر "
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/FloorScreen.xml:0
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/FloorScreen.xml:0
 #, python-format
@@ -382,7 +399,7 @@ msgid "Enables Bill Splitting in the Point of Sale."
 msgstr "يسمح بتقسيم الفاتورة في نقطة البيع."
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/js/Screens/ProductScreen/ControlButtons/SubmitOrderButton.js:0
 #, python-format
 msgid "Failed in printing the changes in the order"
@@ -405,6 +422,7 @@ msgid "Floor Plans"
 msgstr "مخططات الطابق"
 
 #. module: pos_restaurant
+#. odoo-python
 #: code:addons/pos_restaurant/models/pos_restaurant.py:0
 #, python-format
 msgid "Floor: %s - PoS Config: %s \n"
@@ -423,7 +441,7 @@ msgstr "الأرضيات والطاولات "
 #. module: pos_restaurant
 #: model_terms:ir.ui.view,arch_db:pos_restaurant.res_config_settings_view_form
 msgid "Floors & Tables Map"
-msgstr ""
+msgstr "خريطة الطوابق والطاولات "
 
 #. module: pos_restaurant
 #: model:pos.category,name:pos_restaurant.food
@@ -431,20 +449,19 @@ msgid "Food"
 msgstr "طعام"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/ReceiptScreen/OrderReceipt.xml:0
 #, python-format
 msgid "For convenience, we are providing the following gratuity calculations:"
 msgstr "لتسهيل الأمور، سوف نقوم بتقديم عمليات احتساب البقشيش التالية: "
 
 #. module: pos_restaurant
-#: model:product.product,name:pos_restaurant.pos_food_funghi
 #: model:product.template,name:pos_restaurant.pos_food_funghi_product_template
 msgid "Funghi"
 msgstr "Funghi"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
@@ -454,7 +471,7 @@ msgid "Green"
 msgstr "أخضر"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
@@ -464,7 +481,7 @@ msgid "Grey"
 msgstr "رمادي"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/ProductScreen/ControlButtons/TableGuestsButton.xml:0
 #: model:ir.model.fields,field_description:pos_restaurant.field_pos_order__customer_count
 #, python-format
@@ -472,14 +489,14 @@ msgid "Guests"
 msgstr "ضيوف"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/js/Screens/ProductScreen/ControlButtons/TableGuestsButton.js:0
 #, python-format
 msgid "Guests ?"
 msgstr "ضيوف؟"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/ReceiptScreen/OrderReceipt.xml:0
 #, python-format
 msgid "Guests:"
@@ -510,7 +527,7 @@ msgid ""
 msgstr "إذا كانت قيمته خطأ، تُلغى الطاولة ولن تكون متاحة في نقطة البيع"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/ProductScreen/ControlButtons/OrderlineNoteButton.xml:0
 #, python-format
 msgid "Internal Note"
@@ -532,7 +549,7 @@ msgid "Is a Bar/Restaurant"
 msgstr "حانة أو مطعم"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/PaymentScreen/PaymentScreen.xml:0
 #, python-format
 msgid "Keep Open"
@@ -541,12 +558,12 @@ msgstr "تركه مفتوحاً "
 #. module: pos_restaurant
 #: model_terms:ir.ui.view,arch_db:pos_restaurant.res_config_settings_view_form
 msgid "Kitchen Notes"
-msgstr ""
+msgstr "ملاحظات المطبخ"
 
 #. module: pos_restaurant
 #: model_terms:ir.ui.view,arch_db:pos_restaurant.res_config_settings_view_form
 msgid "Kitchen Printers"
-msgstr ""
+msgstr "طابعات المطبخ"
 
 #. module: pos_restaurant
 #: model:ir.model.fields,field_description:pos_restaurant.field_restaurant_floor____last_update
@@ -572,10 +589,10 @@ msgstr "آخر تحديث في"
 #. module: pos_restaurant
 #: model:ir.model.fields,help:pos_restaurant.field_pos_order__multiprint_resume
 msgid "Last printed state of the order"
-msgstr ""
+msgstr "آخر حالة مطبوعة للطلب "
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
@@ -585,44 +602,38 @@ msgid "Light grey"
 msgstr "رمادي فاتح"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/TipReceipt.xml:0
 #, python-format
 msgid "Logo"
 msgstr "الشعار"
 
 #. module: pos_restaurant
-#: model:product.product,name:pos_restaurant.pos_food_maki
 #: model:product.template,name:pos_restaurant.pos_food_maki_product_template
 msgid "Lunch Maki 18pc"
 msgstr "ماكي الغداء 18 قطعة "
 
 #. module: pos_restaurant
-#: model:product.product,name:pos_restaurant.pos_food_salmon
 #: model:product.template,name:pos_restaurant.pos_food_salmon_product_template
 msgid "Lunch Salmon 20pc"
 msgstr "سلمون الغداء 20 قطعة "
 
 #. module: pos_restaurant
-#: model:product.product,name:pos_restaurant.pos_food_temaki
 #: model:product.template,name:pos_restaurant.pos_food_temaki_product_template
 msgid "Lunch Temaki mix 3pc"
 msgstr "مشكل تيماكي الغداء 3 قطع "
 
 #. module: pos_restaurant
-#: model:product.product,name:pos_restaurant.pos_food_margherita
 #: model:product.template,name:pos_restaurant.pos_food_margherita_product_template
 msgid "Margherita"
 msgstr "مارغريتا "
 
 #. module: pos_restaurant
-#: model:product.product,name:pos_restaurant.minute_maid
 #: model:product.template,name:pos_restaurant.minute_maid_product_template
 msgid "Minute Maid"
 msgstr "Minute Maid"
 
 #. module: pos_restaurant
-#: model:product.product,name:pos_restaurant.pos_food_mozza
 #: model:product.template,name:pos_restaurant.pos_food_mozza_product_template
 msgid "Mozzarella Sandwich"
 msgstr "شطيرة موتزاريلا "
@@ -633,14 +644,14 @@ msgid "Multiprint Resume"
 msgstr "سيرة ذاتية متعددة النُسخ "
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/multiprint.xml:0
 #, python-format
 msgid "NEW"
 msgstr "جديد"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/multiprint.xml:0
 #: code:addons/pos_restaurant/static/src/xml/multiprint.xml:0
 #, python-format
@@ -648,14 +659,14 @@ msgid "NOTE"
 msgstr "ملاحظة"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/TipScreen.xml:0
 #, python-format
 msgid "No Tip"
 msgstr "بلا بقشيش "
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/ProductScreen/Orderline.xml:0
 #: code:addons/pos_restaurant/static/src/xml/Screens/ProductScreen/Orderline.xml:0
 #, python-format
@@ -663,21 +674,21 @@ msgid "Note"
 msgstr "ملاحظة "
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/js/Screens/ProductScreen/ControlButtons/PrintBillButton.js:0
 #, python-format
 msgid "Nothing to Print"
 msgstr "ﻻيوجد شيء لطباعته "
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/js/Screens/FloorScreen/FloorScreen.js:0
 #, python-format
 msgid "Number of Seats ?"
 msgstr "عدد المقاعد؟"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/js/ChromeWidgets/TicketButton.js:0
 #: code:addons/pos_restaurant/static/src/js/Screens/FloorScreen/FloorScreen.js:0
 #: code:addons/pos_restaurant/static/src/js/Screens/FloorScreen/FloorScreen.js:0
@@ -689,21 +700,21 @@ msgid "Offline"
 msgstr "غير متصل بالإنترنت "
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/BillScreen.xml:0
 #, python-format
 msgid "Ok"
 msgstr "موافق"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/js/Screens/TicketScreen.js:0
 #, python-format
 msgid "Open"
 msgstr "فتح"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
@@ -713,7 +724,7 @@ msgid "Orange"
 msgstr "برتقالي"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/ProductScreen/ControlButtons/SubmitOrderButton.xml:0
 #, python-format
 msgid "Order"
@@ -747,26 +758,24 @@ msgid "POS Printer"
 msgstr "طابعة نقطة البيع"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/ReceiptScreen/OrderReceipt.xml:0
 #, python-format
 msgid "PRO FORMA"
 msgstr "مبدأي "
 
 #. module: pos_restaurant
-#: model:product.product,name:pos_restaurant.pos_food_4formaggi
 #: model:product.template,name:pos_restaurant.pos_food_4formaggi_product_template
 msgid "Pasta 4 formaggi "
 msgstr "معكرونة بـ 4 أجبان "
 
 #. module: pos_restaurant
-#: model:product.product,name:pos_restaurant.pos_food_bolo
 #: model:product.template,name:pos_restaurant.pos_food_bolo_product_template
 msgid "Pasta Bolognese"
 msgstr "معكرونة بولونيز "
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/SplitBillScreen/SplitBillScreen.xml:0
 #, python-format
 msgid "Payment"
@@ -805,35 +814,35 @@ msgstr "جلسة نقطة البيع"
 #. module: pos_restaurant
 #: model:ir.model.fields,field_description:pos_restaurant.field_res_config_settings__pos_iface_orderline_notes
 msgid "Pos Iface Orderline Notes"
-msgstr ""
+msgstr "ملاحظات بند طلب Iface نقطة البيع "
 
 #. module: pos_restaurant
 #: model:ir.model.fields,field_description:pos_restaurant.field_res_config_settings__pos_iface_printbill
 msgid "Pos Iface Printbill"
-msgstr ""
+msgstr "طباعة فاتورة Iface نقطة البيع "
 
 #. module: pos_restaurant
 #: model:ir.model.fields,field_description:pos_restaurant.field_res_config_settings__pos_iface_splitbill
 msgid "Pos Iface Splitbill"
-msgstr ""
+msgstr "تقسيم فاتورة Iface نقطة البيع "
 
 #. module: pos_restaurant
 #: model:ir.model.fields,field_description:pos_restaurant.field_res_config_settings__pos_is_order_printer
 msgid "Pos Is Order Printer"
-msgstr ""
+msgstr "طابعة الطلبات في نقطة البيع "
 
 #. module: pos_restaurant
 #: model:ir.model.fields,field_description:pos_restaurant.field_res_config_settings__pos_is_table_management
 msgid "Pos Is Table Management"
-msgstr ""
+msgstr "إدارة الطاولات في نقطة البيع "
 
 #. module: pos_restaurant
 #: model:ir.model.fields,field_description:pos_restaurant.field_res_config_settings__pos_set_tip_after_payment
 msgid "Pos Set Tip After Payment"
-msgstr ""
+msgstr "إعداد البقشيش بعد الدفع في نقطة البيع "
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/BillScreen.xml:0
 #, python-format
 msgid "Print"
@@ -865,21 +874,21 @@ msgid "Printers"
 msgstr "الطابعات "
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/js/Screens/ProductScreen/ControlButtons/SubmitOrderButton.js:0
 #, python-format
 msgid "Printing failed"
 msgstr "فشلت الطباعة "
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/js/Screens/TipScreen.js:0
 #, python-format
 msgid "Printing is not supported on some browsers"
 msgstr "الطباعة غير مدعومة في بعض المتصفحات "
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/js/Screens/TipScreen.js:0
 #, python-format
 msgid ""
@@ -896,7 +905,7 @@ msgid "Proxy IP Address"
 msgstr "عنوان IP الوكيل "
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
@@ -906,7 +915,7 @@ msgid "Purple"
 msgstr "بنفسجي"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
@@ -916,14 +925,14 @@ msgid "Red"
 msgstr "أحمر"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/js/Screens/FloorScreen/FloorScreen.js:0
 #, python-format
 msgid "Removing a table cannot be undone"
 msgstr "لا يمكن التراجع عن حذف طاولة"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
 #, python-format
@@ -931,7 +940,7 @@ msgid "Rename"
 msgstr "إعادة التسمية"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/TipScreen.xml:0
 #, python-format
 msgid "Reprint receipts"
@@ -940,7 +949,7 @@ msgstr "طباعةالإيصالات "
 #. module: pos_restaurant
 #: model_terms:ir.ui.view,arch_db:pos_restaurant.res_config_settings_view_form
 msgid "Restaurant &amp; Bar"
-msgstr ""
+msgstr "مطعم وحانة "
 
 #. module: pos_restaurant
 #: model:ir.model,name:pos_restaurant.model_restaurant_floor
@@ -972,14 +981,14 @@ msgid "Restaurant Table"
 msgstr "طاولة المطعم "
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/PaymentScreen/PaymentScreenPaymentLines.xml:0
 #, python-format
 msgid "Reverse"
 msgstr "عكس"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/PaymentScreen/PaymentScreenPaymentLines.xml:0
 #, python-format
 msgid "Reverse Payment"
@@ -991,7 +1000,7 @@ msgid "Round"
 msgstr "دائري"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
 #, python-format
@@ -999,13 +1008,12 @@ msgid "Round Shape"
 msgstr "دائري الشكل"
 
 #. module: pos_restaurant
-#: model:product.product,name:pos_restaurant.pos_food_chirashi
 #: model:product.template,name:pos_restaurant.pos_food_chirashi_product_template
 msgid "Salmon and Avocado"
 msgstr "سلمون وأفوكادو "
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
 #: model:ir.model.fields,field_description:pos_restaurant.field_restaurant_table__seats
@@ -1019,7 +1027,7 @@ msgid "Sequence"
 msgstr "التسلسل "
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/TipReceipt.xml:0
 #, python-format
 msgid "Served by"
@@ -1031,7 +1039,7 @@ msgid "Set Tip After Payment"
 msgstr "تعيين بقشيش بعد الدفع "
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/TicketScreen.xml:0
 #: code:addons/pos_restaurant/static/src/xml/Screens/TipScreen.xml:0
 #, python-format
@@ -1044,7 +1052,7 @@ msgid "Shape"
 msgstr "الشكل "
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/TipReceipt.xml:0
 #, python-format
 msgid "Signature"
@@ -1056,13 +1064,12 @@ msgid "Skip line when sending ticket to kitchen printers."
 msgstr "تخطي بند عند إرسال تذكرة إلى طابعات المطبخ. "
 
 #. module: pos_restaurant
-#: model:product.product,name:pos_restaurant.pos_food_tuna
 #: model:product.template,name:pos_restaurant.pos_food_tuna_product_template
 msgid "Spicy Tuna Sandwich"
 msgstr "شطيرة التونا الحارة "
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/ProductScreen/ControlButtons/SplitBillButton.xml:0
 #, python-format
 msgid "Split"
@@ -1079,7 +1086,7 @@ msgid "Square"
 msgstr "مربع"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
 #, python-format
@@ -1087,14 +1094,14 @@ msgid "Square Shape"
 msgstr "مربع الشكل"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/TipReceipt.xml:0
 #, python-format
 msgid "Subtotal"
 msgstr "الناتج الفرعي"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/js/Screens/TicketScreen.js:0
 #: code:addons/pos_restaurant/static/src/xml/Screens/TicketScreen.xml:0
 #: code:addons/pos_restaurant/static/src/xml/Screens/TicketScreen.xml:0
@@ -1109,7 +1116,7 @@ msgid "Table Name"
 msgstr "اسم الطاولة"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/js/Screens/FloorScreen/FloorScreen.js:0
 #, python-format
 msgid "Table Name ?"
@@ -1122,11 +1129,18 @@ msgid "Tables"
 msgstr "الجداول "
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/TipReceipt.xml:0
 #, python-format
 msgid "Tel:"
 msgstr "هاتف:"
+
+#. module: pos_restaurant
+#. odoo-python
+#: code:addons/pos_restaurant/models/pos_restaurant.py:0
+#, python-format
+msgid "The %s is already used in another Pos Config."
+msgstr "%s مستخدم بالفعل في تهيئة نقطة بيع أخرى. "
 
 #. module: pos_restaurant
 #: model:ir.model.fields,help:pos_restaurant.field_restaurant_printer__proxy_ip
@@ -1141,7 +1155,7 @@ msgstr "عدد العملاء المقدم لهم هذا الطلب."
 #. module: pos_restaurant
 #: model:ir.model.fields,help:pos_restaurant.field_restaurant_floor__background_color
 msgid "The background color of the floor in a html-compatible format"
-msgstr ""
+msgstr "لون الخلفية للطابق في تنسيق متوافق مع html "
 
 #. module: pos_restaurant
 #: model:ir.model.fields,help:pos_restaurant.field_restaurant_table__seats
@@ -1189,21 +1203,21 @@ msgid "The table's width in pixels"
 msgstr "عرض الطاولة بالبيكسل"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/js/Screens/ProductScreen/ControlButtons/PrintBillButton.js:0
 #, python-format
 msgid "There are no order lines"
 msgstr "لا توجد بنود طلب "
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/FloorScreen.xml:0
 #, python-format
 msgid "This floor has no tables yet, use the"
 msgstr "لا توجد طاولات في هذا الطابق بعد، استخدم الـ"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/js/Screens/TipScreen.js:0
 #, python-format
 msgid ""
@@ -1213,7 +1227,7 @@ msgstr ""
 "هذا الطلب غير متزامن في الخادم بعد. تأكد من أنه متزامن ثم حاول مجدداً. "
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
 #, python-format
@@ -1221,7 +1235,7 @@ msgid "Tint"
 msgstr "ظل اللون"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/TicketScreen.xml:0
 #: code:addons/pos_restaurant/static/src/xml/Screens/TicketScreen.xml:0
 #, python-format
@@ -1229,35 +1243,35 @@ msgid "Tip"
 msgstr "نصيحة "
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/TipReceipt.xml:0
 #, python-format
 msgid "Tip:"
 msgstr "البقشيش: "
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/js/Screens/TicketScreen.js:0
 #, python-format
 msgid "Tipping"
 msgstr "منح البقشيش "
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/TipReceipt.xml:0
 #, python-format
 msgid "Total:"
 msgstr "الإجمالي:"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/ProductScreen/ControlButtons/TransferOrderButton.xml:0
 #, python-format
 msgid "Transfer"
 msgstr "الشحنة"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
@@ -1267,89 +1281,49 @@ msgid "Turquoise"
 msgstr "فيروزي"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/js/Screens/FloorScreen/FloorScreen.js:0
 #, python-format
 msgid "Unable to change background color"
 msgstr "تعذر تغيير لون الخلفية "
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/js/Screens/FloorScreen/FloorScreen.js:0
 #, python-format
 msgid "Unable to create table because you are offline."
 msgstr "تعذر إنشاء طاولة لعدم اتصالك بالإنترنت. "
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/js/Screens/FloorScreen/FloorScreen.js:0
 #, python-format
 msgid "Unable to delete table"
 msgstr "تعذر حذف الطاولة "
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/js/Screens/FloorScreen/FloorScreen.js:0
 #, python-format
 msgid "Unable to fetch orders"
-msgstr ""
+msgstr "تعذر إحضار الطلبات "
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/js/Screens/FloorScreen/FloorScreen.js:0
 #, python-format
 msgid "Unable to get orders count"
 msgstr "تعذر الحصول على عدد الطلبات "
 
 #. module: pos_restaurant
-#: model:product.product,uom_name:pos_restaurant.coke
-#: model:product.product,uom_name:pos_restaurant.minute_maid
-#: model:product.product,uom_name:pos_restaurant.pos_food_4formaggi
-#: model:product.product,uom_name:pos_restaurant.pos_food_bacon
-#: model:product.product,uom_name:pos_restaurant.pos_food_bolo
-#: model:product.product,uom_name:pos_restaurant.pos_food_cheeseburger
-#: model:product.product,uom_name:pos_restaurant.pos_food_chicken
-#: model:product.product,uom_name:pos_restaurant.pos_food_chirashi
-#: model:product.product,uom_name:pos_restaurant.pos_food_club
-#: model:product.product,uom_name:pos_restaurant.pos_food_funghi
-#: model:product.product,uom_name:pos_restaurant.pos_food_maki
-#: model:product.product,uom_name:pos_restaurant.pos_food_margherita
-#: model:product.product,uom_name:pos_restaurant.pos_food_mozza
-#: model:product.product,uom_name:pos_restaurant.pos_food_salmon
-#: model:product.product,uom_name:pos_restaurant.pos_food_temaki
-#: model:product.product,uom_name:pos_restaurant.pos_food_tuna
-#: model:product.product,uom_name:pos_restaurant.pos_food_vege
-#: model:product.product,uom_name:pos_restaurant.water
-#: model:product.template,uom_name:pos_restaurant.coke_product_template
-#: model:product.template,uom_name:pos_restaurant.minute_maid_product_template
-#: model:product.template,uom_name:pos_restaurant.pos_food_4formaggi_product_template
-#: model:product.template,uom_name:pos_restaurant.pos_food_bacon_product_template
-#: model:product.template,uom_name:pos_restaurant.pos_food_bolo_product_template
-#: model:product.template,uom_name:pos_restaurant.pos_food_cheeseburger_product_template
-#: model:product.template,uom_name:pos_restaurant.pos_food_chicken_product_template
-#: model:product.template,uom_name:pos_restaurant.pos_food_chirashi_product_template
-#: model:product.template,uom_name:pos_restaurant.pos_food_club_product_template
-#: model:product.template,uom_name:pos_restaurant.pos_food_funghi_product_template
-#: model:product.template,uom_name:pos_restaurant.pos_food_maki_product_template
-#: model:product.template,uom_name:pos_restaurant.pos_food_margherita_product_template
-#: model:product.template,uom_name:pos_restaurant.pos_food_mozza_product_template
-#: model:product.template,uom_name:pos_restaurant.pos_food_salmon_product_template
-#: model:product.template,uom_name:pos_restaurant.pos_food_temaki_product_template
-#: model:product.template,uom_name:pos_restaurant.pos_food_tuna_product_template
-#: model:product.template,uom_name:pos_restaurant.pos_food_vege_product_template
-#: model:product.template,uom_name:pos_restaurant.water_product_template
-msgid "Units"
-msgstr "الوحدات"
-
-#. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/js/ChromeWidgets/TicketButton.js:0
 #, python-format
 msgid "Unknown error"
 msgstr "خطأ غير معروف"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/js/Screens/TipScreen.js:0
 #, python-format
 msgid "Unsynced order"
@@ -1361,14 +1335,13 @@ msgid "Uuid"
 msgstr "المعرف الفريد عالمياً "
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/TipReceipt.xml:0
 #, python-format
 msgid "VAT:"
 msgstr "ضريبة القيمة المضافة:"
 
 #. module: pos_restaurant
-#: model:product.product,name:pos_restaurant.pos_food_vege
 #: model:product.template,name:pos_restaurant.pos_food_vege_product_template
 msgid "Vegetarian"
 msgstr "نباتي "
@@ -1379,7 +1352,6 @@ msgid "Vertical Position"
 msgstr "الوضع الرأسي"
 
 #. module: pos_restaurant
-#: model:product.product,name:pos_restaurant.water
 #: model:product.template,name:pos_restaurant.water_product_template
 msgid "Water"
 msgstr "ماء"
@@ -1390,14 +1362,14 @@ msgid "Width"
 msgstr "العرض"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/SplitBillScreen/SplitOrderline.xml:0
 #, python-format
 msgid "With a"
 msgstr "بـ"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/EditBar.xml:0
@@ -1407,6 +1379,14 @@ msgid "Yellow"
 msgstr "أصفر"
 
 #. module: pos_restaurant
+#. odoo-javascript
+#: code:addons/pos_restaurant/static/src/js/Screens/ProductScreen/ControlButtons/TableGuestsButton.js:0
+#, python-format
+msgid "You cannot put a number that exceeds %s "
+msgstr "لا يمكنك وضع عدد يتجاوز %s "
+
+#. module: pos_restaurant
+#. odoo-python
 #: code:addons/pos_restaurant/models/pos_restaurant.py:0
 #, python-format
 msgid ""
@@ -1417,6 +1397,7 @@ msgstr ""
 "أولاً: \n"
 
 #. module: pos_restaurant
+#. odoo-python
 #: code:addons/pos_restaurant/models/pos_restaurant.py:0
 #, python-format
 msgid ""
@@ -1427,7 +1408,7 @@ msgstr ""
 "أولاً: "
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/TipReceipt.xml:0
 #: code:addons/pos_restaurant/static/src/xml/TipReceipt.xml:0
 #, python-format
@@ -1435,35 +1416,35 @@ msgid "________________________"
 msgstr "________________________"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/TipReceipt.xml:0
 #, python-format
 msgid "______________________________________________"
 msgstr "______________________________________________"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/SplitBillScreen/SplitOrderline.xml:0
 #, python-format
 msgid "at"
 msgstr "في"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/ReceiptScreen/OrderReceipt.xml:0
 #, python-format
 msgid "at table"
 msgstr "في الطاولة"
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/FloorScreen/FloorScreen.xml:0
 #, python-format
 msgid "button in the editing toolbar to create new tables."
 msgstr "زر في قائمة أدوات التحرير لإنشاء طاولات جديدة."
 
 #. module: pos_restaurant
-#. openerp-web
+#. odoo-javascript
 #: code:addons/pos_restaurant/static/src/xml/Screens/SplitBillScreen/SplitOrderline.xml:0
 #, python-format
 msgid "discount"

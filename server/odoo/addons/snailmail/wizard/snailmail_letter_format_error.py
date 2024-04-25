@@ -1,4 +1,3 @@
-
 from odoo import api, fields, models
 
 class SnailmailLetterFormatError(models.TransientModel):
@@ -16,11 +15,11 @@ class SnailmailLetterFormatError(models.TransientModel):
 
     def update_resend_action(self):
         self.env.company.write({'snailmail_cover': self.snailmail_cover})
-        letters_to_resend = self.env['snailmail.letter'].search([
-            ('error_code', '=', 'FORMAT_ERROR'),
-        ])
+        letters_to_resend = self.message_id.letter_ids
         for letter in letters_to_resend:
-            letter.attachment_id.unlink()
+            old_attachment = letter.attachment_id
+            letter.attachment_id = False
+            old_attachment.unlink()
             letter.write({'cover': self.snailmail_cover})
             letter.snailmail_print()
 

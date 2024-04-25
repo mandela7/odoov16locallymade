@@ -24,7 +24,7 @@ class PayULatamTest(PayULatamCommon, PaymentHttpCommon):
         for supported_currency_code in SUPPORTED_CURRENCIES:
             supported_currency = self._prepare_currency(supported_currency_code)
             compatible_providers = self.env['payment.provider']._get_compatible_providers(
-                self.company.id, self.partner.id, self.amount, currency_id=supported_currency.id
+                self.env.company.id, self.partner.id, self.amount, currency_id=supported_currency.id
             )
             self.assertIn(self.payulatam, compatible_providers)
 
@@ -159,11 +159,7 @@ class PayULatamTest(PayULatamCommon, PaymentHttpCommon):
         """ Test the processing of a webhook notification. """
         tx = self._create_transaction('redirect')
         url = self._build_url(PayuLatamController._webhook_url)
-        with patch(
-            'odoo.addons.payment_payulatam.controllers.main.PayuLatamController'
-            '._verify_notification_signature'
-        ):
-            self._make_http_post_request(url, data=self.async_notification_data)
+        self._make_http_post_request(url, data=self.async_notification_data_webhook)
         self.assertEqual(tx.state, 'done')
 
     @mute_logger('odoo.addons.payment_payulatam.controllers.main')

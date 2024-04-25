@@ -6,15 +6,16 @@
 # Khwunchai Jaengsawang <khwunchai.j@ku.th>, 2022
 # Martin Trigaux, 2022
 # Wichanon Jamwutthipreecha, 2022
+# Rasareeyar Lappiam, 2024
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:24+0000\n"
+"POT-Creation-Date: 2022-12-15 12:45+0000\n"
 "PO-Revision-Date: 2022-09-22 05:56+0000\n"
-"Last-Translator: Wichanon Jamwutthipreecha, 2022\n"
-"Language-Team: Thai (https://www.transifex.com/odoo/teams/41243/th/)\n"
+"Last-Translator: Rasareeyar Lappiam, 2024\n"
+"Language-Team: Thai (https://app.transifex.com/odoo/teams/41243/th/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -22,19 +23,19 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #, python-format
 msgid " Flag"
-msgstr ""
+msgstr "ธง"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #, python-format
 msgid " Flagged"
-msgstr ""
+msgstr "ปักธงแล้ว"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_forum__total_answers
@@ -59,72 +60,84 @@ msgid "# Views"
 msgstr "# ยอดเข้าชม"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to accept or refuse an answer."
 msgstr "%dคะแนน Karma ที่ต้องยอมรับหรือปฏิเสธคำตอบ"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to answer a question."
 msgstr "%dคะแนน Karma เพื่อตอบคำถาม"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to close or reopen a post."
 msgstr "%dคะแนน Karma เพื่่อปิดหรือเปิดโพสต์ใหม่อีกครั้ง"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to comment."
 msgstr "%dคะแนน Karma เพื่อแสดงความคิดเห็น"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to convert a comment to an answer."
 msgstr "%d คะแนน Karma จำเป็น เพื่อแปลงความคิดเห็นเป็นคำตอบ"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to convert an answer to a comment."
 msgstr "%dคะแนน Karma จำเป็น เพื่อแปลงความคิดเห็นเป็นคำตอบ"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to convert your comment to an answer."
 msgstr "%d  คะแนน Karma จำเป็น เพื่อแปลงความคิดเห็นเป็นคำตอบ"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to create a new Tag."
 msgstr "%d  คะแนน Karma จำเป็น เพื่อสร้างแท็กใหม่"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to create a new question."
 msgstr "%d คะแนน Karma จำเป็น เพื่อสร้างคำถามใหม่"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to delete or reactivate a post."
 msgstr "%dคะแนน Karma จำเป็น เพื่อลบหรือเปิดใช้งานโพสต์อีกครั้ง"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to downvote."
 msgstr "%d คะแนน Karma จำเป็น เพื่อโหวตไม่เห็นด้วย"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
@@ -132,6 +145,7 @@ msgid "%d karma required to edit a post."
 msgstr "%d คะแนน Karma จำเป็น เพื่อแก้ไขโพสต์"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
@@ -139,6 +153,7 @@ msgid "%d karma required to flag a post."
 msgstr "%d คะแนน Karma จำเป็น เพื่อตั้งค่าสถานะโพสต์"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/controllers/main.py:0
 #: code:addons/website_forum/controllers/main.py:0
 #: code:addons/website_forum/models/forum.py:0
@@ -147,42 +162,49 @@ msgid "%d karma required to mark a post as offensive."
 msgstr "%d คะแนน Karma จำเป็น เพื่อตั้งค่าโพสต์เป็นละเมิด"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to post an image or link."
 msgstr "%d คะแนน Karma จำเป็น เพื่อโพสต์ภาพหรือลิงก์"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to refuse a post."
 msgstr "%d คะแนน Karma จำเป็น เพื่อปฏิเสธโพสต์"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to retag."
 msgstr "%dคะแนน Karma จำเป็น เพื่อแท็กอีกครั้ง"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to unlink a comment."
 msgstr "%dคะแนน Karma จำเป็น เพื่อยกเลิกการเชื่อมโยงความคิดเห็น"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to unlink a post."
 msgstr "%dคะแนน Karma จำเป็น เพื่อยกเลิกการเชื่อมโยงโพสต์"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to upvote."
 msgstr "%d คะแนน Karma จำเป็น เพื่อโหวตไม่เห็นด้วย"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to validate a post."
@@ -226,14 +248,14 @@ msgid "0 Answers"
 msgstr "0 คำตอบ"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/xml/public_templates.xml:0
 #, python-format
 msgid "45% of questions shared"
 msgstr "45% ของคำถามถูกแชร์"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/xml/public_templates.xml:0
 #, python-format
 msgid ""
@@ -271,10 +293,10 @@ msgstr ""
 #: model_terms:forum.forum,faq:website_forum.forum_help
 #: model_terms:ir.ui.view,arch_db:website_forum.default_faq
 msgid ""
-"<b>Answers should not add or expand questions</b>. Insteadeither edit the "
+"<b>Answers should not add or expand questions</b>. Instead, either edit the "
 "question or add a comment."
 msgstr ""
-"<b>คำตอบไม่ควรเพิ่มหรือขยายคำถาม</b>ให้แก้ไขคำถามหรือเพิ่มความคิดเห็นแทน"
+"<b>คำตอบไม่ควรเพิ่มหรือขยายคำถาม</b> ให้แก้ไขคำถามหรือเพิ่มความคิดเห็นแทน"
 
 #. module: website_forum
 #: model_terms:forum.forum,faq:website_forum.forum_help
@@ -455,7 +477,7 @@ msgstr "<i class=\"fa fa-bug\"/> เครื่องมือตัวกร�
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.post_description_full
 msgid "<i class=\"fa fa-check fa-fw me-1\"/>Accept"
-msgstr ""
+msgstr "<i class=\"fa fa-check fa-fw me-1\"/>ยอมรับ"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.moderation_queue
@@ -496,12 +518,12 @@ msgstr "<i class=\"fa fa-chevron-left small\"/> กลับ"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_post_view_kanban
 msgid "<i class=\"fa fa-comments-o me-1\" title=\"Forum\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-comments-o me-1\" title=\"ฟอรั่ม\"/>"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_post_view_kanban
 msgid "<i class=\"fa fa-eye me-1\" title=\"Views\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-eye me-1\" title=\"จำนวนการดู\"/>"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.user_sidebar
@@ -523,7 +545,7 @@ msgstr "<i class=\"fa fa-flag\"/> ประเทศ"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_post_view_kanban
 msgid "<i class=\"fa fa-globe me-1\" title=\"Website\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-globe me-1\" title=\"เว็บไซต์\"/>"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.post_answers
@@ -542,7 +564,7 @@ msgstr "<i class=\"fa fa-question-circle-o fa-fw\"/> โพสต์ของฉ
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.post_description_full
 msgid "<i class=\"fa fa-reply me-1\"/>Answer"
-msgstr ""
+msgstr "<i class=\"fa fa-reply me-1\"/>คำตอบ"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.post_description_full
@@ -574,6 +596,8 @@ msgid ""
 "<i class=\"fa fa-thumbs-down text-danger ms-3\" role=\"img\" aria-"
 "label=\"Negative votes\" title=\"Negative votes\"/>"
 msgstr ""
+"<i class=\"fa fa-thumbs-down text-danger ms-3\" role=\"รูปภาพ\" aria-"
+"label=\"คะแนนเสียงเชิงลบ\" title=\"คะแนนเสียงเชิงลบ\"/>"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.user_profile_content
@@ -587,7 +611,7 @@ msgstr ""
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.post_description_full
 msgid "<i class=\"fa fa-times fa-fw me-1\"/>Reject"
-msgstr ""
+msgstr "<i class=\"fa fa-times fa-fw me-1\"/>ปฏิเสธ"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.edit_post
@@ -607,7 +631,7 @@ msgstr "<i class=\"fa fa-user\"/> ผู้ใช้"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.user_profile_content
 msgid "<small class=\"fw-bold\">Votes</small>"
-msgstr ""
+msgstr "<small class=\"fw-bold\">โหวต</small>"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.moderation_display_post_answer
@@ -759,7 +783,7 @@ msgid "Accepting an answer"
 msgstr "ยอมรับคำตอบ"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #: code:addons/website_forum/static/src/js/website_forum.js:0
@@ -802,6 +826,7 @@ msgstr ""
 "ซึ่งทำให้สามารถเผยแพร่เนื้อหาในฟอรั่มสื่อสังคมได้"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/controllers/main.py:0
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 #, python-format
@@ -846,6 +871,7 @@ msgid "Answer"
 msgstr "คำตอบ"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #: model:mail.message.subtype,description:website_forum.mt_answer_edit
 #: model:mail.message.subtype,name:website_forum.mt_answer_edit
@@ -993,6 +1019,11 @@ msgid "Asking a question"
 msgstr "ถามคำถาม"
 
 #. module: website_forum
+#: model:ir.model,name:website_forum.model_ir_attachment
+msgid "Attachment"
+msgstr "การแนบ"
+
+#. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_forum__message_attachment_count
 #: model:ir.model.fields,field_description:website_forum.field_forum_post__message_attachment_count
 #: model:ir.model.fields,field_description:website_forum.field_forum_tag__message_attachment_count
@@ -1037,6 +1068,7 @@ msgid "Back to Question"
 msgstr "กลับไปที่คำถาม"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/controllers/main.py:0
 #: code:addons/website_forum/controllers/main.py:0
 #, python-format
@@ -1070,7 +1102,7 @@ msgid "Bumped on"
 msgstr "ชนบน"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/xml/public_templates.xml:0
 #, python-format
 msgid "By sharing you answer, you will get additional"
@@ -1142,6 +1174,11 @@ msgid "Can Upvote"
 msgstr "สามารถโหวตเห็นด้วย"
 
 #. module: website_forum
+#: model:ir.model.fields,field_description:website_forum.field_forum_post__can_use_full_editor
+msgid "Can Use Full Editor"
+msgstr "สามารถใช้โปรแกรมแก้ไขแบบเต็มได้"
+
+#. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_post__can_view
 msgid "Can View"
 msgstr "สามารถดู"
@@ -1174,28 +1211,28 @@ msgid "Chief Commentator"
 msgstr "หัวหน้านักวิจารณ์"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/tours/website_forum.js:0
 #, python-format
 msgid "Click here to accept this answer."
 msgstr "คลิดที่นี้เพื่อยอมรับคำตอบ"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/tours/website_forum.js:0
 #, python-format
 msgid "Click to answer."
 msgstr "ตลิกเพื่อตอบ"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/tours/website_forum.js:0
 #, python-format
 msgid "Click to post your answer."
 msgstr "คลิกเพื่อโพสต์คำตอบ"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/tours/website_forum.js:0
 #, python-format
 msgid "Click to post your question."
@@ -1281,8 +1318,6 @@ msgstr "แสดงความคิดเห็นบนโพสต์นี
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_p_2
 #: model:gamification.challenge,name:website_forum.challenge_commentator
-#: model:gamification.challenge.line,name:website_forum.line_chief_commentator
-#: model:gamification.challenge.line,name:website_forum.line_commentator
 #: model:gamification.goal.definition,name:website_forum.definition_commentator
 msgid "Commentator"
 msgstr "ผู้แสดงความคิดเห็น"
@@ -1299,7 +1334,6 @@ msgid "Complete own biography"
 msgstr "กรอกประวัติตัวเอง"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_configure_profile
 #: model:gamification.goal.definition,name:website_forum.definition_configure_profile
 #: model_terms:gamification.badge,description:website_forum.badge_p_1
 msgid "Completed own biography"
@@ -1363,7 +1397,7 @@ msgid "Create a new forum post"
 msgstr "สร้างโพสต์ในฟอรั่มใหม่"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/tours/website_forum.js:0
 #, python-format
 msgid "Create a new post in this forum by clicking on the button."
@@ -1409,7 +1443,6 @@ msgstr "คำถามที่น่าเชื่อถือ"
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_5
 #: model:gamification.challenge,name:website_forum.challenge_critic
-#: model:gamification.challenge.line,name:website_forum.line_critic
 #: model:gamification.goal.definition,name:website_forum.definition_critic
 msgid "Critic"
 msgstr "นักวิจารณ์"
@@ -1502,7 +1535,6 @@ msgstr "ละทิ้ง"
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_6
 #: model:gamification.challenge,name:website_forum.challenge_disciplined
-#: model:gamification.challenge.line,name:website_forum.line_disciplined
 #: model:gamification.goal.definition,name:website_forum.definition_disciplined
 msgid "Disciplined"
 msgstr "มีระเบียบ"
@@ -1575,20 +1607,19 @@ msgstr "แก้ไขโพสของคุณ"
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_7
 #: model:gamification.challenge,name:website_forum.challenge_editor
-#: model:gamification.challenge.line,name:website_forum.line_editor
 #: model:gamification.goal.definition,name:website_forum.definition_editor
 msgid "Editor"
 msgstr "ผู้แก้ไข"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_forum__karma_editor
+#: model:ir.model.fields,help:website_forum.field_forum_post__can_use_full_editor
 msgid "Editor Features: image and links"
 msgstr "ฟีเจอร์ตัวแก้ไข: รูปภาพและลิงก์"
 
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_a_5
 #: model:gamification.challenge,name:website_forum.challenge_enlightened
-#: model:gamification.challenge.line,name:website_forum.line_enlightened
 #: model:gamification.goal.definition,name:website_forum.definition_enlightened
 msgid "Enlightened"
 msgstr "ผู้ตื่นรู้"
@@ -1626,19 +1657,16 @@ msgid "Favourite"
 msgstr "รายการโปรด"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_favorite_question_1
 #: model:gamification.goal.definition,name:website_forum.definition_favorite_question_1
 msgid "Favourite Question (1)"
 msgstr "คำถามโปรด (1)"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_stellar_question_25
 #: model:gamification.goal.definition,name:website_forum.definition_stellar_question_25
 msgid "Favourite Question (25)"
 msgstr "คำถามโปรด (25)"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_favorite_question_5
 #: model:gamification.goal.definition,name:website_forum.definition_favorite_question_5
 msgid "Favourite Question (5)"
 msgstr "คำถามโปรด (5)"
@@ -1732,18 +1760,19 @@ msgid ""
 "For example, if you ask an interesting question or give a helpful answer, "
 "your input will be upvoted. On the other hand if the answer is misleading - "
 "it will be downvoted. Each vote in favor will generate 10 points, each vote "
-"against will subtract 10 points. There is a limit of 200 points that can be "
+"against will subtract 2 points. There is a limit of 200 points that can be "
 "accumulated for a question or answer per day. The table given at the end "
 "explains reputation point requirements for each type of moderation task."
 msgstr ""
 "ตัวอย่างเช่น หากคุณถามคำถามที่น่าสนใจหรือให้คำตอบที่เป็นประโยชน์ "
-"ข้อมูลของคุณจะถูกโหวตให้เห็นด้วย ในทางกลับกัน ถ้าคำตอบทำให้เข้าใจผิด - "
-"จะถูกโหวตไม่เห็นด้วยและในแต่ละครั้งของการโหวตเห็นด้วยจะเพิ่ม 10 คะแนน "
-"โหวตไม่เห็นด้วยจะหัก 10 คะแนน จำกัด 200 "
-"คะแนนที่สามารถสะสมสำหรับคำถามหรือคำตอบต่อวัน "
-"ตารางที่ระบุในตอนท้ายจะอธิบายข้อกำหนดคะแนนชื่อเสียงสำหรับการกลั่นกรองแต่ละประเภท"
+"ข้อมูลของคุณจะถูกโหวตเห็นด้วย ในทางกลับกัน หากคำตอบนั้นทำให้เข้าใจผิด "
+"คำตอบนั้นจะถูกลบคะแนน การลงคะแนนเสียงเห็นด้วยแต่ละครั้งจะได้ 10 คะแนน "
+"การลงคะแนนเสียงที่ไม่เห็นด้วยแต่ละครั้งจะถูกลบ 2 คะแนน "
+"มีการจำกัดคะแนนที่สามารถสะสมได้ 200 คะแนนสำหรับคำถามหรือคำตอบต่อวัน "
+"ตารางที่ให้ไว้ตอนท้ายจะอธิบายข้อกำหนดคะแนนความน่าเชื่อถือสำหรับงานตรวจสอบแต่ละประเภท"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/website.py:0
 #: code:addons/website_forum/models/website.py:0
 #: model:ir.actions.act_url,name:website_forum.action_open_forum
@@ -1774,7 +1803,7 @@ msgstr "ชื่อฟอรั่ม"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.snippet_options
 msgid "Forum Page"
-msgstr ""
+msgstr "หน้าฟอรั่ม"
 
 #. module: website_forum
 #: model:ir.model,name:website_forum.model_forum_post
@@ -1785,7 +1814,7 @@ msgstr "โพสต์ฟอรั่ม"
 #. module: website_forum
 #: model:ir.actions.act_window,name:website_forum.action_forum_post
 msgid "Forum Post Pages"
-msgstr ""
+msgstr "หน้าโพสต์ฟอรั่ม"
 
 #. module: website_forum
 #: model:ir.ui.menu,name:website_forum.menu_forum_post_pages
@@ -1816,7 +1845,7 @@ msgid "Gamification Challenge"
 msgstr "ความท้าทายในรูปแบบเกม"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/tours/website_forum.js:0
 #, python-format
 msgid "Give your post title."
@@ -1829,7 +1858,6 @@ msgid "Good Answer"
 msgstr "คำตอบที่ดี"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_good_answer
 #: model:gamification.goal.definition,name:website_forum.definition_good_answer
 msgid "Good Answer (6)"
 msgstr "คำตอบที่ดี (6)"
@@ -1852,7 +1880,6 @@ msgid "Great Answer"
 msgstr "คำตอบที่่ยอดเยี่ยม"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_great_answer
 #: model:gamification.goal.definition,name:website_forum.definition_great_answer
 msgid "Great Answer (15)"
 msgstr "คำตอบที่่ยอดเยี่ยม (15)"
@@ -1886,7 +1913,6 @@ msgid "Guru"
 msgstr "กูรู"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_guru
 #: model:gamification.goal.definition,name:website_forum.definition_guru
 msgid "Guru (15)"
 msgstr "กูรู (15)"
@@ -2039,7 +2065,7 @@ msgid "Inappropriate and unacceptable statements"
 msgstr "ข้อความที่ไม่เหมาะสมและไม่สามารถยอมรับได้"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/tours/website_forum.js:0
 #, python-format
 msgid "Insert tags related to your question."
@@ -2073,12 +2099,14 @@ msgid "Is the author's biography visible from his post"
 msgstr "ชีวประวัติของผู้เขียนมองเห็นได้จากโพสต์ของเขาหรือไม่"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "It is not allowed to modify someone else's vote."
 msgstr "ไม่อนุญาตให้แก้ไขการลงคะแนนของผู้อื่น"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "It is not allowed to vote for its own post."
@@ -2090,7 +2118,7 @@ msgid "Karma"
 msgstr "Karma"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #, python-format
 msgid "Karma Error"
@@ -2207,7 +2235,7 @@ msgstr "ทำเครื่องหมายว่าเป็นคำตอ
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.show_flag_validator
 msgid "Mark as Offensive"
-msgstr ""
+msgstr "ทำเครื่องหมายว่าไม่เหมาะสม"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.mark_as_offensive
@@ -2286,7 +2314,7 @@ msgid "Most voted"
 msgstr "ได้รับการโหวตมากที่สุด"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/xml/public_templates.xml:0
 #, python-format
 msgid ""
@@ -2373,7 +2401,6 @@ msgid "Nice Answer"
 msgstr "คำตอบที่น่าสนใจ"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_nice_answer
 #: model:gamification.goal.definition,name:website_forum.definition_nice_answer
 msgid "Nice Answer (4)"
 msgstr "คำตอบที่น่าสนใจ (4)"
@@ -2468,8 +2495,8 @@ msgstr "จำนวนโพสต์ที่ตั้งสถานะ"
 #: model:ir.model.fields,help:website_forum.field_forum_forum__message_needaction_counter
 #: model:ir.model.fields,help:website_forum.field_forum_post__message_needaction_counter
 #: model:ir.model.fields,help:website_forum.field_forum_tag__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "จํานวนข้อความที่ต้องดําเนินการ"
+msgid "Number of messages requiring action"
+msgstr "จำนวนข้อความที่ต้องดำเนินการ"
 
 #. module: website_forum
 #: model:ir.model.fields,help:website_forum.field_forum_forum__message_has_error_counter
@@ -2499,7 +2526,7 @@ msgid "Offensive"
 msgstr "ละเมิด"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #: model_terms:ir.ui.view,arch_db:website_forum.header
 #, python-format
@@ -2507,7 +2534,7 @@ msgid "Offensive Post"
 msgstr "โพสต์ที่ละเมิด"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/xml/public_templates.xml:0
 #, python-format
 msgid "On average,"
@@ -2541,7 +2568,6 @@ msgstr "ฟอรั่มของเรา"
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_23
 #: model:gamification.challenge,name:website_forum.challenge_peer_pressure
-#: model:gamification.challenge.line,name:website_forum.line_peer_pressure
 #: model:gamification.goal.definition,name:website_forum.definition_peer_pressure
 msgid "Peer Pressure"
 msgstr "แรงกดดันของขุนนาง"
@@ -2570,19 +2596,16 @@ msgid "Popular Question"
 msgstr "คำถามยอดนิยม"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_popular_question
 #: model:gamification.goal.definition,name:website_forum.definition_popular_question
 msgid "Popular Question (150)"
 msgstr "คำถามยอดนิยม (150)"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_notable_question
 #: model:gamification.goal.definition,name:website_forum.definition_notable_question
 msgid "Popular Question (250)"
 msgstr "คำถามยอดนิยม (250)"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_famous_question
 #: model:gamification.goal.definition,name:website_forum.definition_famous_question
 msgid "Popular Question (500)"
 msgstr "คำถามยอดนิยม (500)"
@@ -2628,7 +2651,7 @@ msgstr "โพสต์ความคิดเห็น"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.snippet_options
 msgid "Post Count"
-msgstr ""
+msgstr "จำนวนโพสต์"
 
 #. module: website_forum
 #: model:ir.model,name:website_forum.model_forum_post_vote
@@ -2656,6 +2679,7 @@ msgid "Posted 100 comments"
 msgstr "โพสต์ 100 ความคิดเห็น"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "Posting answer on a [Deleted] or [Closed] question is not possible."
@@ -2698,20 +2722,19 @@ msgstr ""
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_25
 #: model:gamification.challenge,name:website_forum.challenge_pundit
-#: model:gamification.challenge.line,name:website_forum.line_pundit
 #: model:gamification.goal.definition,name:website_forum.definition_pundit
 msgid "Pundit"
 msgstr "บัณฑิต"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/tours/website_forum.js:0
 #, python-format
 msgid "Put your answer here."
 msgstr "ใส่คำตอบของคุณตรงนี้"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/tours/website_forum.js:0
 #, python-format
 msgid "Put your question here."
@@ -2725,6 +2748,7 @@ msgid "Question"
 msgstr "คำถาม"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #: model:mail.message.subtype,description:website_forum.mt_question_edit
 #: model:mail.message.subtype,name:website_forum.mt_question_edit
@@ -2763,6 +2787,7 @@ msgid "Question set as favorite by 5 users"
 msgstr "คำถามที่ถูกตั้งไว้เป็นรายการโปรดโดยผู้ใช้ 5 ราย"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/controllers/main.py:0
 #, python-format
 msgid "Question should not be empty."
@@ -2818,6 +2843,7 @@ msgid "Ranks"
 msgstr "อันดับ"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
@@ -2825,7 +2851,7 @@ msgid "Re: %s"
 msgstr "ตอบกลับ: %s"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #, python-format
 msgid "Read the guidelines to know how to gain karma."
@@ -2889,6 +2915,7 @@ msgid "Reopen"
 msgstr "เปิดอีกครั้ง"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/controllers/main.py:0
 #, python-format
 msgid "Reply should not be empty."
@@ -2942,7 +2969,6 @@ msgstr "บันทึกการเปลี่ยนแปลง"
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_26
 #: model:gamification.challenge,name:website_forum.challenge_scholar
-#: model:gamification.challenge.line,name:website_forum.line_scholar
 #: model:gamification.goal.definition,name:website_forum.definition_scholar
 msgid "Scholar"
 msgstr "นักวิชาการ"
@@ -2990,7 +3016,6 @@ msgstr "เลือกทั้งหมด"
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_a_8
 #: model:gamification.challenge,name:website_forum.challenge_self_learner
-#: model:gamification.challenge.line,name:website_forum.line_self_learner
 #: model:gamification.goal.definition,name:website_forum.definition_self_learner
 msgid "Self-Learner"
 msgstr "ผู้เรียนรู้ด้วยตัวเอง"
@@ -3008,7 +3033,7 @@ msgid "Sequence"
 msgstr "ลำดับ"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/xml/public_templates.xml:0
 #, python-format
 msgid ""
@@ -3060,28 +3085,28 @@ msgid "Some users"
 msgstr "ผู้ใช้บางราย"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #, python-format
 msgid "Sorry you must be logged in to perform this action"
 msgstr "ขออภัย คุณต้องเข้าสู่ระบบเพื่อดำเนินการ"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #, python-format
 msgid "Sorry you must be logged to flag a post"
 msgstr "ขออภัย คุณต้องเข้าสู่ระบบเพื่อตั้งค่าสถานะโพสต์"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #, python-format
 msgid "Sorry you must be logged to vote"
 msgstr "ขออภัย คุณต้องเข้าสู่ระบบเพื่อโหวต"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #, python-format
 msgid "Sorry, anonymous users cannot choose correct answer."
@@ -3098,7 +3123,7 @@ msgid "Sorry, we could not find any <b>%s</b> result <b>%s</b> %s%s%s."
 msgstr "ขออภัย เราไม่พบ <b>%s</b> ผลลัพ์ <b>%s</b> %s%s%s"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #, python-format
 msgid "Sorry, you cannot vote for your own posts"
@@ -3134,7 +3159,6 @@ msgstr "นักเรียน"
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_31
 #: model:gamification.challenge,name:website_forum.challenge_supporter
-#: model:gamification.challenge.line,name:website_forum.line_supporter
 #: model:gamification.goal.definition,name:website_forum.definition_supporter
 msgid "Supporter"
 msgstr "ผู้สนับสนุน"
@@ -3169,7 +3193,6 @@ msgstr "แท็กที่ฉันติดตาม"
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_32
 #: model:gamification.challenge,name:website_forum.challenge_taxonomist
-#: model:gamification.challenge.line,name:website_forum.line_taxonomist
 #: model:gamification.goal.definition,name:website_forum.definition_taxonomist
 msgid "Taxonomist"
 msgstr "นักอนุกรมวิธาน"
@@ -3177,7 +3200,6 @@ msgstr "นักอนุกรมวิธาน"
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_a_1
 #: model:gamification.challenge,name:website_forum.challenge_teacher
-#: model:gamification.challenge.line,name:website_forum.line_teacher
 #: model:gamification.goal.definition,name:website_forum.definition_teacher
 msgid "Teacher"
 msgstr "ครู"
@@ -3199,7 +3221,7 @@ msgstr ""
 "และฟิลด์นี้เป็นวิธีแก้ปัญหาชั่วคราว"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/xml/public_templates.xml:0
 #, python-format
 msgid "Thanks for posting!"
@@ -3292,14 +3314,14 @@ msgid "This forum has been archived."
 msgstr "ฟอรั่มนี้ถูกเก็บถาวรแล้ว"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #, python-format
 msgid "This post can not be flagged"
 msgstr "โพสต์นี้ไม่สามารถตั้งค่าสถานะได้"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #, python-format
 msgid "This post is already flagged"
@@ -3333,6 +3355,7 @@ msgid "Title must not be empty"
 msgstr "ชื่อเรื่องต้องไม่เว้นว่าง"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/controllers/main.py:0
 #, python-format
 msgid "Title should not be empty."
@@ -3391,7 +3414,7 @@ msgstr "คำตอบทั้งหมด"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.view_forum_forum_list
 msgid "Total Posts"
-msgstr ""
+msgstr "โพสต์ทั้งหมด"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.view_forum_forum_list
@@ -3460,25 +3483,21 @@ msgid "Upvote"
 msgstr "โหวตเห็นด้วย"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_student
 #: model:gamification.goal.definition,name:website_forum.definition_student
 msgid "Upvoted question (1)"
 msgstr "คำถามถูกโหวตเห็นด้วย (1)"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_great_question
 #: model:gamification.goal.definition,name:website_forum.definition_great_question
 msgid "Upvoted question (15)"
 msgstr "คำถามถูกโหวตเห็นด้วย (15)"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_nice_question
 #: model:gamification.goal.definition,name:website_forum.definition_nice_question
 msgid "Upvoted question (4)"
 msgstr "คำถามถูกโหวตเห็นด้วย (4)"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_good_question
 #: model:gamification.goal.definition,name:website_forum.definition_good_question
 msgid "Upvoted question (6)"
 msgstr "คำถามถูกโหวตเห็นด้วย (6)"
@@ -3647,13 +3666,14 @@ msgid "You already have a pending post"
 msgstr "คุณมีโพสต์ที่รอดำเนินการอยู่"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/xml/public_templates.xml:0
 #, python-format
 msgid "You can share your question once it has been validated"
 msgstr "คุณสามารถแชร์คำถามของคุณเมื่อได้รับการตรวจสอบแล้ว"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "You cannot create recursive forum posts."
@@ -3740,7 +3760,7 @@ msgstr "วันที่กิจกรรม"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.header
 msgid "and join this Forum"
-msgstr ""
+msgstr "และเข้าร่วมฟอรั่มนี้"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.header
@@ -3785,12 +3805,12 @@ msgstr "เช่น ช่วยเหลือ"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_forum_view_form_add
 msgid "e.g. Technical Assistance"
-msgstr ""
+msgstr "เช่น ความช่วยเหลือด้านเทคนิค"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.view_forum_post_form
 msgid "e.g. When should I plant my tomatoes?"
-msgstr ""
+msgstr "เช่น ฉันควรปลูกมะเขือเทศตอนช่วงไหน?"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.faq_karma
@@ -3832,7 +3852,7 @@ msgid "has been posted. Click here to access the question :"
 msgstr "ได้รับการโพสต์ คลิกที่นี้เพื่อเข้าสู่คำถาม:"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/xml/public_templates.xml:0
 #, python-format
 msgid "here"
@@ -3858,7 +3878,7 @@ msgid "how to install Odoo on a specific infrastructure,"
 msgstr "ติดตั้ง Odoo บนโครงสร้างพื้นฐานเฉพาะได้อย่างไร"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/xml/public_templates.xml:0
 #, python-format
 msgid ""
@@ -3900,7 +3920,7 @@ msgid "it is a rant disguised as a question: “______ sucks, am I right?”"
 msgstr "เป็นการพูดจาหยาบคายในรูปแบบคำถาม: “______ ห่วย จริงไหม?”"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/xml/public_templates.xml:0
 #, python-format
 msgid "karma points"
@@ -3934,7 +3954,7 @@ msgid "on"
 msgstr "เมื่อ"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/xml/public_templates.xml:0
 #, python-format
 msgid ""

@@ -14,12 +14,13 @@ import { KanbanRecord } from "@web/views/kanban/kanban_record";
 import { FileUploader } from "@web/views/fields/file_handler";
 import { standardWidgetProps } from "@web/views/widgets/standard_widget_props";
 
-const { Component, useState } = owl;
+import { Component, useState } from "@odoo/owl";
 
 export class AccountFileUploader extends Component {
     setup() {
         this.orm = useService("orm");
         this.action = useService("action");
+        this.notification = useService("notification");
         this.attachmentIdsToProcess = [];
         const rec = this.props.record ? this.props.record.data : false;
         this.extraContext = rec ? {
@@ -45,6 +46,18 @@ export class AccountFileUploader extends Component {
             context: { ...this.extraContext, ...this.env.searchModel.context },
         });
         this.attachmentIdsToProcess = [];
+        if (action.context && action.context.notifications) {
+            for (let [file, msg] of Object.entries(action.context.notifications)) {
+                this.notification.add(
+                    msg,
+                    {
+                        title: file,
+                        type: "info",
+                        sticky: true,
+                    });
+            }
+            delete action.context.notifications;
+        }
         this.action.doAction(action);
     }
 }
@@ -55,7 +68,7 @@ AccountFileUploader.template = "account.AccountFileUploader";
 AccountFileUploader.extractProps = ({ attrs }) => ({
     togglerTemplate: attrs.template || "account.JournalUploadLink",
     btnClass: attrs.btnClass || "",
-    linkText: attrs.linkText || _lt("Upload"),
+    linkText: attrs.linkText || attrs.title || _lt("Upload"), //TODO: remove linkText attr in master (not translatable)
 });
 AccountFileUploader.props = {
     ...standardWidgetProps,
@@ -115,15 +128,28 @@ AccountMoveUploadListRenderer.components = {
     AccountDropZone,
 };
 
-export class AccountMoveUploadListController extends ListController {}
-AccountMoveUploadListController.components = {
+export class AccountMoveListController extends ListController {
+    setup() {
+        super.setup();
+        this.account_move_service = useService("account_move");
+    }
+
+    async onDeleteSelectedRecords() {
+        const selectedResIds = await this.getSelectedResIds();
+        if (this.props.resModel !== "account.move" || !await this.account_move_service.addDeletionDialog(this, selectedResIds)) {
+            return super.onDeleteSelectedRecords(...arguments);
+        }
+    }
+};
+
+AccountMoveListController.components = {
     ...ListController.components,
     AccountFileUploader,
 };
 
 export const AccountMoveUploadListView = {
     ...listView,
-    Controller: AccountMoveUploadListController,
+    Controller: AccountMoveListController,
     Renderer: AccountMoveUploadListRenderer,
     buttonTemplate: "account.ListView.Buttons",
 };

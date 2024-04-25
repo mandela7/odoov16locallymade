@@ -50,7 +50,7 @@ class PurchaseOrder(models.Model):
     @api.depends('picking_ids.date_done')
     def _compute_effective_date(self):
         for order in self:
-            pickings = order.picking_ids.filtered(lambda x: x.state == 'done' and x.location_dest_id.usage == 'internal' and x.date_done)
+            pickings = order.picking_ids.filtered(lambda x: x.state == 'done' and x.location_dest_id.usage != 'supplier' and x.date_done)
             order.effective_date = min(pickings.mapped('date_done'), default=False)
 
     @api.depends('picking_ids', 'picking_ids.state')
@@ -122,7 +122,7 @@ class PurchaseOrder(models.Model):
                 for order_line in order.order_line:
                     order_line.move_ids._action_cancel()
                     if order_line.move_dest_ids:
-                        move_dest_ids = order_line.move_dest_ids
+                        move_dest_ids = order_line.move_dest_ids.filtered(lambda move: move.state != 'done' and not move.scrapped)
                         if order_line.propagate_cancel:
                             move_dest_ids._action_cancel()
                         else:
@@ -189,7 +189,7 @@ class PurchaseOrder(models.Model):
         filtered_documents = {}
         for (parent, responsible), rendering_context in documents.items():
             if parent._name == 'stock.picking':
-                if parent.state == 'cancel':
+                if parent.state in ['cancel', 'done']:
                     continue
             filtered_documents[(parent, responsible)] = rendering_context
         self.env['stock.picking']._log_activity(_render_note_exception_quantity_po, filtered_documents)
@@ -288,7 +288,20 @@ class PurchaseOrder(models.Model):
 class PurchaseOrderLine(models.Model):
     _inherit = 'purchase.order.line'
 
-    qty_received_method = fields.Selection(selection_add=[('stock_moves', 'Stock Moves')])
+    def _ondelete_stock_moves(self):
+        modified_fields = ['qty_received_manual', 'qty_received_method']
+        self.flush_recordset(fnames=['qty_received', *modified_fields])
+        self.invalidate_recordset(fnames=modified_fields, flush=False)
+        query = f'''
+            UPDATE {self._table}
+            SET qty_received_manual = qty_received, qty_received_method = 'manual'
+            WHERE id IN %(ids)s
+        '''
+        self.env.cr.execute(query, {'ids': self._ids or (None,)})
+        self.modified(modified_fields)
+
+    qty_received_method = fields.Selection(selection_add=[('stock_moves', 'Stock Moves')],
+                                           ondelete={'stock_moves': _ondelete_stock_moves})
 
     move_ids = fields.One2many('stock.move', 'purchase_line_id', string='Reservation', readonly=True, copy=False)
     orderpoint_id = fields.Many2one('stock.warehouse.orderpoint', 'Orderpoint', copy=False, index='btree_not_null')
@@ -307,7 +320,7 @@ class PurchaseOrderLine(models.Model):
         self.ensure_one()
         moves = self.move_ids.filtered(lambda m: m.product_id == self.product_id)
         if self._context.get('accrual_entry_date'):
-            moves = moves.filtered(lambda r: fields.Date.to_date(r.date) <= self._context['accrual_entry_date'])
+            moves = moves.filtered(lambda r: fields.Date.context_today(r, r.date) <= self._context['accrual_entry_date'])
         return moves
 
     @api.depends('move_ids.state', 'move_ids.product_uom_qty', 'move_ids.product_uom')
@@ -329,6 +342,8 @@ class PurchaseOrderLine(models.Model):
                             # In this case, the received quantity on the PO is set although we didn't
                             # receive the product physically in our stock. To avoid counting the
                             # quantity twice, we do nothing.
+                            pass
+                        elif move.origin_returned_move_id and move.origin_returned_move_id._is_purchase_return() and not move.to_refund:
                             pass
                         else:
                             total += move.product_uom._compute_quantity(move.product_uom_qty, line.product_uom, rounding_method='HALF-UP')
@@ -358,15 +373,23 @@ class PurchaseOrderLine(models.Model):
             new_date = fields.Datetime.to_datetime(values['date_planned'])
             self.filtered(lambda l: not l.display_type)._update_move_date_deadline(new_date)
         lines = self.filtered(lambda l: l.order_id.state == 'purchase')
-        previous_product_qty = {line.id: line.product_uom_qty for line in lines}
+
+        if 'product_packaging_id' in values:
+            self.move_ids.filtered(
+                lambda m: m.state not in ['cancel', 'done']
+            ).product_packaging_id = values['product_packaging_id']
+
+        previous_product_uom_qty = {line.id: line.product_uom_qty for line in lines}
+        previous_product_qty = {line.id: line.product_qty for line in lines}
         result = super(PurchaseOrderLine, self).write(values)
         if 'price_unit' in values:
             for line in lines:
                 # Avoid updating kit components' stock.move
                 moves = line.move_ids.filtered(lambda s: s.state not in ('cancel', 'done') and s.product_id == line.product_id)
-                moves.write({'price_unit': line.price_unit})
+                moves.write({'price_unit': line._get_stock_move_price_unit()})
         if 'product_qty' in values:
-            lines.with_context(previous_product_qty=previous_product_qty)._create_or_update_picking()
+            lines = lines.filtered(lambda l: float_compare(previous_product_qty[l.id], l.product_qty, precision_rounding=l.product_uom.rounding) != 0)
+            lines.with_context(previous_product_qty=previous_product_uom_qty)._create_or_update_picking()
         return result
 
     def action_product_forecast_report(self):
@@ -423,9 +446,16 @@ class PurchaseOrderLine(models.Model):
                         note=_('The quantities on your purchase order indicate less than billed. You should ask for a refund.'))
 
                 # If the user increased quantity of existing line or created a new line
-                pickings = line.order_id.picking_ids.filtered(lambda x: x.state not in ('done', 'cancel') and x.location_dest_id.usage in ('internal', 'transit', 'customer'))
-                picking = pickings and pickings[0] or False
+                # Give priority to the pickings related to the line
+                line_pickings = line.move_ids.picking_id.filtered(lambda p: p.state not in ('done', 'cancel') and p.location_dest_id.usage in ('internal', 'transit', 'customer'))
+                if line_pickings:
+                    picking = line_pickings[0]
+                else:
+                    pickings = line.order_id.picking_ids.filtered(lambda x: x.state not in ('done', 'cancel') and x.location_dest_id.usage in ('internal', 'transit', 'customer'))
+                    picking = pickings and pickings[0] or False
                 if not picking:
+                    if not line.product_qty > line.qty_received:
+                        continue
                     res = line.order_id._prepare_picking()
                     picking = self.env['stock.picking'].create(res)
 
@@ -462,9 +492,8 @@ class PurchaseOrderLine(models.Model):
         price_unit = self._get_stock_move_price_unit()
         qty = self._get_qty_procurement()
 
-        move_dests = self.move_dest_ids
-        if not move_dests:
-            move_dests = self.move_ids.move_dest_ids.filtered(lambda m: m.state != 'cancel' and not m.location_dest_id.usage == 'supplier')
+        move_dests = self.move_dest_ids or self.move_ids.move_dest_ids
+        move_dests = move_dests.filtered(lambda m: m.state != 'cancel' and not m._is_purchase_return())
 
         if not move_dests:
             qty_to_attach = 0
@@ -600,7 +629,7 @@ class PurchaseOrderLine(models.Model):
         incoming_moves = self.env['stock.move']
 
         for move in self.move_ids.filtered(lambda r: r.state != 'cancel' and not r.scrapped and self.product_id == r.product_id):
-            if move.location_dest_id.usage == "supplier" and move.to_refund:
+            if move._is_purchase_return() and move.to_refund:
                 outgoing_moves |= move
             elif move.location_dest_id.usage != "supplier":
                 if not move.origin_returned_move_id or (move.origin_returned_move_id and move.to_refund):

@@ -133,7 +133,7 @@ class MaintenanceEquipment(models.Model):
     maintenance_open_count = fields.Integer(compute='_compute_maintenance_count', string="Current Maintenance", store=True)
     period = fields.Integer('Days between each preventive maintenance')
     next_action_date = fields.Date(compute='_compute_next_maintenance', string='Date of the next preventive maintenance', store=True)
-    maintenance_team_id = fields.Many2one('maintenance.team', string='Maintenance Team', check_company=True)
+    maintenance_team_id = fields.Many2one('maintenance.team', string='Maintenance Team', check_company=True, ondelete="restrict")
     maintenance_duration = fields.Float(help="Maintenance Duration in hours.")
 
     @api.depends('effective_date', 'period', 'maintenance_ids.request_date', 'maintenance_ids.close_date')
@@ -346,6 +346,10 @@ class MaintenanceRequest(models.Model):
                 request._add_followers()
             if request.equipment_id and not request.maintenance_team_id:
                 request.maintenance_team_id = request.equipment_id.maintenance_team_id
+            if request.close_date and not request.stage_id.done:
+                request.close_date = False
+            if not request.close_date and request.stage_id.done:
+                request.close_date = fields.Date.today()
         maintenance_requests.activity_update()
         return maintenance_requests
 
@@ -359,7 +363,9 @@ class MaintenanceRequest(models.Model):
             self._add_followers()
         if 'stage_id' in vals:
             self.filtered(lambda m: m.stage_id.done).write({'close_date': fields.Date.today()})
+            self.filtered(lambda m: not m.stage_id.done).write({'close_date': False})
             self.activity_feedback(['maintenance.mail_act_maintenance_request'])
+            self.activity_update()
         if vals.get('user_id') or vals.get('schedule_date'):
             self.activity_update()
         if vals.get('equipment_id'):

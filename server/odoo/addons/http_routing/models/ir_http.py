@@ -23,15 +23,11 @@ from odoo import api, models, exceptions, tools, http
 from odoo.addons.base.models import ir_http
 from odoo.addons.base.models.ir_http import RequestUID
 from odoo.addons.base.models.ir_qweb import QWebException
-from odoo.http import request
+from odoo.http import request, HTTPRequest, Response
 from odoo.osv import expression
 from odoo.tools import config, ustr, pycompat
 
 _logger = logging.getLogger(__name__)
-
-# global resolver (GeoIP API is thread-safe, for multithreaded workers)
-# This avoids blowing up open files limit
-odoo._geoip_resolver = None
 
 # ------------------------------------------------------------
 # Slug API
@@ -103,8 +99,9 @@ def slug(value):
     return f"{slugname}-{identifier}"
 
 
-# NOTE: as the pattern is used as it for the ModelConverter (ir_http.py), do not use any flags
+# NOTE: the second pattern is used for the ModelConverter, do not use nor flags nor groups
 _UNSLUG_RE = re.compile(r'(?:(\w{1,2}|\w[A-Za-z0-9-_]+?\w)-)?(-?\d+)(?=$|/)')
+_UNSLUG_ROUTE_PATTERN = r'(?:(?:\w{1,2}|\w[A-Za-z0-9-_]+?\w)-)?(?:-?\d+)(?=$|/)'
 
 
 def unslug(s):
@@ -249,13 +246,13 @@ class ModelConverter(ir_http.ModelConverter):
     def __init__(self, url_map, model=False, domain='[]'):
         super(ModelConverter, self).__init__(url_map, model)
         self.domain = domain
-        self.regex = _UNSLUG_RE.pattern
+        self.regex = _UNSLUG_ROUTE_PATTERN
 
     def to_url(self, value):
         return slug(value)
 
     def to_python(self, value):
-        matching = re.match(self.regex, value)
+        matching = _UNSLUG_RE.match(value)
         _uid = RequestUID(value=value, match=matching, converter=self)
         record_id = int(matching.group(2))
         env = api.Environment(request.cr, _uid, request.context)
@@ -421,6 +418,13 @@ class IrHttp(models.AbstractModel):
             and getattr(request, 'is_frontend_multilang', True)
         )
 
+        # Some URLs in website are concatenated, first url ends with /,
+        # second url starts with /, resulting url contains two following
+        # slashes that must be merged.
+        if allow_redirect and '//' in path:
+            new_url = path.replace('//', '/')
+            werkzeug.exceptions.abort(request.redirect(new_url, code=301, local=True))
+
         # There is no user on the environment yet but the following code
         # requires one to set the lang on the request. Temporary grant
         # the public user. Don't try it at home!
@@ -458,28 +462,28 @@ class IrHttp(models.AbstractModel):
         elif not url_lang_str:
             _logger.debug("%r (lang: %r) missing lang in url, redirect", path, request_url_code)
             redirect = request.redirect_query(f'/{request_url_code}{path}', request.httprequest.args)
-            redirect.set_cookie('frontend_lang', request.lang._get_cached('code'))
+            redirect.set_cookie('frontend_lang', request.lang._get_cached('code'), max_age=365 * 24 * 3600)
             werkzeug.exceptions.abort(redirect)
 
         # See /6, default lang in url, /en/home -> /home
         elif url_lang_str == default_lang.url_code and allow_redirect:
             _logger.debug("%r (lang: %r) default lang in url, redirect", path, request_url_code)
             redirect = request.redirect_query(path_no_lang, request.httprequest.args)
-            redirect.set_cookie('frontend_lang', default_lang._get_cached('code'))
+            redirect.set_cookie('frontend_lang', default_lang._get_cached('code'), max_age=365 * 24 * 3600)
             werkzeug.exceptions.abort(redirect)
 
         # See /7, lang alias in url, /fr_FR/home -> /fr/home
         elif url_lang_str != request_url_code and allow_redirect:
             _logger.debug("%r (lang: %r) lang alias in url, redirect", path, request_url_code)
             redirect = request.redirect_query(f'/{request_url_code}{path_no_lang}', request.httprequest.args, code=301)
-            redirect.set_cookie('frontend_lang', request.lang._get_cached('code'))
+            redirect.set_cookie('frontend_lang', request.lang._get_cached('code'), max_age=365 * 24 * 3600)
             werkzeug.exceptions.abort(redirect)
 
         # See /8, homepage with trailing slash. /fr_BE/ -> /fr_BE
         elif path == f'/{url_lang_str}/' and allow_redirect:
             _logger.debug("%r (lang: %r) homepage with trailing slash, redirect", path, request_url_code)
             redirect = request.redirect_query(path[:-1], request.httprequest.args, code=301)
-            redirect.set_cookie('frontend_lang', default_lang._get_cached('code'))
+            redirect.set_cookie('frontend_lang', default_lang._get_cached('code'), max_age=365 * 24 * 3600)
             werkzeug.exceptions.abort(redirect)
 
         # See /9, valid lang in url
@@ -512,20 +516,23 @@ class IrHttp(models.AbstractModel):
         string. This act as a light redirection, it does not return a
         3xx responses to the browser but still change the current URL.
         """
+        # WSGI encoding dance https://peps.python.org/pep-3333/#unicode-issues
+        if isinstance(path, str):
+            path = path.encode('utf-8')
+        path = path.decode('latin1', 'replace')
+
         if query_string is None:
             query_string = request.httprequest.environ['QUERY_STRING']
 
         # Change the WSGI environment
-        environ = request.httprequest.environ.copy()
+        environ = request.httprequest._HTTPRequest__environ.copy()
         environ['PATH_INFO'] = path
         environ['QUERY_STRING'] = query_string
         environ['RAW_URI'] = f'{path}?{query_string}'
         # REQUEST_URI left as-is so it still contains the original URI
 
         # Create and expose a new request from the modified WSGI env
-        httprequest = werkzeug.wrappers.Request(environ)
-        httprequest.parameter_storage_class = (
-            werkzeug.datastructures.ImmutableOrderedMultiDict)
+        httprequest = HTTPRequest(environ)
         threading.current_thread().url = httprequest.url
         request.httprequest = httprequest
 
@@ -568,7 +575,7 @@ class IrHttp(models.AbstractModel):
     def _frontend_pre_dispatch(cls):
         request.update_context(lang=request.lang._get_cached('code'))
         if request.httprequest.cookies.get('frontend_lang') != request.lang._get_cached('code'):
-            request.future_response.set_cookie('frontend_lang', request.lang._get_cached('code'))
+            request.future_response.set_cookie('frontend_lang', request.lang._get_cached('code'), max_age=365 * 24 * 3600)
 
     @classmethod
     def _get_exception_code_values(cls, exception):
@@ -633,7 +640,7 @@ class IrHttp(models.AbstractModel):
         code, values = cls._get_exception_code_values(exception)
 
         request.cr.rollback()
-        if code == 403:
+        if code in (404, 403):
             try:
                 response = cls._serve_fallback()
                 if response:
@@ -649,7 +656,7 @@ class IrHttp(models.AbstractModel):
         except Exception:
             code, html = 418, request.env['ir.ui.view']._render_template('http_routing.http_error', values)
 
-        response = werkzeug.wrappers.Response(html, status=code, content_type='text/html;charset=utf-8')
+        response = Response(html, status=code, content_type='text/html;charset=utf-8')
         cls._post_dispatch(response)
         return response
 

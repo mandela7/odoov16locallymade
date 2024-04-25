@@ -53,6 +53,9 @@ export class Many2ManyTagsField extends Component {
         });
 
         this.update = (recordlist) => {
+            if (!recordlist) {
+                return;
+            }
             if (Array.isArray(recordlist)) {
                 const resIds = recordlist.map((rec) => rec.id);
                 return saveRecord(resIds);
@@ -248,8 +251,10 @@ Many2ManyTagsField.fieldsToFetch = {
 Many2ManyTagsField.isSet = (value) => value.count > 0;
 
 Many2ManyTagsField.extractProps = ({ attrs, field }) => {
+    const hasCreatePermission = attrs.can_create ? Boolean(JSON.parse(attrs.can_create)) : true;
+
     const noCreate = Boolean(attrs.options.no_create);
-    const canCreate = attrs.can_create && Boolean(JSON.parse(attrs.can_create)) && !noCreate;
+    const canCreate = hasCreatePermission && !noCreate;
     const noQuickCreate = Boolean(attrs.options.no_quick_create);
     const noCreateEdit = Boolean(attrs.options.no_create_edit);
 

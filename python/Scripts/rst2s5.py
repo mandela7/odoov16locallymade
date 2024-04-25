@@ -1,4 +1,4 @@
-#!c:\odoobuild\winpy64\python-3.7.7.amd64\python.exe
+#!C:\odoobuild\WinPy64\python-3.10.11.amd64\python.exe
 
 # $Id: rst2s5.py 4564 2006-05-21 20:44:42Z wiemann $
 # Author: Chris Liechti <cliechti@gmx.net>

@@ -14,29 +14,33 @@
                             </div>
                             <div class="row">
                                 <div class="col-6" name="div_outgoing_address">
-                                    <div t-if="o.move_ids_without_package and o.move_ids_without_package[0].partner_id and o.move_ids_without_package[0].partner_id.id != o.partner_id.id">
+                                    <div t-if="o.should_print_delivery_address()">
                                         <span><strong>Delivery Address:</strong></span>
-                                        <div t-field="o.move_ids_without_package[0].partner_id"
+                                        <div t-field="o.move_ids[0].partner_id"
                                             t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
                                     </div>
-                                    <div t-if="o.picking_type_id.code != 'internal' and (not o.move_ids_without_package or not o.move_ids_without_package[0].partner_id) and o.picking_type_id.warehouse_id.partner_id">
+                                    <div t-elif="o.picking_type_id.code != 'internal' and o.picking_type_id.warehouse_id.partner_id">
                                         <span><strong>Warehouse Address:</strong></span>
                                         <div t-field="o.picking_type_id.warehouse_id.partner_id"
                                             t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
                                     </div>
                                 </div>
                                 <div class="col-5 offset-1" name="div_incoming_address">
+                                    <t t-set="show_partner" t-value="False" />
                                     <div t-if="o.picking_type_id.code=='incoming' and o.partner_id">
                                         <span><strong>Vendor Address:</strong></span>
+                                        <t t-set="show_partner" t-value="True" />
                                     </div>
                                     <div t-if="o.picking_type_id.code=='internal' and o.partner_id">
                                         <span><strong>Warehouse Address:</strong></span>
+                                        <t t-set="show_partner" t-value="True" />
                                     </div>
-                                    <div t-if="o.picking_type_id.code=='outgoing' and o.partner_id">
+                                    <div t-if="o.picking_type_id.code=='outgoing' and o.partner_id and o.partner_id != o.partner_id.commercial_partner_id">
                                         <span><strong>Customer Address:</strong></span>
+                                        <t t-set="show_partner" t-value="True" />
                                     </div>
-                                    <div t-if="o.partner_id" name="partner_header">
-                                        <div t-field="o.partner_id"
+                                    <div t-if="show_partner" name="partner_header">
+                                        <div t-field="o.partner_id.commercial_partner_id"
                                              t-options='{"widget": "contact", "fields": ["address", "name", "phone", "vat"], "no_marker": True, "phone_icons": True}'/>
                                     </div>
                                 </div>
@@ -84,7 +88,7 @@
                                 </thead>
                                 <tbody>
                                     <!-- In case you come across duplicated lines, ask NIM or LAP -->
-                                    <t t-foreach="o.move_line_ids_without_package" t-as="ml">
+                                    <t t-foreach="o.move_line_ids_without_package.sorted(lambda ml: (ml.location_id.complete_name, ml.location_dest_id.complete_name))" t-as="ml">
                                         <tr>
                                             <td>
                                                 <span t-field="ml.product_id.display_name"/><br/>

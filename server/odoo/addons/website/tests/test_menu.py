@@ -2,6 +2,9 @@
 
 import json
 
+from hashlib import sha256
+from lxml import html
+
 from odoo.tests import common
 
 
@@ -70,6 +73,13 @@ class TestMenu(common.TransactionCase):
 
     def test_04_specific_menu_translation(self):
         IrModuleModule = self.env['ir.module.module']
+        if self.env['website'].search_count([]) == 1:
+            self.env['website'].create({
+                'name': 'My Website 2',
+                'domain': '',
+                'sequence': 20,
+            })
+
         Menu = self.env['website.menu']
         existing_menus = Menu.search([])
 
@@ -115,13 +125,11 @@ class TestMenu(common.TransactionCase):
 
 
 class TestMenuHttp(common.HttpCase):
-    def test_01_menu_page_m2o(self):
-        # 1. Create a page with a menu
-        Menu = self.env['website.menu']
-        Page = self.env['website.page']
-        page_url = '/page_specific'
-        page = Page.create({
-            'url': page_url,
+    def setUp(self):
+        super().setUp()
+        self.page_url = '/page_specific'
+        self.page = self.env['website.page'].create({
+            'url': self.page_url,
             'website_id': 1,
             # ir.ui.view properties
             'name': 'Base',
@@ -129,20 +137,14 @@ class TestMenuHttp(common.HttpCase):
             'arch': '<div>Specific View</div>',
             'key': 'test.specific_view',
         })
-        menu = Menu.create({
+        self.menu = self.env['website.menu'].create({
             'name': 'Page Specific menu',
-            'page_id': page.id,
-            'url': page_url,
+            'page_id': self.page.id,
+            'url': self.page_url,
             'website_id': 1,
         })
 
-        # 2. Edit the menu URL to a 'reserved' URL
-        data = {
-            'id': menu.id,
-            'parent_id': menu.parent_id.id,
-            'name': menu.name,
-            'url': '/website/info',
-        }
+    def simulate_rpc_save_menu(self, data, to_delete=None):
         self.authenticate("admin", "admin")
         # `Menu.save(1, {'data': [data], 'to_delete': []})` would have been
         # ideal but need a full frontend context to generate routing maps,
@@ -151,18 +153,88 @@ class TestMenuHttp(common.HttpCase):
             "params": {
                 'model': 'website.menu',
                 'method': 'save',
-                'args': [1, {'data': [data], 'to_delete': []}],
+                'args': [1, {'data': [data], 'to_delete': to_delete or []}],
                 'kwargs': {},
             },
-        }), headers={"Content-Type": "application/json"})
+        }), headers={"Content-Type": "application/json", "Referer": self.page.get_base_url() + self.page_url})
 
-        self.assertFalse(menu.page_id, "M2o should have been unset as this is a reserved URL.")
-        self.assertEqual(menu.url, '/website/info', "Menu URL should have changed.")
-        self.assertEqual(page.url, page_url, "Page's URL shouldn't have changed.")
+    def test_01_menu_page_m2o(self):
+        # Ensure that the M2o relation tested later in the test is properly set.
+        self.assertTrue(self.menu.page_id, "M2o should have been set by the setup")
+        # Edit the menu URL to a 'reserved' URL
+        data = {
+            'id': self.menu.id,
+            'parent_id': self.menu.parent_id.id,
+            'name': self.menu.name,
+            'url': '/website/info',
+        }
+        self.simulate_rpc_save_menu(data)
+
+        self.assertFalse(self.menu.page_id, "M2o should have been unset as this is a reserved URL.")
+        self.assertEqual(self.menu.url, '/website/info', "Menu URL should have changed.")
+        self.assertEqual(self.page.url, self.page_url, "Page's URL shouldn't have changed.")
 
         # 3. Edit the menu URL back to the page URL
-        data['url'] = page_url
-        Menu.save(1, {'data': [data], 'to_delete': []})
-        self.assertEqual(menu.page_id, page,
+        data['url'] = self.page_url
+        self.env['website.menu'].save(1, {'data': [data], 'to_delete': []})
+        self.assertEqual(self.menu.page_id, self.page,
                          "M2o should have been set back, as there was a page found with the new URL set on the menu.")
-        self.assertTrue(page.url == menu.url == page_url)
+        self.assertTrue(self.page.url == self.menu.url == self.page_url)
+
+    def test_02_menu_anchors(self):
+        # Ensure that the M2o relation tested later in the test is properly set.
+        self.assertTrue(self.menu.page_id, "M2o should have been set by the setup")
+        # Edit the menu URL to an anchor
+        data = {
+            'id': self.menu.id,
+            'parent_id': self.menu.parent_id.id,
+            'name': self.menu.name,
+            'url': '#anchor',
+        }
+        self.simulate_rpc_save_menu(data)
+        self.assertFalse(self.menu.page_id, "M2o should have been unset as this is an anchor URL.")
+        self.assertEqual(self.menu.url, self.page_url + '#anchor', "Page URL should have been properly prefixed with the referer url")
+        self.assertEqual(self.page.url, self.page_url, "Page URL should not have changed")
+
+    def test_03_mega_menu_translate(self):
+        # Setup
+        fr = self.env['res.lang']._activate_lang('fr_FR')
+        Menu = self.env['website.menu']
+        website = self.env['website'].browse(1)
+        website.language_ids += fr
+        menu = Menu.create({
+            'name': 'Test Mega Menu Content Translation Edit Mode',
+            'mega_menu_content': '<p>something</p>',
+            'parent_id': website.menu_id.id,
+            'website_id': website.id,
+        })
+        self.env['ir.module.module']._load_module_terms(['website'], [fr.code])
+
+        # Load cache
+        self.url_open('/%s' % fr.url_code)
+        self.url_open('/%s?edit_translations=1' % fr.url_code)
+
+        # Translate
+        root = html.fromstring(menu.mega_menu_content)
+        to_translate = root.text_content()
+        sha = sha256(to_translate.encode()).hexdigest()
+        menu.update_field_translations_sha('mega_menu_content', {fr.code: {sha: 'french_mega_menu_content'}})
+        self.assertIn("french_mega_menu_content",
+                      menu.with_context(lang=fr.code, website_id=website.id).mega_menu_content)
+
+        # Checks
+        page = self.url_open('/%s' % fr.url_code)
+        self.assertIn(b"french_mega_menu_content", page.content)
+        page = self.url_open('/%s?edit_translations=1' % fr.url_code)
+        self.assertIn(b"french_mega_menu_content", page.content)
+
+    def test_menu_empty_url(self):
+        website = self.env['website'].browse(1)
+        menu = self.env['website.menu'].create({
+            'name': 'Test Empty URL menu',
+            'parent_id': website.menu_id.id,
+            'website_id': website.id,
+        })
+        self.assertFalse(menu.url, "Menu URL should be empty")
+        # this should not crash
+        website.is_menu_cache_disabled()

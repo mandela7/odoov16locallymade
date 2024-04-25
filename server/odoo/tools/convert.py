@@ -142,11 +142,11 @@ def _eval_xml(self, node, env):
             return '<?xml version="1.0"?>\n'\
                 +_process("".join(etree.tostring(n, encoding='unicode') for n in node))
         if t == 'html':
-            return _process("".join(etree.tostring(n, encoding='unicode') for n in node))
+            return _process("".join(etree.tostring(n, method='html', encoding='unicode') for n in node))
 
         data = node.text
         if node.get('file'):
-            with file_open(node.get('file'), 'rb') as f:
+            with file_open(node.get('file'), 'rb', env=env) as f:
                 data = f.read()
 
         if t == 'base64':
@@ -565,7 +565,10 @@ form: module.record_id""" % (xml_id,)
                     val = self.model_id_get(f_ref)
                     f_val = val[0] + ',' + str(val[1])
                 else:
-                    f_val = self.id_get(f_ref)
+                    f_val = self.id_get(f_ref, raise_if_not_found=nodeattr2bool(rec, 'forcecreate', True))
+                    if not f_val:
+                        _logger.warning("Skipping creation of %r because %s=%r could not be resolved", xid, f_name, f_ref)
+                        return None
             else:
                 f_val = _eval_xml(self, field, env)
                 if f_name in model._fields:

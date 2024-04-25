@@ -95,7 +95,7 @@
                         </div>
                         <notebook>
                             <page string="Operators" name="operators">
-                                    <field name="user_ids" colspan="2">
+                                    <field name="user_ids" nolabel="1" colspan="2" domain="[['groups_id', 'not in', %(base.group_portal)d]]">
                                         <kanban>
                                             <field name="id"/>
                                             <field name="name"/>
@@ -186,7 +186,7 @@
                     <field name="sequence" widget="handle"/>
                     <field name="regex_url"/>
                     <field name="action"/>
-                    <field name="country_ids"/>
+                    <field name="country_ids" widget="many2many_tags"/>
                 </tree>
             </field>
         </record>
@@ -226,7 +226,7 @@
                                 <field name="chatbot_script_id" class="oe_inline" style="width: 60% !important;"
                                        options="{'no_create': True, 'no_open': True}"/>
                             </div>
-                            <label for="chatbot_only_if_no_operator" class="oe_inline" string="Enabled only if no operator"/>
+                            <label for="chatbot_only_if_no_operator" class="oe_inline" attrs="{'invisible': [('chatbot_script_id', '=', False)]}" string="Enabled only if no operator"/>
                             <div class="oe_inline" attrs="{'invisible': [('chatbot_script_id', '=', False)]}">
                                 <field name="chatbot_only_if_no_operator"/>
                             </div>

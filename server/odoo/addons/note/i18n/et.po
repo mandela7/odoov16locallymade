@@ -8,20 +8,23 @@
 # Algo Kärp <algokarp@gmail.com>, 2022
 # Egon Raamat <egon@avalah.ee>, 2022
 # Triine Aavik <triine@avalah.ee>, 2022
-# Eneli Õigus <enelioigus@gmail.com>, 2022
+# Rivo Zängov <eraser@eraser.ee>, 2022
 # Martin Trigaux, 2022
 # Piia Paurson <piia@avalah.ee>, 2022
 # Arma Gedonsky <armagedonsky@hot.ee>, 2022
-# Rivo Zängov <eraser@eraser.ee>, 2022
+# JanaAvalah, 2022
+# Mihkel avalah, 2023
+# Leaanika Randmets, 2023
+# Eneli Õigus <enelioigus@gmail.com>, 2024
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:01+0000\n"
+"POT-Creation-Date: 2024-02-06 13:31+0000\n"
 "PO-Revision-Date: 2022-09-22 05:53+0000\n"
-"Last-Translator: Rivo Zängov <eraser@eraser.ee>, 2022\n"
-"Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
+"Last-Translator: Eneli Õigus <enelioigus@gmail.com>, 2024\n"
+"Language-Team: Estonian (https://app.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -31,12 +34,12 @@ msgstr ""
 #. module: note
 #: model_terms:ir.ui.view,arch_db:note.view_note_note_kanban
 msgid "<i class=\"fa fa-check\" role=\"img\" aria-label=\"Opened\" title=\"Opened\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-check\" role=\"img\" aria-label=\"Opened\" title=\"Opened\"/>"
 
 #. module: note
 #: model_terms:ir.ui.view,arch_db:note.view_note_note_kanban
 msgid "<i class=\"fa fa-undo\" role=\"img\" aria-label=\"Closed\" title=\"Closed\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-undo\" role=\"img\" aria-label=\"Closed\" title=\"Closed\"/>"
 
 #. module: note
 #: model:ir.model.fields,field_description:note.field_mail_activity_type__category
@@ -54,6 +57,8 @@ msgid ""
 "Actions may trigger specific behavior like opening calendar view or "
 "automatically mark as done when a document is uploaded"
 msgstr ""
+"Toimingud võivad käivitada teatud tegevuse, näiteks kalendrivaate avamine "
+"või dokumendi üleslaadimisel automaatselt tehtuks märkimine"
 
 #. module: note
 #: model:ir.model.fields,field_description:note.field_note_note__open
@@ -74,7 +79,7 @@ msgstr "Tegevus"
 #. module: note
 #: model:ir.model.fields,field_description:note.field_note_note__activity_exception_decoration
 msgid "Activity Exception Decoration"
-msgstr "Tegevuse erandlik kohendus"
+msgstr "Tegevuse erandi tüüp"
 
 #. module: note
 #: model:ir.model.fields,field_description:note.field_note_note__activity_state
@@ -89,7 +94,7 @@ msgstr "Tegevuse tüüp"
 #. module: note
 #: model:ir.model.fields,field_description:note.field_note_note__activity_type_icon
 msgid "Activity Type Icon"
-msgstr "Tegevuse liigi sümbol"
+msgstr "Tegevustüübi ikoon"
 
 #. module: note
 #: model_terms:ir.actions.act_window,help:note.action_note_note
@@ -102,14 +107,14 @@ msgid "Add a new tag"
 msgstr "Lisage uus silt"
 
 #. module: note
-#. openerp-web
+#. odoo-javascript
 #: code:addons/note/static/src/components/activity_menu_view/activity_menu_view.xml:0
 #, python-format
 msgid "Add a note"
 msgstr "Lisa märkus"
 
 #. module: note
-#. openerp-web
+#. odoo-javascript
 #: code:addons/note/static/src/components/activity_menu_view/activity_menu_view.xml:0
 #, python-format
 msgid "Add new note"
@@ -128,10 +133,10 @@ msgstr "Manuste arv"
 #. module: note
 #: model_terms:ir.ui.view,arch_db:note.view_note_note_filter
 msgid "By sticky note Category"
-msgstr ""
+msgstr "Kleepsu järgi Kategooria"
 
 #. module: note
-#. openerp-web
+#. odoo-javascript
 #: code:addons/note/static/src/components/activity_menu_view/activity_menu_view.xml:0
 #, python-format
 msgid "Channel"
@@ -182,7 +187,7 @@ msgstr "Kustuta"
 #: model:ir.model.fields,field_description:note.field_note_stage__display_name
 #: model:ir.model.fields,field_description:note.field_note_tag__display_name
 msgid "Display Name"
-msgstr "Näidatav nimi"
+msgstr "Kuva nimi"
 
 #. module: note
 #: model_terms:ir.ui.view,arch_db:note.view_note_note_kanban
@@ -192,12 +197,12 @@ msgstr "Rippmenüü"
 #. module: note
 #: model:ir.model.fields,field_description:note.field_note_stage__fold
 msgid "Folded by Default"
-msgstr ""
+msgstr "Volditud vaikimisi"
 
 #. module: note
 #: model_terms:ir.ui.view,arch_db:note.view_note_note_kanban
 msgid "Follower"
-msgstr ""
+msgstr "Jälgija"
 
 #. module: note
 #: model:ir.model.fields,field_description:note.field_note_note__message_follower_ids
@@ -222,12 +227,12 @@ msgstr "Tulevased tegevused"
 #. module: note
 #: model_terms:ir.ui.view,arch_db:note.view_note_note_filter
 msgid "Group By"
-msgstr "Grupeeri"
+msgstr "Rühmitamine"
 
 #. module: note
 #: model:ir.model.fields,field_description:note.field_note_note__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "On sõnum"
 
 #. module: note
 #: model:ir.model.fields,field_description:note.field_note_note__id
@@ -249,11 +254,10 @@ msgstr "Ikoon, mis näitab erandi tegevust"
 #. module: note
 #: model:ir.model.fields,help:note.field_note_note__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr "Kui märgitud, siis uued sõnumid nõuavad Su tähelepanu."
+msgstr "Kui kontrollitud, siis uued sõnumid nõuavad Su tähelepanu."
 
 #. module: note
 #: model:ir.model.fields,help:note.field_note_note__message_has_error
-#: model:ir.model.fields,help:note.field_note_note__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr "Kui valitud, on mõningatel sõnumitel saatmiserror."
 
@@ -267,14 +271,14 @@ msgstr "Jälgija"
 #: model:ir.model.fields,field_description:note.field_note_stage____last_update
 #: model:ir.model.fields,field_description:note.field_note_tag____last_update
 msgid "Last Modified on"
-msgstr "Viimati muudetud"
+msgstr "Viimati muudetud (millal)"
 
 #. module: note
 #: model:ir.model.fields,field_description:note.field_note_note__write_uid
 #: model:ir.model.fields,field_description:note.field_note_stage__write_uid
 #: model:ir.model.fields,field_description:note.field_note_tag__write_uid
 msgid "Last Updated by"
-msgstr "Viimati uuendas"
+msgstr "Viimati uuendatud (kelle poolt)"
 
 #. module: note
 #: model:ir.model.fields,field_description:note.field_note_note__write_date
@@ -296,7 +300,7 @@ msgstr "Peamine manus"
 #. module: note
 #: model:note.stage,name:note.note_stage_01
 msgid "Meeting Minutes"
-msgstr ""
+msgstr "Protokollid"
 
 #. module: note
 #: model:ir.model.fields,field_description:note.field_note_note__message_has_error
@@ -321,7 +325,7 @@ msgstr "Uus"
 #. module: note
 #: model:ir.model.fields,field_description:note.field_note_note__activity_calendar_event_id
 msgid "Next Activity Calendar Event"
-msgstr ""
+msgstr "Järgmine tegevus kalendris"
 
 #. module: note
 #: model:ir.model.fields,field_description:note.field_note_note__activity_date_deadline
@@ -348,24 +352,25 @@ msgstr "Märkus"
 #. module: note
 #: model:ir.model.fields,field_description:note.field_note_note__memo
 msgid "Note Content"
-msgstr ""
+msgstr "Märkme sisu"
 
 #. module: note
 #: model:ir.model,name:note.model_note_stage
 msgid "Note Stage"
-msgstr ""
+msgstr "Märkme etapp"
 
 #. module: note
 #: model:ir.model.fields,field_description:note.field_note_note__name
 msgid "Note Summary"
-msgstr ""
+msgstr "Märkme kokkuvõte"
 
 #. module: note
 #: model:ir.model,name:note.model_note_tag
 msgid "Note Tag"
-msgstr ""
+msgstr "Märkme silt"
 
 #. module: note
+#. odoo-python
 #: code:addons/note/models/res_users.py:0
 #: model:ir.actions.act_window,name:note.action_note_note
 #: model:ir.ui.menu,name:note.menu_note_notes
@@ -373,7 +378,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:note.view_note_note_filter
 #, python-format
 msgid "Notes"
-msgstr "Märkused"
+msgstr "Märkmed"
 
 #. module: note
 #: model_terms:ir.actions.act_window,help:note.action_note_note
@@ -381,6 +386,8 @@ msgid ""
 "Notes are private, unless you share them by inviting follower on a note.\n"
 "            (Useful for meeting minutes)."
 msgstr ""
+"Märkmed on privaatsed, välja arvatud juhul, kui lisate märkmetele jälgija.\n"
+"             (Kasulik koosoleku protokollimisel)."
 
 #. module: note
 #: model:ir.model.fields,field_description:note.field_note_note__message_needaction_counter
@@ -394,8 +401,8 @@ msgstr "Veateadete arv"
 
 #. module: note
 #: model:ir.model.fields,help:note.field_note_note__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "Tegutsemist nõudvate sõnumite arv"
+msgid "Number of messages requiring action"
+msgstr "Tegevust nõudvate sõnumite arv"
 
 #. module: note
 #: model:ir.model.fields,help:note.field_note_note__message_has_error_counter
@@ -411,14 +418,14 @@ msgstr "Omanik"
 #. module: note
 #: model:ir.model.fields,field_description:note.field_mail_activity__note_id
 msgid "Related Note"
-msgstr ""
+msgstr "Seotud märkus"
 
 #. module: note
-#. openerp-web
+#. odoo-javascript
 #: code:addons/note/static/src/components/activity_menu_view/activity_menu_view.xml:0
 #, python-format
 msgid "Remember..."
-msgstr ""
+msgstr "Jäta meeles…."
 
 #. module: note
 #: model:ir.model.fields.selection,name:note.selection__mail_activity_type__category__reminder
@@ -432,16 +439,11 @@ msgid "Responsible User"
 msgstr "Vastutav kasutaja"
 
 #. module: note
-#. openerp-web
+#. odoo-javascript
 #: code:addons/note/static/src/components/activity_menu_view/activity_menu_view.xml:0
 #, python-format
 msgid "SAVE"
-msgstr ""
-
-#. module: note
-#: model:ir.model.fields,field_description:note.field_note_note__message_has_sms_error
-msgid "SMS Delivery error"
-msgstr "Sõnumi kohaletoimetamise veateade"
+msgstr "SALVESTA"
 
 #. module: note
 #: model:ir.model.fields,field_description:note.field_note_note__sequence
@@ -469,7 +471,7 @@ msgstr "Etapi nimi"
 #. module: note
 #: model_terms:ir.ui.view,arch_db:note.view_note_stage_form
 msgid "Stage of Notes"
-msgstr ""
+msgstr "Märkmete etapp"
 
 #. module: note
 #: model:ir.actions.act_window,name:note.action_note_stage
@@ -481,12 +483,12 @@ msgstr "Etapid"
 #. module: note
 #: model_terms:ir.ui.view,arch_db:note.view_note_stage_tree
 msgid "Stages of Notes"
-msgstr ""
+msgstr "Märkmete etapid"
 
 #. module: note
 #: model:ir.model.fields,field_description:note.field_note_note__stage_ids
 msgid "Stages of Users"
-msgstr ""
+msgstr "Kasutajate etapid"
 
 #. module: note
 #: model:ir.model.fields,help:note.field_note_note__activity_state
@@ -522,7 +524,7 @@ msgid "Tags"
 msgstr "Sildid"
 
 #. module: note
-#. openerp-web
+#. odoo-javascript
 #: code:addons/note/static/src/models/activity_menu_view.js:0
 #, python-format
 msgid "Today"
@@ -547,13 +549,3 @@ msgstr "Kirjel oleva erandtegevuse tüüp."
 #: model:ir.model,name:note.model_res_users
 msgid "User"
 msgstr "Kasutaja"
-
-#. module: note
-#: model:ir.model.fields,field_description:note.field_note_note__website_message_ids
-msgid "Website Messages"
-msgstr "Veebilehe sõnumid"
-
-#. module: note
-#: model:ir.model.fields,help:note.field_note_note__website_message_ids
-msgid "Website communication history"
-msgstr "Veebilehe suhtluse ajalugu"

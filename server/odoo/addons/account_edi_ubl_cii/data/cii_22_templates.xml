@@ -31,9 +31,12 @@
 
                     <!-- Amounts. -->
                     <ram:SpecifiedLineTradeAgreement>
-                        <!-- Line information: unit_price (discount is below the taxes) -->
+                        <!-- Line information: unit_price
+                        NB: the gross_price_unit should be the price tax excluded !
+                        if price_unit = 100 and tax 10% price_include -> then the gross_price_unit is 91
+                        -->
                         <ram:GrossPriceProductTradePrice>
-                            <ram:ChargeAmount t-out="format_monetary(line.price_unit, 2)"/>
+                            <ram:ChargeAmount t-out="format_monetary(line_vals['gross_price_total_unit'], 2)"/>
                             <!-- Discount. -->
                             <ram:AppliedTradeAllowanceCharge t-if="line.discount">
                                 <ram:ChargeIndicator>
@@ -60,26 +63,27 @@
                         <t t-foreach="tax_details['tax_details_per_record'][line]['tax_details'].values()"
                            t-as="tax_detail_vals">
                             <ram:ApplicableTradeTax t-if="tax_detail_vals['amount_type'] == 'percent'">
-                                <ram:TypeCode>VAT</ram:TypeCode>
+                                <ram:TypeCode t-translation="off">VAT</ram:TypeCode>
                                 <ram:CategoryCode t-out="tax_detail_vals['tax_category_code']"/>
                                 <ram:RateApplicablePercent t-out="tax_detail_vals['amount']"/>
                             </ram:ApplicableTradeTax>
                         </t>
 
-                        <!-- Discount. -->
-                        <!-- A discount in percent can only be on the whole document (CalculationPercent), not on a line... -->
-                        <ram:SpecifiedTradeAllowanceCharge t-if="line.discount">
-                            <ram:ChargeIndicator>
-                                <udt:Indicator>false</udt:Indicator>
-                            </ram:ChargeIndicator>
-                            <ram:ActualAmount t-out="format_monetary(line.price_unit * line.discount/100, 2)"/>
-                            <!-- https://unece.org/fileadmin/DAM/trade/untdid/d16b/tred/tred5189.htm -->
-                            <ram:ReasonCode>95</ram:ReasonCode>
-                        </ram:SpecifiedTradeAllowanceCharge>
+                        <!-- Allowance/Charge on the line -->
+                        <t t-foreach="line_vals.get('allowance_charge_vals_list')" t-as="allowance_charge_vals">
+                            <ram:SpecifiedTradeAllowanceCharge>
+                                <ram:ChargeIndicator>
+                                    <udt:Indicator t-esc="allowance_charge_vals['indicator']"/>
+                                </ram:ChargeIndicator>
+                                <ram:ActualAmount t-esc="format_monetary(allowance_charge_vals['amount'], 2)"/>
+                                <ram:ReasonCode t-esc="allowance_charge_vals['reason_code']"/>
+                                <ram:Reason t-esc="allowance_charge_vals['reason']"/>
+                            </ram:SpecifiedTradeAllowanceCharge>
+                        </t>
 
                         <!-- Subtotal. -->
                         <ram:SpecifiedTradeSettlementLineMonetarySummation>
-                            <ram:LineTotalAmount t-out="format_monetary(line.price_subtotal, 2)"/>
+                            <ram:LineTotalAmount t-esc="format_monetary(line_vals['line_total_amount'], 2)"/>
                         </ram:SpecifiedTradeSettlementLineMonetarySummation>
 
                     </ram:SpecifiedLineTradeSettlement>
@@ -92,7 +96,7 @@
                 xmlns:rsm="urn:un:unece:uncefact:data:standard:CrossIndustryInvoice:100"
                 xmlns:udt="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:100">
                 <!-- Contact. -->
-                <ram:Name t-out="partner.name"/>
+                <ram:Name t-out="partner.display_name"/>
                 <ram:SpecifiedLegalOrganization t-if="specified_legal_organization_val">
                     <ram:ID t-att-schemeID="str('0002')"
                             t-out="specified_legal_organization_val"/>
@@ -185,7 +189,7 @@
                         <ram:BuyerTradeParty>
                             <!-- Address. -->
                             <t t-call="account_edi_ubl_cii.account_invoice_partner_facturx_export_22">
-                                <t t-set="partner" t-value="record.commercial_partner_id"/>
+                                <t t-set="partner" t-value="record.partner_id"/>
                                 <t t-set="specified_legal_organization_val" t-value="buyer_specified_legal_organization"/>
                             </t>
 
@@ -248,7 +252,7 @@
                             <ram:ApplicableTradeTax>
                                 <ram:CalculatedAmount
                                     t-out="format_monetary(tax_detail_vals.get('calculated_amount'), 2)"/>
-                                <ram:TypeCode>VAT</ram:TypeCode>
+                                <ram:TypeCode t-translation="off">VAT</ram:TypeCode>
                                 <ram:ExemptionReason t-out="tax_detail_vals.get('tax_exemption_reason')"/>
                                 <ram:BasisAmount
                                     t-out="format_monetary(tax_detail_vals['base_amount_currency'], 2)"/>
@@ -283,12 +287,12 @@
                         <!-- Summary. -->
                         <ram:SpecifiedTradeSettlementHeaderMonetarySummation>
                             <ram:LineTotalAmount
-                                t-out="format_monetary(record.amount_untaxed, 2)"/>
+                                t-esc="format_monetary(tax_basis_total_amount, 2)"/>
                             <ram:TaxBasisTotalAmount
-                                t-out="format_monetary(record.amount_untaxed, 2)"/>
+                                t-esc="format_monetary(tax_basis_total_amount, 2)"/>
                             <ram:TaxTotalAmount
                                 t-att-currencyID="currency.name"
-                                t-out="format_monetary(record.amount_tax, 2)"/>
+                                t-esc="format_monetary(tax_total_amount, 2)"/>
                             <ram:GrandTotalAmount
                                 t-out="format_monetary(record.amount_total, 2)"/>
                             <ram:TotalPrepaidAmount
@@ -339,34 +343,34 @@
                         <pdfaExtension:schemas>
                             <rdf:Bag>
                                 <rdf:li rdf:parseType="Resource">
-                                    <pdfaSchema:schema>Factur-X PDFA Extension Schema</pdfaSchema:schema>
+                                    <pdfaSchema:schema t-translation="off">Factur-X PDFA Extension Schema</pdfaSchema:schema>
                                     <pdfaSchema:namespaceURI>urn:factur-x:pdfa:CrossIndustryDocument:invoice:1p0#</pdfaSchema:namespaceURI>
                                     <pdfaSchema:prefix>fx</pdfaSchema:prefix>
                                     <pdfaSchema:property>
                                         <rdf:Seq>
                                             <rdf:li rdf:parseType="Resource">
-                                                <pdfaProperty:name>DocumentFileName</pdfaProperty:name>
-                                                <pdfaProperty:valueType>Text</pdfaProperty:valueType>
-                                                <pdfaProperty:category>external</pdfaProperty:category>
-                                                <pdfaProperty:description>name of the embedded XML invoice file</pdfaProperty:description>
+                                                <pdfaProperty:name t-translation="off">DocumentFileName</pdfaProperty:name>
+                                                <pdfaProperty:valueType t-translation="off">Text</pdfaProperty:valueType>
+                                                <pdfaProperty:category t-translation="off">external</pdfaProperty:category>
+                                                <pdfaProperty:description t-translation="off">name of the embedded XML invoice file</pdfaProperty:description>
                                             </rdf:li>
                                             <rdf:li rdf:parseType="Resource">
-                                                <pdfaProperty:name>DocumentType</pdfaProperty:name>
-                                                <pdfaProperty:valueType>Text</pdfaProperty:valueType>
-                                                <pdfaProperty:category>external</pdfaProperty:category>
-                                                <pdfaProperty:description>INVOICE</pdfaProperty:description>
+                                                <pdfaProperty:name t-translation="off">DocumentType</pdfaProperty:name>
+                                                <pdfaProperty:valueType t-translation="off">Text</pdfaProperty:valueType>
+                                                <pdfaProperty:category t-translation="off">external</pdfaProperty:category>
+                                                <pdfaProperty:description t-translation="off">INVOICE</pdfaProperty:description>
                                             </rdf:li>
                                             <rdf:li rdf:parseType="Resource">
-                                                <pdfaProperty:name>Version</pdfaProperty:name>
-                                                <pdfaProperty:valueType>Text</pdfaProperty:valueType>
-                                                <pdfaProperty:category>external</pdfaProperty:category>
-                                                <pdfaProperty:description>The actual version of the Factur-X XML schema</pdfaProperty:description>
+                                                <pdfaProperty:name t-translation="off">Version</pdfaProperty:name>
+                                                <pdfaProperty:valueType t-translation="off">Text</pdfaProperty:valueType>
+                                                <pdfaProperty:category t-translation="off">external</pdfaProperty:category>
+                                                <pdfaProperty:description t-translation="off">The actual version of the Factur-X XML schema</pdfaProperty:description>
                                             </rdf:li>
                                             <rdf:li rdf:parseType="Resource">
-                                                <pdfaProperty:name>ConformanceLevel</pdfaProperty:name>
-                                                <pdfaProperty:valueType>Text</pdfaProperty:valueType>
-                                                <pdfaProperty:category>external</pdfaProperty:category>
-                                                <pdfaProperty:description>The conformance level of the embedded Factur-X data</pdfaProperty:description>
+                                                <pdfaProperty:name t-translation="off">ConformanceLevel</pdfaProperty:name>
+                                                <pdfaProperty:valueType t-translation="off">Text</pdfaProperty:valueType>
+                                                <pdfaProperty:category t-translation="off">external</pdfaProperty:category>
+                                                <pdfaProperty:description t-translation="off">The conformance level of the embedded Factur-X data</pdfaProperty:description>
                                             </rdf:li>
                                         </rdf:Seq>
                                     </pdfaSchema:property>
@@ -377,7 +381,7 @@
                     <rdf:Description xmlns:fx="urn:factur-x:pdfa:CrossIndustryDocument:invoice:1p0#" rdf:about="">
                         <fx:ConformanceLevel>EN 16931</fx:ConformanceLevel>
                         <fx:DocumentFileName>factur-x.xml</fx:DocumentFileName>
-                        <fx:DocumentType>INVOICE</fx:DocumentType>
+                        <fx:DocumentType t-translation="off">INVOICE</fx:DocumentType>
                         <fx:Version>1.0</fx:Version>
                     </rdf:Description>
                 </rdf:RDF>

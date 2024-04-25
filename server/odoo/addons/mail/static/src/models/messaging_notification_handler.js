@@ -25,6 +25,7 @@ registerModel({
          */
         start() {
             this.env.services['bus_service'].addEventListener('notification', this._handleNotifications);
+            this.env.services['bus_service'].start();
         },
         /**
          * @private
@@ -97,6 +98,8 @@ registerModel({
                             return this._handleNotificationPartnerTransientMessage(message.payload);
                         case 'mail.channel/leave':
                             return this._handleNotificationChannelLeave(message.payload);
+                        case 'mail.channel/delete':
+                            return this._handleNotificationChannelDelete(message.payload);
                         case 'res.users/connection':
                             return this._handleNotificationPartnerUserConnection(message.payload);
                         case 'mail.activity/updated': {
@@ -176,6 +179,21 @@ registerModel({
                 this.messaging.messagingBus.trigger('o-attachment-deleted', { attachment });
                 attachment.delete();
             }
+        },
+        /**
+         * @private
+         * @param {Object} payload
+         * @param {integer} payload.id
+         */
+        async _handleNotificationChannelDelete({ id }) {
+            const channel = this.messaging.models['Thread'].findFromIdentifyingData({
+                id,
+                model: 'mail.channel',
+            });
+            if (!channel) {
+                return;
+            }
+            channel.delete();
         },
         /**
          * @private
@@ -273,7 +291,7 @@ registerModel({
             // particular the case with the `uuid` field that is assumed
             // "required" by the rest of the code and is necessary for some
             // features such as chat windows.
-            if (!channel) {
+            if (!channel || !channel.channel_type) {
                 const res = await this.messaging.models['Thread'].performRpcChannelInfo({ ids: [channelId] });
                 if (!this.exists()) {
                     return;
@@ -681,9 +699,8 @@ registerModel({
             const titlePattern = messaging.outOfFocusUnreadMessageCounter === 1
                 ? this.env._t("%s Message")
                 : this.env._t("%s Messages");
-            this.env.bus.trigger('set_title_part', {
-                part: '_chat',
-                title: sprintf(titlePattern, messaging.outOfFocusUnreadMessageCounter),
+            this.env.services["title"].setParts({
+                _chat: sprintf(titlePattern, messaging.outOfFocusUnreadMessageCounter),
             });
         },
         /**

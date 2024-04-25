@@ -93,6 +93,17 @@
     }
 }
 
+// This function checks if the color ($color) has enough contrast to be visible
+// on a background with the color ($background-color). If not, it is replaced
+// with $light (if too dark) or $dark (if too light).
+@function adjust-color-to-background($color, $background-color, $light: $color-contrast-light, $dark: $color-contrast-dark) {
+    @return if(
+        color-contrast($color) == $color-contrast-dark,
+        color-contrast($background-color, $color, $dark),
+        color-contrast($background-color, $light, $color)
+    );
+}
+
 // ------------------------------------------------------------------
 // Padding
 // ------------------------------------------------------------------
@@ -147,14 +158,12 @@
 
 @mixin o-field-pointer() {
     // Force `pointer`cursor on  inputs and labels
-    &:not(:disabled):not(.disabled) {
-        &, input, label {
-            cursor: pointer;
-        }
+    .form-check-input:not(:disabled), .form-check-input:not(:disabled) + label {
+        cursor: pointer;
+    }
 
-        &:hover, &:hover .form-check-input {
-            border-color: $form-check-input-checked-border-color;
-        }
+    &:hover, &:hover .form-check-input:not(:disabled) {
+        border-color: $form-check-input-checked-border-color;
     }
 }
 

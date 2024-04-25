@@ -5,22 +5,22 @@
 # Translators:
 # Umur Akın <umura@projetgrup.com>, 2022
 # Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2022
-# Yedigen, 2022
 # Martin Trigaux, 2022
 # Ediz Duman <neps1192@gmail.com>, 2022
 # Halil, 2022
 # Levent Karakaş <levent@mektup.at>, 2022
 # Murat Kaplan <muratk@projetgrup.com>, 2022
-# Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2022
+# Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2023
+# ismail eski <ismaileski@gmail.com>, 2024
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-23 08:02+0000\n"
+"POT-Creation-Date: 2024-02-06 13:31+0000\n"
 "PO-Revision-Date: 2022-09-22 05:52+0000\n"
-"Last-Translator: Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2022\n"
-"Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
+"Last-Translator: ismail eski <ismaileski@gmail.com>, 2024\n"
+"Language-Team: Turkish (https://app.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -28,7 +28,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: hr_skills
-#. openerp-web
+#. odoo-javascript
 #: code:addons/hr_skills/static/src/fields/skills_one2many.xml:0
 #: code:addons/hr_skills/static/src/xml/resume_templates.xml:0
 #, python-format
@@ -36,11 +36,11 @@ msgid "ADD"
 msgstr "EKLE"
 
 #. module: hr_skills
-#. openerp-web
+#. odoo-javascript
 #: code:addons/hr_skills/static/src/xml/resume_templates.xml:0
 #, python-format
 msgid "CREATE A NEW ENTRY"
-msgstr "YENİ BİR GİRİŞ OLUŞTUR"
+msgstr "YENİ BİR KAYIT OLUŞTUR"
 
 #. module: hr_skills
 #: model:ir.model.fields.selection,name:hr_skills.selection__hr_resume_line__display_type__classic
@@ -53,11 +53,11 @@ msgid "Company"
 msgstr "Şirket"
 
 #. module: hr_skills
-#. openerp-web
+#. odoo-javascript
 #: code:addons/hr_skills/static/src/fields/skills_one2many.xml:0
 #, python-format
 msgid "Create a new entry"
-msgstr ""
+msgstr "Yeni bir kayıt oluşturun"
 
 #. module: hr_skills
 #: model:ir.model.fields,field_description:hr_skills.field_hr_employee_skill__create_uid
@@ -82,7 +82,7 @@ msgid "Created on"
 msgstr "Oluşturulma"
 
 #. module: hr_skills
-#. openerp-web
+#. odoo-javascript
 #: code:addons/hr_skills/static/src/fields/resume_one2many.xml:0
 #, python-format
 msgid "Current"
@@ -107,7 +107,7 @@ msgstr "Başlama Tarihi"
 #. module: hr_skills
 #: model:ir.model.fields,field_description:hr_skills.field_hr_skill_level__default_level
 msgid "Default Level"
-msgstr ""
+msgstr "Varsayılan Seviye"
 
 #. module: hr_skills
 #: model:ir.model.fields,field_description:hr_skills.field_hr_employee_skill_log__department_id
@@ -162,17 +162,17 @@ msgstr "Çalışan Yetenekleri"
 #. module: hr_skills
 #: model:ir.model,name:hr_skills.model_hr_employee_skill_report
 msgid "Employee Skills Report"
-msgstr ""
+msgstr "Çalışan Yetenekleri Raporu"
 
 #. module: hr_skills
 #: model_terms:ir.ui.view,arch_db:hr_skills.hr_employee_skill_report_view_search
 msgid "Employees with Skills"
-msgstr ""
+msgstr "Yeteneklere Sahip Çalışanlar"
 
 #. module: hr_skills
 #: model_terms:ir.ui.view,arch_db:hr_skills.hr_employee_skill_report_view_search
 msgid "Employees without Skills"
-msgstr ""
+msgstr "Yetenekleri Olmayan Çalışanlar"
 
 #. module: hr_skills
 #: model_terms:ir.ui.view,arch_db:hr_skills.hr_employee_skill_log_view_search
@@ -202,6 +202,8 @@ msgid ""
 "If checked, this level will be the default one selected when choosing this "
 "skill."
 msgstr ""
+"İşaretlenirse, bu seviye bu yetenek seçilirken seçilen varsayılan seviye "
+"olacaktır."
 
 #. module: hr_skills
 #: model:ir.model.fields,field_description:hr_skills.field_hr_employee_skill____last_update
@@ -239,7 +241,7 @@ msgstr "Son Güncelleme"
 #. module: hr_skills
 #: model:ir.model.fields,field_description:hr_skills.field_hr_employee_skill_report__level_progress
 msgid "Level Progress"
-msgstr ""
+msgstr "Seviye İlerlemesi"
 
 #. module: hr_skills
 #: model:ir.model.fields,field_description:hr_skills.field_hr_skill_type__skill_level_ids
@@ -250,7 +252,7 @@ msgstr "Seviyeleri"
 #. module: hr_skills
 #: model:ir.ui.menu,name:hr_skills.hr_resume_line_type_menu
 msgid "Line Types"
-msgstr ""
+msgstr "Satır Tipleri"
 
 #. module: hr_skills
 #: model:ir.model.fields,field_description:hr_skills.field_hr_resume_line__name
@@ -262,13 +264,14 @@ msgid "Name"
 msgstr "Adı"
 
 #. module: hr_skills
+#. odoo-python
 #: code:addons/hr_skills/models/hr_skill_level.py:0
 #, python-format
 msgid "Only one default level is allowed per skill type."
-msgstr ""
+msgstr "Yetenek türü başına yalnızca bir varsayılan seviyeye izin verilir."
 
 #. module: hr_skills
-#. openerp-web
+#. odoo-javascript
 #: code:addons/hr_skills/static/src/views/skills_list_renderer.js:0
 #, python-format
 msgid "Other"
@@ -296,17 +299,12 @@ msgstr "Sıfır bilgiden (% 0) tam uzmanlığa (% 100) kadar ilerleme."
 #. module: hr_skills
 #: model:ir.model.constraint,message:hr_skills.constraint_hr_skill_level_check_level_progress
 msgid "Progress should be a number between 0 and 100."
-msgstr ""
+msgstr "İlerleme 0 ile 100 arasında bir sayı olmalıdır."
 
 #. module: hr_skills
 #: model:ir.model,name:hr_skills.model_hr_employee_public
 msgid "Public Employee"
 msgstr "Herkese Açık Personel"
-
-#. module: hr_skills
-#: model_terms:ir.ui.view,arch_db:hr_skills.hr_employee_view_form
-msgid "Resume"
-msgstr "Devam Et"
 
 #. module: hr_skills
 #: model:ir.ui.menu,name:hr_skills.menu_human_resources_configuration_resume
@@ -316,41 +314,41 @@ msgstr "Devam Et"
 #: model_terms:ir.ui.view,arch_db:hr_skills.hr_employee_view_search
 #: model_terms:ir.ui.view,arch_db:hr_skills.res_users_view_form
 #: model_terms:ir.ui.view,arch_db:hr_skills.resume_line_view_form
-msgid "Resumé"
+msgid "Resume"
 msgstr "Özgeçmiş"
 
 #. module: hr_skills
 #: model:ir.actions.act_window,name:hr_skills.hr_resume_type_action
-msgid "Resumé Line Types"
-msgstr "Özgeçmiş Satırı Türleri"
+msgid "Resume Line Types"
+msgstr "Özgeçmiş Satır Türleri"
 
 #. module: hr_skills
 #: model:ir.model,name:hr_skills.model_hr_resume_line
-msgid "Resumé line of an employee"
-msgstr "Mevcut bir çalışanın özgeçmiş satırı"
+msgid "Resume line of an employee"
+msgstr "Bir çalışanın özgeçmiş satırı"
 
 #. module: hr_skills
 #: model:ir.model.fields,field_description:hr_skills.field_hr_employee__resume_line_ids
 #: model:ir.model.fields,field_description:hr_skills.field_hr_employee_public__resume_line_ids
 #: model:ir.model.fields,field_description:hr_skills.field_res_users__resume_line_ids
-msgid "Resumé lines"
-msgstr "Özgeçmiş Satırları"
+msgid "Resume lines"
+msgstr "Özgeçmiş satırları"
 
 #. module: hr_skills
 #: model_terms:ir.ui.view,arch_db:hr_skills.hr_employee_skill_log_view_search
 msgid "Search Logs"
-msgstr ""
+msgstr "Loglarda  Ara"
 
 #. module: hr_skills
 #: model_terms:ir.ui.view,arch_db:hr_skills.hr_skill_view_search
 msgid "Search Skill"
-msgstr ""
+msgstr "Yetenek Ara"
 
 #. module: hr_skills
 #: model:ir.model.fields,field_description:hr_skills.field_hr_resume_line_type__sequence
 #: model:ir.model.fields,field_description:hr_skills.field_hr_skill__sequence
 msgid "Sequence"
-msgstr "Sıra"
+msgstr "Sıralama"
 
 #. module: hr_skills
 #: model_terms:ir.ui.view,arch_db:hr_skills.employee_skill_level_view_tree
@@ -375,7 +373,7 @@ msgstr "Yetenek"
 #: model:ir.actions.server,name:hr_skills.action_open_skills_log_department
 #: model:ir.actions.server,name:hr_skills.action_open_skills_log_employee
 msgid "Skill History Report"
-msgstr ""
+msgstr "Yetenek Geçmişi Raporu"
 
 #. module: hr_skills
 #: model:ir.model,name:hr_skills.model_hr_skill_level
@@ -441,15 +439,17 @@ msgstr "Yetenekler"
 #: model_terms:ir.ui.view,arch_db:hr_skills.hr_employee_skill_log_view_graph_employee
 #: model_terms:ir.ui.view,arch_db:hr_skills.hr_employee_skill_log_view_tree
 msgid "Skills History"
-msgstr ""
+msgstr "Yetenek Geçmişi"
 
 #. module: hr_skills
+#. odoo-python
 #: code:addons/hr_skills/models/hr_employee_skill.py:0
 #, python-format
 msgid "The skill %(name)s and skill type %(type)s doesn't match"
 msgstr "%(name)s yetenek ve %(type)s yetenek türü eşleşmiyor"
 
 #. module: hr_skills
+#. odoo-python
 #: code:addons/hr_skills/models/hr_employee_skill.py:0
 #, python-format
 msgid "The skill level %(level)s is not valid for skill type: %(type)s"
@@ -473,7 +473,7 @@ msgstr "Aynı yetenek için iki seviyeye izin verilmez"
 #. module: hr_skills
 #: model:ir.model.constraint,message:hr_skills.constraint_hr_employee_skill_log__unique_skill_log
 msgid "Two levels for the same skill on the same day is not allowed"
-msgstr ""
+msgstr "Aynı gün aynı yetenek için iki seviyeye izin verilmez"
 
 #. module: hr_skills
 #: model:ir.model.fields,field_description:hr_skills.field_hr_resume_line__line_type_id
@@ -482,7 +482,7 @@ msgstr "Tür"
 
 #. module: hr_skills
 #: model:ir.model,name:hr_skills.model_hr_resume_line_type
-msgid "Type of a resumé line"
+msgid "Type of a resume line"
 msgstr "Özgeçmiş satırının türü"
 
 #. module: hr_skills

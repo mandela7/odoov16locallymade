@@ -12,6 +12,11 @@ class PortalAccount(portal.PortalAccount):
 
     def _invoice_get_page_view_values(self, invoice, access_token, **kwargs):
         values = super()._invoice_get_page_view_values(invoice, access_token, **kwargs)
+
+        if not invoice._has_to_be_paid():
+            # Do not compute payment-related stuff if given invoice doesn't have to be paid.
+            return values
+
         logged_in = not request.env.user._is_public()
         # We set partner_id to the partner id of the current user if logged in, otherwise we set it
         # to the invoice partner id. We do this to ensure that payment tokens are assigned to the
@@ -36,7 +41,7 @@ class PortalAccount(portal.PortalAccount):
 
         fees_by_provider = {
             pro_sudo: pro_sudo._compute_fees(
-                invoice.amount_total, invoice.currency_id, invoice.partner_id.country_id
+                invoice.amount_residual, invoice.currency_id, invoice.partner_id.country_id
             ) for pro_sudo in providers_sudo.filtered('fees_active')
         }
         values.update({

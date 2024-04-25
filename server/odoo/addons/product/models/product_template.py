@@ -28,6 +28,9 @@ class ProductTemplate(models.Model):
         # Deletion forbidden (at least through unlink)
         return self.env.ref('uom.product_uom_unit')
 
+    def _get_default_uom_po_id(self):
+        return self.default_get(['uom_id']).get('uom_id') or self._get_default_uom_id()
+
     def _read_group_categ_id(self, categories, domain, order):
         category_ids = self.env.context.get('default_categ_id')
         if not category_ids and self.env.context.get('group_expand'):
@@ -96,7 +99,7 @@ class ProductTemplate(models.Model):
     uom_name = fields.Char(string='Unit of Measure Name', related='uom_id.name', readonly=True)
     uom_po_id = fields.Many2one(
         'uom.uom', 'Purchase UoM',
-        default=_get_default_uom_id, required=True,
+        default=_get_default_uom_po_id, required=True,
         help="Default unit of measure used for purchase orders. It must be in the same category as the default unit of measure.")
     company_id = fields.Many2one(
         'res.company', 'Company', index=True)
@@ -235,12 +238,17 @@ class ProductTemplate(models.Model):
                     template.barcode = archived_variants.barcode
 
     def _search_barcode(self, operator, value):
-        templates = self.with_context(active_test=False).search([('product_variant_ids.barcode', operator, value)])
-        return [('id', 'in', templates.ids)]
+        query = self.with_context(active_test=False)._search([('product_variant_ids.barcode', operator, value)])
+        return [('id', 'in', query)]
 
     def _set_barcode(self):
-        if len(self.product_variant_ids) == 1:
+        variant_count = len(self.product_variant_ids)
+        if variant_count == 1:
             self.product_variant_ids.barcode = self.barcode
+        elif variant_count == 0:
+            archived_variants = self.with_context(active_test=False).product_variant_ids
+            if len(archived_variants) == 1:
+                archived_variants.barcode = self.barcode
 
     @api.model
     def _get_weight_uom_id_from_ir_config_parameter(self):
@@ -503,15 +511,22 @@ class ProductTemplate(models.Model):
         searched_ids = set(templates.ids)
         # some product.templates do not have product.products yet (dynamic variants configuration),
         # we need to add the base _name_search to the results
-        # FIXME awa: this is really not performant at all but after discussing with the team
-        # we don't see another way to do it
         tmpl_without_variant_ids = []
-        if not limit or len(searched_ids) < limit:
-            tmpl_without_variant_ids = self.env['product.template'].search(
-                [('id', 'not in', self.env['product.template']._search([('product_variant_ids.active', '=', True)]))]
-            )
+        # Useless if variants is not set up as no tmpl_without_variant_ids could exist.
+        if self.env.user.has_group('product.group_product_variant') and (not limit or len(searched_ids) < limit):
+            # The ORM has to be bypassed because it would require a NOT IN which is inefficient.
+            self.env['product.product'].flush_model(['product_tmpl_id', 'active'])
+            tmpl_without_variant_ids = self.env['product.template']._search([], order='id')
+            tmpl_without_variant_ids.add_where("""
+                NOT EXISTS (
+                    SELECT product_tmpl_id
+                    FROM product_product
+                    WHERE product_product.active = true
+                        AND product_template.id = product_product.product_tmpl_id
+                )
+            """)
         if tmpl_without_variant_ids:
-            domain = expression.AND([args or [], [('id', 'in', tmpl_without_variant_ids.ids)]])
+            domain = expression.AND([args or [], [('id', 'in', tmpl_without_variant_ids)]])
             searched_ids |= set(super(ProductTemplate, self)._name_search(
                     name,
                     args=domain,
@@ -565,6 +580,8 @@ class ProductTemplate(models.Model):
             price = template[price_type] or 0.0
             price_currency = template.currency_id
             if price_type == 'standard_price':
+                if not price and template.product_variant_ids:
+                    price = template.product_variant_ids[0].standard_price
                 price_currency = template.cost_currency_id
 
             # yes, there can be attribute values for product template if it's not a variant YET
@@ -761,9 +778,10 @@ class ProductTemplate(models.Model):
         self.ensure_one()
         parent_combination = parent_combination or self.env['product.template.attribute.value']
         archived_products = self.with_context(active_test=False).product_variant_ids.filtered(lambda l: not l.active)
+        active_combinations = set(tuple(product.product_template_attribute_value_ids.ids) for product in self.product_variant_ids)
         return {
             'exclusions': self._complete_inverse_exclusions(self._get_own_attribute_exclusions()),
-            'archived_combinations': [product.product_template_attribute_value_ids.ids for product in archived_products],
+            'archived_combinations': list(set(tuple(product.product_template_attribute_value_ids.ids) for product in archived_products) - active_combinations),
             'parent_exclusions': self._get_parent_attribute_exclusions(parent_combination),
             'parent_combination': parent_combination.ids,
             'parent_product_name': parent_name,
@@ -1295,6 +1313,9 @@ class ProductTemplate(models.Model):
             'label': _('Import Template for Products'),
             'template': '/product/static/xls/product_template.xls'
         }]
+
+    def get_contextual_price(self, product=None):
+        return self._get_contextual_price(product=product)
 
     def _get_contextual_price(self, product=None):
         self.ensure_one()

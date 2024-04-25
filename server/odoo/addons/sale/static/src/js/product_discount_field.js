@@ -21,6 +21,9 @@ export class ProductDiscountField extends FloatField {
     }
 
     onChange(ev) {
+        if (!("order_line" in this.props.record.model.root.data)) {
+            return;
+        }
         const x2mList = this.props.record.model.root.data.order_line;
         const orderLines = x2mList.records.filter(line => !line.data.display_type);
 
@@ -37,7 +40,7 @@ export class ProductDiscountField extends FloatField {
                         return {
                             operation: "UPDATE",
                             record: line,
-                            data: {["discount"]: Number(ev.target.value)},
+                            data: {["discount"]: this.props.value},
                         };
                     });
 

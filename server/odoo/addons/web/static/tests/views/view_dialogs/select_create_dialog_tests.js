@@ -2,10 +2,10 @@
 
 import {
     click,
+    clickOpenedDropdownItem,
     getFixture,
     nextTick,
     editInput,
-    selectDropdownItem,
     patchWithCleanup,
 } from "@web/../tests/helpers/utils";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
@@ -127,6 +127,7 @@ QUnit.module("ViewDialogs", (hooks) => {
                             orderby: "",
                             expand: false,
                             expand_orderby: null,
+                            expand_limit: null,
                             lazy: true,
                             limit: 80,
                             offset: 0,
@@ -265,6 +266,11 @@ QUnit.module("ViewDialogs", (hooks) => {
 
     QUnit.test("SelectCreateDialog cascade x2many in create mode", async function (assert) {
         assert.expect(5);
+
+        patchWithCleanup(browser, {
+            setTimeout: (fn) => fn(),
+        });
+
         serverData.views = {
             "partner,false,form": `
                 <form>
@@ -323,7 +329,7 @@ QUnit.module("ViewDialogs", (hooks) => {
         await click(target, ".o_field_x2many_list_row_add a");
 
         await editInput(target, ".o_field_widget[name=instrument] input", "ABC");
-        await selectDropdownItem(target, "instrument", "Create and edit...");
+        await clickOpenedDropdownItem(target, "instrument", "Create and edit...");
 
         assert.containsOnce(target, ".modal .modal-lg");
 
@@ -342,7 +348,7 @@ QUnit.module("ViewDialogs", (hooks) => {
     });
 
     QUnit.test("SelectCreateDialog: save current search", async function (assert) {
-        assert.expect(4);
+        assert.expect(5);
 
         serverData.views = {
             "partner,false,list": `
@@ -384,6 +390,9 @@ QUnit.module("ViewDialogs", (hooks) => {
                     "should save the correct context"
                 );
                 return 7; // fake serverSideId
+            }
+            if (args.method === "get_views") {
+                assert.equal(args.kwargs.options.load_filters, true, "Missing load_filters option");
             }
         };
         patchWithCleanup(browser, { setTimeout: (fn) => fn() });

@@ -14,6 +14,7 @@ from psycopg2.extras import Json
 
 from odoo.exceptions import AccessError, ValidationError
 from odoo.tests import common
+from odoo.addons.base.tests.common import TransactionCaseWithUserDemo
 from odoo.tools import mute_logger, view_validation
 from odoo.addons.base.models.ir_ui_view import (
     transfer_field_to_modifiers, transfer_node_to_modifiers, simplify_modifiers,
@@ -30,7 +31,7 @@ class ViewXMLID(common.TransactionCase):
         self.assertTrue(view.model_data_id)
         self.assertEqual(view.model_data_id.complete_name, 'base.view_company_form')
 
-class ViewCase(common.TransactionCase):
+class ViewCase(TransactionCaseWithUserDemo):
     def setUp(self):
         super(ViewCase, self).setUp()
         self.View = self.env['ir.ui.view']
@@ -1738,12 +1739,12 @@ class TestViews(ViewCase):
         def _test_modifiers(what, expected):
             modifiers = {}
             if isinstance(what, dict):
-                transfer_field_to_modifiers(what, modifiers)
+                transfer_field_to_modifiers(what, modifiers, ['invisible', 'readonly', 'required'])
             else:
                 node = etree.fromstring(what) if isinstance(what, str) else what
                 transfer_node_to_modifiers(node, modifiers)
             simplify_modifiers(modifiers)
-            assert modifiers == expected, "%s != %s" % (modifiers, expected)
+            assert str(modifiers) == str(expected), "%s != %s" % (modifiers, expected)
 
         _test_modifiers('<field name="a"/>', {})
         _test_modifiers('<field name="a" invisible="1"/>', {"invisible": True})
@@ -1752,6 +1753,14 @@ class TestViews(ViewCase):
         _test_modifiers('<field name="a" invisible="0"/>', {})
         _test_modifiers('<field name="a" readonly="0"/>', {})
         _test_modifiers('<field name="a" required="0"/>', {})
+        _test_modifiers(
+            """<field name="a" attrs="{'readonly': 1}"/>""",
+            {"readonly": True},
+        )
+        _test_modifiers(
+            """<field name="a" attrs="{'readonly': 0}"/>""",
+            {},
+        )
         # TODO: Order is not guaranteed
         _test_modifiers(
             '<field name="a" invisible="1" required="1"/>',
@@ -2418,7 +2427,7 @@ class TestViews(ViewCase):
                 </form>
             """,
         })
-        user_demo = self.env.ref('base.user_demo')
+        user_demo = self.user_demo
         # Make sure demo doesn't have the base.group_system
         self.assertFalse(self.env['res.partner'].with_user(user_demo).env.user.has_group('base.group_system'))
         arch = self.env['res.partner'].with_user(user_demo).get_view(view_id=view.id)['arch']
@@ -2880,6 +2889,45 @@ class TestViews(ViewCase):
             </form>
         """, valid=True)
 
+    @mute_logger('odoo.addons.base.models.ir_ui_view')
+    def test_empty_groups_attrib(self):
+        """Ensure we allow empty groups attribute"""
+        view = self.View.create({
+            'name': 'foo',
+            'model': 'res.partner',
+            'arch': """
+                <form>
+                    <field name="name" groups="" />
+                </form>
+            """,
+        })
+        arch = self.env['res.partner'].get_view(view_id=view.id)['arch']
+        tree = etree.fromstring(arch)
+        nodes = tree.xpath("//field[@name='name' and not (@groups)]")
+        self.assertEqual(1, len(nodes))
+
+    def test_attrs_groups_with_groups_in_model(self):
+        """Tests the attrs is well processed to modifiers for a field node combining:
+        - a `groups` attribute on the field node in the view architecture
+        - a `groups` attribute on the field in the Python model
+        This is an edge case and it worths a unit test."""
+        self.patch(type(self.env['res.partner']).name, 'groups', 'base.group_system')
+        self.env.user.groups_id += self.env.ref('base.group_multi_company')
+        view = self.View.create({
+            'name': 'foo',
+            'model': 'res.partner',
+            'arch': """
+                <form>
+                    <field name="active"/>
+                    <field name="name" groups="base.group_multi_company" attrs="{'invisible': [('active', '=', True)]}"/>
+                </form>
+            """,
+        })
+        arch = self.env['res.partner'].get_view(view_id=view.id)['arch']
+        tree = etree.fromstring(arch)
+        node_field_name = tree.xpath('//field[@name="name"]')[0]
+        self.assertEqual(node_field_name.get('modifiers'), '{"invisible": [["active", "=", true]]}')
+
     def test_button(self):
         arch = """
             <form>
@@ -3174,6 +3222,9 @@ class TestViews(ViewCase):
             '<graph string="Graph"><label for="model"/><field name="model" type="row"/><field name="inherit_id" type="measure"/></graph>',
             'A <graph> can only contains <field> nodes, found a <label>'
         )
+
+    def test_graph_attributes(self):
+        self.assertValid('<graph string="Graph" cumulated="1" ><field name="model" type="row"/><field name="inherit_id" type="measure"/></graph>')
 
     def test_view_ref(self):
         view = self.assertValid(
@@ -3891,7 +3942,7 @@ class TestValidationTools(common.BaseCase):
             {'x', 'y', 'z'},
         )
 
-class TestAccessRights(common.TransactionCase):
+class TestAccessRights(TransactionCaseWithUserDemo):
 
     @common.users('demo')
     def test_access(self):
@@ -3917,7 +3968,7 @@ class TestAllViews(common.TransactionCase):
                 view._check_xml()
 
 @common.tagged('post_install', '-at_install', '-standard', 'render_all_views')
-class TestRenderAllViews(common.TransactionCase):
+class TestRenderAllViews(TransactionCaseWithUserDemo):
 
     @common.users('demo', 'admin')
     def test_render_all_views(self):

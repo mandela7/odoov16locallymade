@@ -19,16 +19,18 @@ class PaymentTransaction(models.Model):
 
     @api.depends('invoice_ids')
     def _compute_invoices_count(self):
-        self.env.cr.execute(
-            '''
-            SELECT transaction_id, count(invoice_id)
-            FROM account_invoice_transaction_rel
-            WHERE transaction_id IN %s
-            GROUP BY transaction_id
-            ''',
-            [tuple(self.ids)]
-        )
-        tx_data = dict(self.env.cr.fetchall())  # {id: count}
+        tx_data = {}
+        if self.ids:
+            self.env.cr.execute(
+                '''
+                SELECT transaction_id, count(invoice_id)
+                FROM account_invoice_transaction_rel
+                WHERE transaction_id IN %s
+                GROUP BY transaction_id
+                ''',
+                [tuple(self.ids)]
+            )
+            tx_data = dict(self.env.cr.fetchall())  # {id: count}
         for tx in self:
             tx.invoices_count = tx_data.get(tx.id, 0)
 
@@ -147,7 +149,7 @@ class PaymentTransaction(models.Model):
             'payment_method_line_id': payment_method_line.id,
             'payment_token_id': self.token_id.id,
             'payment_transaction_id': self.id,
-            'ref': self.reference,
+            'ref': f'{self.reference} - {self.partner_id.name} - {self.provider_reference or ""}',
             **extra_create_values,
         }
         payment = self.env['account.payment'].create(payment_values)

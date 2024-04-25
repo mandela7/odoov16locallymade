@@ -12,7 +12,15 @@ import { WithSearch } from "@web/search/with_search/with_search";
 import { OnboardingBanner } from "@web/views/onboarding_banner";
 import { useActionLinks } from "@web/views/view_hook";
 
-import { Component, markRaw, onWillUpdateProps, onWillStart, toRaw, useSubEnv, reactive } from "@odoo/owl";
+import {
+    Component,
+    markRaw,
+    onWillUpdateProps,
+    onWillStart,
+    toRaw,
+    useSubEnv,
+    reactive,
+} from "@odoo/owl";
 const viewRegistry = registry.category("views");
 
 /** @typedef {Object} Config
@@ -67,6 +75,8 @@ export function getDefaultConfig() {
     return config;
 }
 
+/** @typedef {import("./relational_model").OrderTerm} OrderTerm */
+
 /** @typedef {Object} ViewProps
  *  @property {string} resModel
  *  @property {string} type
@@ -87,7 +97,7 @@ export function getDefaultConfig() {
  *  @property {Object} [context={}]
  *  @property {DomainRepr} [domain]
  *  @property {string[]} [groupBy]
- *  @property {string[]} [orderBy]
+ *  @property {OrderTerm[]} [orderBy]
  *
  *  @property {boolean} [useSampleModel]
  *  @property {string} [noContentHelp]
@@ -113,6 +123,7 @@ const STANDARD_PROPS = [
     "fields",
     "relatedModels",
     "viewId",
+    "views",
     "actionMenus",
     "loadActionMenus",
 

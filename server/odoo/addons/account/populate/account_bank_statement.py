@@ -92,6 +92,14 @@ class AccountBankStatementLine(models.Model):
             partner = search_partner_ids(company_id)
             return random.choices(partner + [False], [1/len(partner)] * len(partner) + [1])[0]
 
+        def get_amount(random, **kwargs):
+            """Get a random amount between -1000 and 1000.
+            It is impossible to get a null amount. Because it would not be a valid statement line.
+            :param random: seeded random number generator.
+            :return (float): a number between -1000 and 1000.
+            """
+            return random.uniform(-1000, 1000) or 1
+
         def get_amount_currency(random, values, **kwargs):
             """
             Get a random amount currency between one tenth of  amount and 10 times amount with the same sign
@@ -119,6 +127,8 @@ class AccountBankStatementLine(models.Model):
             ('chart_template_id', '!=', False),
             ('id', 'in', self.env.registry.populated_models['res.company']),
         ])
+        if not company_ids:
+            return []
 
         journal_ids = self.env['account.journal'].search([
             ('company_id', 'in', company_ids.ids),
@@ -129,7 +139,7 @@ class AccountBankStatementLine(models.Model):
             ('partner_id', populate.compute(get_partner)),
             ('date', populate.randdatetime(relative_before=relativedelta(years=-4))),
             ('payment_ref', populate.constant('transaction_{values[date]}_{counter}')),
-            ('amount', populate.randint(-1000, 1000)),
+            ('amount', populate.compute(get_amount)),
             ('foreign_currency_id', populate.compute(get_currency)),
             ('amount_currency', populate.compute(get_amount_currency)),
         ]

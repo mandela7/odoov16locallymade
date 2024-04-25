@@ -19,8 +19,8 @@ class AccountPartialReconcile(models.Model):
         index=True, required=True)
     full_reconcile_id = fields.Many2one(
         comodel_name='account.full.reconcile',
-        string="Full Reconcile", copy=False)
-    exchange_move_id = fields.Many2one(comodel_name='account.move')
+        string="Full Reconcile", copy=False, index='btree_not_null')
+    exchange_move_id = fields.Many2one(comodel_name='account.move', index='btree_not_null')
 
     # ==== Currency fields ====
     company_currency_id = fields.Many2one(
@@ -243,7 +243,7 @@ class AccountPartialReconcile(models.Model):
                                 account.move.line.
         '''
         account = base_line.company_id.account_cash_basis_base_account_id or base_line.account_id
-        tax_ids = base_line.tax_ids.filtered(lambda x: x.tax_exigibility == 'on_payment')
+        tax_ids = base_line.tax_ids.flatten_taxes_hierarchy().filtered(lambda x: x.tax_exigibility == 'on_payment')
         is_refund = base_line.is_refund
         tax_tags = tax_ids.get_tax_tags(is_refund, 'base')
         product_tags = base_line.tax_tag_ids.filtered(lambda x: x.applicability == 'products')
@@ -356,7 +356,7 @@ class AccountPartialReconcile(models.Model):
             base_line.currency_id.id,
             base_line.partner_id.id,
             (account or base_line.account_id).id,
-            tuple(base_line.tax_ids.filtered(lambda x: x.tax_exigibility == 'on_payment').ids),
+            tuple(base_line.tax_ids.flatten_taxes_hierarchy().filtered(lambda x: x.tax_exigibility == 'on_payment').ids),
         )
 
     @api.model
@@ -407,7 +407,8 @@ class AccountPartialReconcile(models.Model):
                 partial = partial_values['partial']
 
                 # Init the journal entry.
-                move_date = partial.max_date if partial.max_date > (move.company_id.period_lock_date or date.min) else today
+                lock_date = move.company_id._get_user_fiscal_lock_date()
+                move_date = partial.max_date if partial.max_date > (lock_date or date.min) else today
                 move_vals = {
                     'move_type': 'entry',
                     'date': move_date,

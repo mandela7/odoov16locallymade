@@ -13,6 +13,7 @@ publicWidget.registry.PaymentExpressCheckoutForm = publicWidget.Widget.extend({
         await this._super(...arguments);
         this.txContext = {};
         Object.assign(this.txContext, this.$el.data());
+        this.txContext.shippingInfoRequired = !!this.txContext.shippingInfoRequired;
         const expressCheckoutForms = this._getExpressCheckoutForms();
         for (const expressCheckoutForm of expressCheckoutForms) {
             await this._prepareExpressCheckoutForm(expressCheckoutForm.dataset);
@@ -36,16 +37,6 @@ publicWidget.registry.PaymentExpressCheckoutForm = publicWidget.Widget.extend({
             'form[name="o_payment_express_checkout_form"] div[name="o_express_checkout_container"]'
         );
     },
-
-    /**
-     * Return whether the shipping information is required or not.
-     *
-     * For a module to request shipping information to the customer, it must override this method.
-     *
-     * @private
-     * @return {Boolean} - Whether the shipping information is required or not.
-     */
-    _isShippingInformationRequired: () => false,
 
     /**
      * Prepare the provider-specific express checkout form based on the provided data.
@@ -99,6 +90,13 @@ publicWidget.registry.PaymentExpressCheckoutForm = publicWidget.Widget.extend({
     _updateAmount(newAmount, newMinorAmount) {
         this.txContext.amount = parseFloat(newAmount);
         this.txContext.minorAmount = parseInt(newMinorAmount);
+        this._getExpressCheckoutForms().forEach(form => {
+            if (newAmount == 0) {
+                form.classList.add('d-none')}
+            else {
+                form.classList.remove('d-none')
+            }
+        })
     },
 
 });

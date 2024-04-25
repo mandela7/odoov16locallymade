@@ -2,7 +2,9 @@
 
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { download } from "@web/core/network/download";
+import { evaluateExpr } from "@web/core/py_js/py";
 import { DynamicRecordList } from "@web/views/relational_model";
+import { unique } from "@web/core/utils/arrays";
 import { useService } from "@web/core/utils/hooks";
 import { sprintf } from "@web/core/utils/strings";
 import { ActionMenus } from "@web/search/action_menus/action_menus";
@@ -59,6 +61,7 @@ export class ListController extends Component {
         this.activeActions = this.archInfo.activeActions;
         const fields = this.props.fields;
         const { rootState } = this.props.state || {};
+        const { rawExpand } = this.archInfo;
         this.model = useModel(this.props.Model, {
             resModel: this.props.resModel,
             fields,
@@ -68,12 +71,15 @@ export class ListController extends Component {
             viewMode: "list",
             groupByInfo: this.archInfo.groupBy.fields,
             limit: this.archInfo.limit || this.props.limit,
+            countLimit: this.archInfo.countLimit,
             defaultOrder: this.archInfo.defaultOrder,
-            expand: this.archInfo.expand,
+            expand: rawExpand ? evaluateExpr(rawExpand, this.props.context) : false,
             groupsLimit: this.archInfo.groupsLimit,
             multiEdit: this.multiEdit,
             rootState,
         });
+
+        this.optionalActiveFields = [];
 
         onWillStart(async () => {
             this.isExportEnable = await this.userService.hasGroup("base.group_allow_export");
@@ -157,7 +163,7 @@ export class ListController extends Component {
 
     async createRecord({ group } = {}) {
         const list = (group && group.list) || this.model.root;
-        if (this.editable) {
+        if (this.editable && !list.isGrouped) {
             if (!(list instanceof DynamicRecordList)) {
                 throw new Error("List should be a DynamicRecordList");
             }
@@ -254,6 +260,7 @@ export class ListController extends Component {
                         body: this.env._t(
                             "Are you sure that you want to archive all the selected records?"
                         ),
+                        confirmLabel: this.env._t("Archive"),
                         confirm: () => {
                             this.toggleArchiveState(true);
                         },
@@ -308,6 +315,20 @@ export class ListController extends Component {
         return list.isGrouped ? list.nbTotalRecords : list.count;
     }
 
+    onOptionalFieldsChanged(optionalActiveFields) {
+        this.optionalActiveFields = optionalActiveFields;
+    }
+
+    get defaultExportList() {
+        return unique(
+            this.props.archInfo.columns
+                .filter((col) => col.type === "field")
+                .filter((col) => !col.optional || this.optionalActiveFields[col.name])
+                .map((col) => this.props.fields[col.name])
+                .filter((field) => field.exportable !== false)
+        );
+    }
+
     get display() {
         if (!this.env.isSmall) {
             return this.props.display;
@@ -323,7 +344,11 @@ export class ListController extends Component {
     }
 
     async downloadExport(fields, import_compat, format) {
-        const resIds = await this.getSelectedResIds();
+        let ids = false;
+        if (!this.isDomainSelected) {
+            const resIds = await this.getSelectedResIds();
+            ids = resIds.length > 0 && resIds;
+        }
         const exportedFields = fields.map((field) => ({
             name: field.name || field.id,
             label: field.label || field.string,
@@ -341,7 +366,7 @@ export class ListController extends Component {
                     domain: this.model.root.domain,
                     fields: exportedFields,
                     groupby: this.model.root.groupBy,
-                    ids: resIds.length > 0 && resIds,
+                    ids,
                     model: this.model.root.resModel,
                 }),
             },
@@ -363,10 +388,9 @@ export class ListController extends Component {
      * @private
      */
     async onExportData() {
-        const resIds = await this.getSelectedResIds();
         const dialogProps = {
-            resIds,
             context: this.props.context,
+            defaultExportList: this.defaultExportList,
             download: this.downloadExport.bind(this),
             getExportedFields: this.getExportedFields.bind(this),
             root: this.model.root,
@@ -379,11 +403,7 @@ export class ListController extends Component {
      * @private
      */
     async onDirectExportData() {
-        const fields = this.props.archInfo.columns
-            .filter((col) => col.type === "field")
-            .map((col) => this.props.fields[col.name])
-            .filter((field) => field.exportable !== false);
-        await this.downloadExport(fields, false, "xlsx");
+        await this.downloadExport(this.defaultExportList, false, "xlsx");
     }
     /**
      * Called when clicking on 'Archive' or 'Unarchive' in the sidebar.
@@ -419,17 +439,18 @@ export class ListController extends Component {
         }
     }
 
-    async onDeleteSelectedRecords() {
+    get deleteConfirmationDialogProps() {
         const root = this.model.root;
         const body =
             root.isDomainSelected || root.selection.length > 1
                 ? this.env._t("Are you sure you want to delete these records?")
                 : this.env._t("Are you sure you want to delete this record?");
-        const dialogProps = {
+        return {
             body,
             confirm: async () => {
                 const total = root.count;
                 const resIds = await this.model.root.deleteRecords();
+                this.model.notify();
                 if (
                     root.isDomainSelected &&
                     resIds.length === session.active_ids_limit &&
@@ -449,7 +470,10 @@ export class ListController extends Component {
             },
             cancel: () => {},
         };
-        this.dialogService.add(ConfirmationDialog, dialogProps);
+    }
+
+    async onDeleteSelectedRecords() {
+        this.dialogService.add(ConfirmationDialog, this.deleteConfirmationDialogProps);
     }
 
     discardSelection() {
@@ -458,7 +482,11 @@ export class ListController extends Component {
         });
     }
 
-    async beforeExecuteActionButton(clickParams) {}
+    async beforeExecuteActionButton(clickParams) {
+        if (clickParams.special !== "cancel" && this.model.root.editedRecord) {
+            return this.model.root.editedRecord.save();
+        }
+    }
 
     async afterExecuteActionButton(clickParams) {}
 }

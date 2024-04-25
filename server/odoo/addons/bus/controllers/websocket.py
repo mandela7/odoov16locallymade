@@ -1,7 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import json
-from werkzeug.exceptions import ServiceUnavailable
 
 from odoo.http import Controller, request, route, SessionExpiredException
 from odoo.addons.base.models.assetsbundle import AssetsBundle
@@ -16,10 +15,6 @@ class WebsocketController(Controller):
         Handle the websocket handshake, upgrade the connection if
         successfull.
         """
-        is_headful_browser = request.httprequest.user_agent and 'Headless' not in request.httprequest.user_agent.string
-        if request.registry.in_test_mode() and is_headful_browser:
-            # Prevent browsers from interfering with the unittests
-            raise ServiceUnavailable()
         return WebsocketConnectionHandler.open_connection(request)
 
     @route('/websocket/health', type='http', auth='none', save_session=False)
@@ -58,9 +53,15 @@ class WebsocketController(Controller):
         return {}
 
     @route('/bus/websocket_worker_bundle', type='http', auth='public', cors='*')
-    def get_websocket_worker_bundle(self):
+    def get_websocket_worker_bundle(self, v=None):  # pylint: disable=unused-argument
+        """
+        :param str v: Version of the worker, frontend only argument used to
+            prevent new worker versions to be loaded from the browser cache.
+        """
         bundle = 'bus.websocket_worker_assets'
         files, _ = request.env["ir.qweb"]._get_asset_content(bundle)
         asset = AssetsBundle(bundle, files)
-        stream = request.env['ir.binary']._get_stream_from(asset.js())
+        stream = request.env['ir.binary']._get_stream_from(asset.js(
+            is_minified="assets" not in request.session.debug
+        ))
         return stream.get_response()

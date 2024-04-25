@@ -8,9 +8,13 @@ import { WebsiteEditorComponent } from '../../components/editor/editor';
 import { WebsiteTranslator } from '../../components/translator/translator';
 import { unslugHtmlDataObject } from '../../services/website_service';
 import {OptimizeSEODialog} from '@website/components/dialog/seo';
+import { WebsiteDialog } from "@website/components/dialog/dialog";
 import { routeToUrl } from "@web/core/browser/router_service";
+import { getActiveHotkey } from "@web/core/hotkeys/hotkey_service";
+import { sprintf } from "@web/core/utils/strings";
+import wUtils from 'website.utils';
 
-const { Component, onWillStart, onMounted, onWillUnmount, useRef, useEffect, useState } = owl;
+const { Component, onWillStart, onMounted, onWillUnmount, useRef, useEffect, useState, useExternalListener } = owl;
 
 class BlockPreview extends Component {}
 BlockPreview.template = 'website.BlockPreview';
@@ -42,6 +46,7 @@ export class WebsitePreview extends Component {
 
         useBus(this.websiteService.bus, 'BLOCK', (event) => this.block(event.detail));
         useBus(this.websiteService.bus, 'UNBLOCK', () => this.unblock());
+        useExternalListener(window, "keydown", this._onKeydownRefresh.bind(this));
 
         onWillStart(async () => {
             const [backendWebsiteRepr] = await Promise.all([
@@ -52,10 +57,30 @@ export class WebsitePreview extends Component {
             this.backendWebsiteId = unslugHtmlDataObject(backendWebsiteRepr).id;
 
             const encodedPath = encodeURIComponent(this.path);
-            if (this.websiteDomain && this.websiteDomain !== window.location.origin) {
-                window.location.href = `${this.websiteDomain}/web#action=website.website_preview&path=${encodedPath}&website_id=${this.websiteId}`;
+            if (this.websiteDomain && !wUtils.isHTTPSorNakedDomainRedirection(this.websiteDomain, window.location.origin)) {
+                // The website domain might be the naked one while the naked one
+                // is actually redirecting to `www` (or the other way around).
+                // In such a case, we need to consider those 2 from the same
+                // domain and let the iframe load that "different" domain. The
+                // iframe will actually redirect to the correct one (naked/www),
+                // which will ends up with the same domain as the parent window
+                // URL (event if it wasn't, it wouldn't be an issue as those are
+                // really considered as the same domain, the user will share the
+                // same session and CORS errors won't be a thing in such a case)
+                this.dialogService.add(WebsiteDialog, {
+                    title: this.env._t("Redirecting..."),
+                    body: sprintf(this.env._t(
+                        "You are about to be redirected to the domain configured for your website ( %s ). " +
+                        "This is necessary to edit or view your website from the Website app. You might need to log back in."
+                    ), this.websiteDomain),
+                    showSecondaryButton: false,
+                }, {
+                    onClose: () => {
+                         window.location.href = `${this.websiteDomain}/web#action=website.website_preview&path=${encodedPath}&website_id=${encodeURIComponent(this.websiteId)}`;
+                    }
+                });
             } else {
-                this.initialUrl = `/website/force/${this.websiteId}?path=${encodedPath}`;
+                this.initialUrl = `/website/force/${encodeURIComponent(this.websiteId)}?path=${encodedPath}`;
             }
         });
 
@@ -77,6 +102,14 @@ export class WebsitePreview extends Component {
                 this.websiteService.showLoader({ showTips: true });
             }
         }, () => [this.props.action.context.params]);
+        
+        useEffect(() => {
+            this.websiteContext.showAceEditor = false;
+        }, () => [
+            this.websiteContext.showNewContentModal,
+            this.websiteContext.edition,
+            this.websiteContext.translation,
+        ]);
 
         onMounted(() => {
             this.websiteService.blockPreview(true, 'load-iframe');
@@ -94,6 +127,7 @@ export class WebsitePreview extends Component {
             this.env.services.messaging.modelManager.messagingCreatedPromise.then(() => {
                 this.env.services.messaging.modelManager.messaging.update({ isWebsitePreviewOpen: false });
             });
+            this.websiteService.context.showAceEditor = false;
             const { pathname, search, hash } = this.iframe.el.contentWindow.location;
             this.websiteService.lastUrl = `${pathname}${search}${hash}`;
             this.websiteService.currentWebsiteId = null;
@@ -134,7 +168,7 @@ export class WebsitePreview extends Component {
             // content of the previous URL before reaching the client action,
             // which was lost after being replaced for the frontend's URL.
             const handleBackNavigation = () => {
-                if (!window.location.pathname.startsWith('/@')) {
+                if (window.location.pathname === '/web') {
                     window.dispatchEvent(new HashChangeEvent('hashchange', {
                         newURL: window.location.href.toString()
                     }));
@@ -221,6 +255,7 @@ export class WebsitePreview extends Component {
 
     reloadIframe(url) {
         return new Promise((resolve, reject) => {
+            this.websiteService.websiteRootInstance = undefined;
             this.iframe.el.addEventListener('OdooFrameContentLoaded', resolve, { once: true });
             if (url) {
                 this.iframe.el.contentWindow.location = url;
@@ -272,7 +307,10 @@ export class WebsitePreview extends Component {
             || (pathname
                 && (backendRoutes.includes(pathname)
                     || pathname.startsWith('/@/')
-                    || pathname.startsWith('/web/content/')));
+                    || pathname.startsWith('/web/content/')
+                    // This is defined here to avoid creating a
+                    // website_documents module for just one patch.
+                    || pathname.startsWith('/document/share/')));
     }
 
     /**
@@ -280,23 +318,73 @@ export class WebsitePreview extends Component {
      * the iframe's url (it is clearer for the user).
      */
     _replaceBrowserUrl() {
+        if (!wUtils.isHTTPSorNakedDomainRedirection(this.iframe.el.contentWindow.location.origin, window.location.origin)) {
+            // If another domain ends up loading in the iframe (for example,
+            // if the iframe is being redirected and has no initial URL, so it
+            // loads "about:blank"), do not push that into the history
+            // state as that could prevent the user from going back and could
+            // trigger a traceback.
+            history.replaceState({}, document.title, '/web');
+            return;
+        }
         // The original /web#action=... url is saved to be pushed on top of the
         // history when leaving the component, so that the webclient can
         // correctly find back and replay the client action.
         if (!this.backendUrl) {
             this.backendUrl = routeToUrl(this.router.current);
         }
-        const currentUrl = new URL(this.iframe.el.contentDocument.location.href);
-        currentUrl.pathname = `/@${currentUrl.pathname}`;
-        this.currentTitle = this.iframe.el.contentDocument.title;
-        history.replaceState({}, this.currentTitle, currentUrl.href);
-        this.title.setParts({ action: this.currentTitle });
+        const currentTitle = this.iframe.el.contentDocument.title;
+        history.replaceState({}, currentTitle, this.iframe.el.contentDocument.location.href);
+        this.title.setParts({ action: currentTitle });
     }
 
-    _onPageLoaded() {
+    _onPageLoaded(ev) {
+        // FIX Chrome-only. If you have the backend in a language A but the
+        // website in English only, you can 1) modify a record's (event,
+        // product...) name in language A (say "New Name").
+        // 2) visit the page `/new-name-11` => the server will redirect you to
+        // the English page `/origin-11`, which is the only one existing.
+        // Chrome caches the redirection.
+        // 3) give the same name in English as in language A, try to visit
+        // => the server now wants to access `/new-name-11`
+        // => Chrome uses the cache to redirect `/new-name-11` to `/origin-11`,
+        // => the server tries to redirect to `/new-name-11` => loop.
+        // Chrome injects a "Too many redirects" layout in the iframe, which in
+        // turn raises a CORS error when the app tries to update the iframe.
+        // If we detect that behavior, we reload the iframe with a new query
+        // parameter, so that it's not cached for Chrome.
+        if (
+            navigator.userAgent.toLowerCase().includes("chrome")
+            && !this.iframe.el.src.includes("iframe_reload")
+        ) {
+            try {
+                /* eslint-disable no-unused-expressions */
+                this.iframe.el.contentWindow.location.href;
+            } catch (err) {
+                if (err.name === "SecurityError") {
+                    ev.stopImmediatePropagation();
+                    // Note that iframe's `src` is the URL used to start the
+                    // website preview, it's not sync'd with iframe navigation.
+                    const srcUrl = new URL(this.iframe.el.src);
+                    const pathUrl = new URL(srcUrl.searchParams.get("path"), srcUrl.origin);
+                    pathUrl.searchParams.set("iframe_reload", "1");
+                    srcUrl.searchParams.set("path", `${pathUrl.pathname}${pathUrl.search}`);
+                    // We could inject `pathUrl` directly but keep the same
+                    // expected URL format `/website/force/1?path=..`
+                    this.iframe.el.src = srcUrl.toString();
+                    return;
+                }
+            }
+        }
+        if (this.lastHiddenPageURL !== this.iframe.el.contentWindow.location.href) {
+            // Hide Ace Editor when moving to another page.
+            this.websiteService.context.showAceEditor = false;
+            this.lastHiddenPageURL = undefined;
+        }
         this.iframe.el.contentWindow.addEventListener('beforeunload', this._onPageUnload.bind(this));
         this._replaceBrowserUrl();
         this.iframe.el.contentWindow.addEventListener('hashchange', this._replaceBrowserUrl.bind(this));
+        this.iframe.el.contentWindow.addEventListener('pagehide', this._onPageHide.bind(this));
 
         this.websiteService.pageDocument = this.iframe.el.contentDocument;
 
@@ -324,6 +412,14 @@ export class WebsitePreview extends Component {
                 // Forward clicks to close backend client action's navbar
                 // dropdowns.
                 this.iframe.el.dispatchEvent(new MouseEvent('click', ev));
+            } else {
+                // When in edit mode, prevent the default behaviours of clicks
+                // as to avoid DOM changes not handled by the editor.
+                // (Such as clicking on a link that triggers navigating to
+                // another page.)
+                if (!ev.target.closest('#oe_manipulators')) {
+                    ev.preventDefault();
+                }
             }
 
             const linkEl = ev.target.closest('[href]');
@@ -334,12 +430,14 @@ export class WebsitePreview extends Component {
             const { href, target, classList } = linkEl;
             if (classList.contains('o_add_language')) {
                 ev.preventDefault();
+                // TODO: in master adapt the href in template to only be the
+                // return URL and use it directly here to pass to url_return
                 this.action.doAction('base.action_view_base_language_install', {
                     target: 'new',
                     additionalContext: {
                         params: {
                             website_id: this.websiteId,
-                            url_return: '/[lang]',
+                            url_return: $.deparam(href).url_return || '/[lang]',
                         },
                     },
                 });
@@ -351,19 +449,30 @@ export class WebsitePreview extends Component {
                 const destinationUrl = new URL(href, window.location);
                 destinationUrl.searchParams.delete('edit_translations');
                 destinationUrl.hash = this.websiteService.contentWindow.location.hash;
-                const forceLangUrl = `/website/lang/${lang}?r=${destinationUrl.toString()}`;
                 this.websiteService.bus.trigger('LEAVE-EDIT-MODE', {
                     onLeave: () => {
-                        this.websiteService.goToWebsite({ path: forceLangUrl });
+                        this.websiteService.goToWebsite({ path: destinationUrl.toString(), lang });
                     },
                     reloadIframe: false,
                 });
-            } else if (href && target !== '_blank' && !isEditing && this._isTopWindowURL(linkEl)) {
-                ev.preventDefault();
-                this.router.redirect(href);
+            } else if (href && target !== '_blank' && !isEditing) {
+                if (this._isTopWindowURL(linkEl)) {
+                    ev.preventDefault();
+                    this.router.redirect(href);
+                } else if (this.iframe.el.contentWindow.location.pathname !== new URL(href).pathname) {
+                    // This scenario triggers a navigation inside the iframe.
+                    this.websiteService.websiteRootInstance = undefined;
+                }
             }
         });
         this.iframe.el.contentDocument.addEventListener('keydown', ev => {
+            if (getActiveHotkey(ev) === 'control+k' && !this.websiteContext.edition) {
+                // Avoid for browsers to focus on the URL bar when pressing
+                // CTRL-K from within the iframe.
+                ev.preventDefault();
+            }
+            // Check if it's a refresh first as we want to prevent default in that case.
+            this._onKeydownRefresh(ev);
             this.iframe.el.dispatchEvent(new KeyboardEvent('keydown', ev));
         });
         this.iframe.el.contentDocument.addEventListener('keyup', ev => {
@@ -371,8 +480,22 @@ export class WebsitePreview extends Component {
         });
     }
 
+    /**
+     * This method is called when the page is unloaded to clean
+     * the iframefallback content.
+     */
+    _cleanIframeFallback() {
+        // Remove autoplay in all iframes urls so videos are not
+        // playing in the background
+        const iframesEl = this.iframefallback.el.contentDocument.querySelectorAll('iframe[src]:not([src=""])');
+        for (const iframeEl of iframesEl) {
+            const url = new URL(iframeEl.src);
+            url.searchParams.delete('autoplay');
+            iframeEl.src = url.toString();
+        }
+    }
+
     _onPageUnload() {
-        this.websiteService.websiteRootInstance = undefined;
         this.iframe.el.setAttribute('is-ready', 'false');
         // Before leaving the iframe, its content is replicated on an
         // underlying iframe, to avoid for white flashes (visible on
@@ -384,7 +507,40 @@ export class WebsitePreview extends Component {
             this.iframefallback.el.contentDocument.body.replaceWith(this.iframe.el.contentDocument.body.cloneNode(true));
             this.iframefallback.el.classList.remove('d-none');
             $().getScrollingElement(this.iframefallback.el.contentDocument)[0].scrollTop = $().getScrollingElement(this.iframe.el.contentDocument)[0].scrollTop;
+            this._cleanIframeFallback();
         }
+    }
+    _onPageHide() {
+        this.lastHiddenPageURL = this.iframe.el && this.iframe.el.contentWindow.location.href;
+        // Normally, at this point, the websiteRootInstance is already set to
+        // `undefined`, as we want to do that as early as possible to prevent
+        // the editor to be in an unstable state. But some events not managed
+        // by the websitePreview could trigger a `pagehide`, so for safety,
+        // it is set to undefined again.
+        this.websiteService.websiteRootInstance = undefined;
+    }
+    /**
+     * Handles refreshing while the website preview is active.
+     * Makes it possible to stay in the backend after an F5 or CTRL-R keypress.
+     *
+     * @param  {KeyboardEvent} ev
+     * @private
+     */
+    _onKeydownRefresh(ev) {
+        const hotkey = getActiveHotkey(ev);
+        if (hotkey !== 'control+r' && hotkey !== 'f5') {
+            return;
+        }
+        // The iframe isn't loaded yet: fallback to default refresh.
+        if (this.websiteService.contentWindow === undefined) {
+            return;
+        }
+        ev.preventDefault();
+        const path = this.websiteService.contentWindow.location;
+        const debugMode = this.env.debug ? `?debug=${odoo.debug}` : "";
+        this.router.redirect(
+            `/web${debugMode}#action=website.website_preview&path=${encodeURIComponent(path)}`
+        );
     }
 }
 WebsitePreview.template = 'website.WebsitePreview';

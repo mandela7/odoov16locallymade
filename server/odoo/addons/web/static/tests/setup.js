@@ -1,10 +1,11 @@
 /** @odoo-module **/
 
-import core, { _t } from "web.core";
+import { _t } from "web.core";
+import LegacyBus from "web.Bus";
 import session from "web.session";
 import { assets, templates } from "@web/core/assets";
 import { browser, makeRAMLocalStorage } from "@web/core/browser/browser";
-import { nextTick, patchTimeZone, patchWithCleanup } from "@web/../tests/helpers/utils";
+import { patchTimeZone, patchWithCleanup } from "@web/../tests/helpers/utils";
 import { memoize } from "@web/core/utils/functions";
 import { legacyProm } from "web.test_legacy";
 import { registerCleanup } from "./helpers/cleanup";
@@ -20,21 +21,6 @@ import { patch } from "@web/core/utils/patch";
 import { App, whenReady } from "@odoo/owl";
 
 const { prepareRegistriesWithCleanup } = utils;
-
-patch(App.prototype, "TestOwlApp", {
-    destroy() {
-        if (!this.destroyed) {
-            this._super(...arguments);
-            this.destroyed = true;
-        }
-    },
-    addTemplate(name) {
-        registerCleanup(() => {
-            delete this.constructor.sharedTemplates[name];
-        });
-        return this._super(...arguments);
-    },
-});
 
 function stringifyObjectValues(obj, properties) {
     let res = "";
@@ -112,6 +98,23 @@ function makeMockLocation(hasListeners = () => true) {
     });
 }
 
+function patchOwlApp() {
+    patchWithCleanup(App.prototype, {
+        destroy() {
+            if (!this.destroyed) {
+                this._super(...arguments);
+                this.destroyed = true;
+            }
+        },
+        addTemplate(name) {
+            registerCleanup(() => {
+                delete this.constructor.sharedTemplates[name];
+            });
+            return this._super(...arguments);
+        },
+    });
+}
+
 function patchBrowserWithCleanup() {
     const originalAddEventListener = browser.addEventListener;
     const originalRemoveEventListener = browser.removeEventListener;
@@ -158,6 +161,9 @@ function patchBrowserWithCleanup() {
             },
             navigator: {
                 userAgent: browser.navigator.userAgent.replace(/\([^)]*\)/, "(X11; Linux x86_64)"),
+                sendBeacon: () => {
+                    throw new Error("sendBeacon called in test but not mocked");
+                },
             },
             // in tests, we never want to interact with the real url or reload the page
             location: mockLocation,
@@ -210,16 +216,14 @@ function patchBodyAddEventListener() {
     });
 }
 
-function patchLegacyCoreBus() {
+function patchLegacyBus() {
     // patch core.bus.on to automatically remove listners bound on the legacy bus
     // during a test (e.g. during the deployment of a service)
-    const originalOn = core.bus.on.bind(core.bus);
-    const originalOff = core.bus.off.bind(core.bus);
-    patchWithCleanup(core.bus, {
+    patchWithCleanup(LegacyBus.prototype, {
         on() {
-            originalOn(...arguments);
+            this._super(...arguments);
             registerCleanup(() => {
-                originalOff(...arguments);
+                this.off(...arguments);
             });
         },
     });
@@ -326,7 +330,7 @@ patch(assets, "TestAssetsLoadXML", {
                 "%c[assets] fetch (mock) JS ressource: " + ressource,
                 "color: #66e; font-weight: bold;"
             );
-            return nextTick();
+            return Promise.resolve();
         }
         console.log(
             "%c[assets] fetch JS ressource: " + ressource,
@@ -340,7 +344,7 @@ patch(assets, "TestAssetsLoadXML", {
                 "%c[assets] fetch (mock) CSS ressource: " + ressource,
                 "color: #66e; font-weight: bold;"
             );
-            return nextTick();
+            return Promise.resolve();
         }
         console.log(
             "%c[assets] fetch CSS ressource: " + ressource,
@@ -351,6 +355,27 @@ patch(assets, "TestAssetsLoadXML", {
 });
 
 export async function setupTests() {
+    // uncomment to debug memory leaks in qunit suite
+    // let memoryBeforeModule;
+    // QUnit.moduleStart(({ tests }) => {
+    //     if (tests.length) {
+    //         window.gc();
+    //         memoryBeforeModule = window.performance.memory.usedJSHeapSize;
+    //     }
+    // });
+    // QUnit.moduleDone(({ name }) => {
+    //     if (memoryBeforeModule) {
+    //         window.gc();
+    //         const afterGc = window.performance.memory.usedJSHeapSize;
+    //         console.log(
+    //             `MEMINFO - After suite "${name}" - after gc: ${afterGc} delta: ${
+    //                 afterGc - memoryBeforeModule
+    //             }`
+    //         );
+    //         memoryBeforeModule = null;
+    //     }
+    // });
+
     QUnit.testStart(() => {
         checkGlobalObjectsIntegrity();
         prepareRegistriesWithCleanup();
@@ -359,9 +384,10 @@ export async function setupTests() {
         cleanLoadedLanguages();
         patchBrowserWithCleanup();
         patchBodyAddEventListener();
-        patchLegacyCoreBus();
+        patchLegacyBus();
         patchOdoo();
         patchSessionInfo();
+        patchOwlApp();
     });
 
     await Promise.all([whenReady(), legacyProm]);

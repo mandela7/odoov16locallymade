@@ -3,19 +3,20 @@
 # 	* account_payment
 # 
 # Translators:
-# Martin Trigaux, 2022
 # Gunther Clauwaert <gclauwae@hotmail.com>, 2022
-# Jolien De Paepe, 2022
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
+# Martin Trigaux, 2022
+# Jolien De Paepe, 2024
+# Wil Odoo, 2024
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:24+0000\n"
+"POT-Creation-Date: 2024-02-06 13:31+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2022\n"
-"Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
+"Last-Translator: Wil Odoo, 2024\n"
+"Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -134,15 +135,17 @@ msgid ""
 msgstr ""
 "<strong>Waarschuwing!</strong> Er is een terugbetaling in behandeling voor deze betaling.\n"
 "                        Wacht even totdat het is verwerkt. Als de terugbetaling nog steeds in behandeling is over een\n"
-"                        enkele minuten, controleer de configuratie van je betalingsprovider."
+"                        enkele minuten, controleer de configuratie van je betaalprovider."
 
 #. module: account_payment
+#. odoo-python
 #: code:addons/account_payment/models/account_payment.py:0
 #, python-format
 msgid "A payment transaction with reference %s already exists."
 msgstr "Er bestaat al een betalingstransactie met referentie %s."
 
 #. module: account_payment
+#. odoo-python
 #: code:addons/account_payment/models/account_payment.py:0
 #, python-format
 msgid "A token is required to create a new payment transaction."
@@ -254,6 +257,7 @@ msgid "Invoice(s)"
 msgstr "Factu(u)r(en)"
 
 #. module: account_payment
+#. odoo-python
 #: code:addons/account_payment/models/payment_transaction.py:0
 #: model:ir.model.fields,field_description:account_payment.field_payment_transaction__invoice_ids
 #, python-format
@@ -360,12 +364,12 @@ msgstr "Betaalwijzes"
 #: model:ir.model,name:account_payment.model_payment_provider
 #: model:ir.model.fields,field_description:account_payment.field_account_payment_method_line__payment_provider_id
 msgid "Payment Provider"
-msgstr "Betalingsprovider"
+msgstr "Betaalprovider"
 
 #. module: account_payment
 #: model:ir.ui.menu,name:account_payment.payment_provider_menu
 msgid "Payment Providers"
-msgstr "Betalingsproviders"
+msgstr "Betaalproviders"
 
 #. module: account_payment
 #: model:ir.model,name:account_payment.model_payment_refund_wizard
@@ -396,12 +400,14 @@ msgid "Payments"
 msgstr "Betalingen"
 
 #. module: account_payment
+#. odoo-python
 #: code:addons/account_payment/models/account_payment_method_line.py:0
 #, python-format
 msgid "Provider"
 msgstr "Provider"
 
 #. module: account_payment
+#. odoo-python
 #: code:addons/account_payment/models/account_payment.py:0
 #: code:addons/account_payment/models/account_payment.py:0
 #: model_terms:ir.ui.view,arch_db:account_payment.payment_refund_wizard_view_form
@@ -467,6 +473,14 @@ msgid "Suitable Payment Token"
 msgstr "Geschikte betalingstoken"
 
 #. module: account_payment
+#. odoo-python
+#: code:addons/account_payment/controllers/payment.py:0
+#, python-format
+msgid "The access token is invalid."
+msgstr "Het toegangstoken is ongeldig."
+
+#. module: account_payment
+#. odoo-python
 #: code:addons/account_payment/wizards/payment_refund_wizard.py:0
 #, python-format
 msgid ""
@@ -481,6 +495,7 @@ msgid "The journal in which the successful transactions are posted."
 msgstr "Het dagboek waarin de succesvolle transacties worden geboekt"
 
 #. module: account_payment
+#. odoo-python
 #: code:addons/account_payment/models/payment_transaction.py:0
 #, python-format
 msgid ""
@@ -491,6 +506,7 @@ msgstr ""
 " %(link)s"
 
 #. module: account_payment
+#. odoo-python
 #: code:addons/account_payment/controllers/payment.py:0
 #: code:addons/account_payment/controllers/payment.py:0
 #, python-format
@@ -531,6 +547,18 @@ msgstr ""
 "Er was een fout met het verwerken van je betalingen: foute creditcard ID."
 
 #. module: account_payment
+#. odoo-python
+#: code:addons/account_payment/models/payment_provider.py:0
+#, python-format
+msgid ""
+"To uninstall this module, please remove first the corresponding payment "
+"method line in the incoming payments tab defined on the bank journal."
+msgstr ""
+"Om deze module te verwijderen, verwijder eerst de corresponderende regel "
+"voor de betaalmethode in het tabblad Inkomende betalingen dat is bepaald op "
+"het bankjournaal."
+
+#. module: account_payment
 #: model:ir.model.fields,field_description:account_payment.field_account_bank_statement_line__transaction_ids
 #: model:ir.model.fields,field_description:account_payment.field_account_move__transaction_ids
 #: model:ir.model.fields,field_description:account_payment.field_account_payment__transaction_ids
@@ -554,11 +582,23 @@ msgid "Void Transaction"
 msgstr "Ongeldige transactie"
 
 #. module: account_payment
-#: code:addons/account_payment/models/account_journal.py:0
+#. odoo-python
+#: code:addons/account_payment/models/account_payment_method_line.py:0
 #, python-format
 msgid ""
 "You can't delete a payment method that is linked to a provider in the enabled or test state.\n"
-"Linked provider(s): %s"
+"Linked providers(s): %s"
 msgstr ""
-"Je kunt een betaalmethode die is gekoppeld aan een betaalprovider in de ingeschakelde of teststatus niet verwijderen.\n"
-"Gelinkte betaalprovider(s): %s"
+"Je kunt een betaalmethode die is gekoppeld aan een provider in de ingeschakelde of teststatus niet verwijderen.\n"
+"Gekoppelde provider(s): %s"
+
+#. module: account_payment
+#. odoo-python
+#: code:addons/account_payment/models/account_journal.py:0
+#, python-format
+msgid ""
+"You must first deactivate a payment provider before deleting its journal.\n"
+"Linked providers: %s"
+msgstr ""
+"Je moet eerst een betaalprovider deactiveren voordat je het dagboek ervan verwijdert. \n"
+"Gekoppelde providers: %s"

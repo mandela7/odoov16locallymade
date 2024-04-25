@@ -8,7 +8,7 @@ from psycopg2 import sql, DatabaseError
 
 from odoo import api, fields, models, _
 from odoo.osv import expression
-from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
+from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT, mute_logger
 from odoo.exceptions import ValidationError, UserError
 from odoo.addons.base.models.res_partner import WARNING_MESSAGE, WARNING_HELP
 
@@ -106,7 +106,7 @@ class AccountFiscalPosition(models.Model):
             return taxes
         result = self.env['account.tax']
         for tax in taxes:
-            taxes_correspondance = self.tax_ids.filtered(lambda t: t.tax_src_id == tax._origin)
+            taxes_correspondance = self.tax_ids.filtered(lambda t: t.tax_src_id == tax._origin and (not t.tax_dest_id or t.tax_dest_active))
             result |= taxes_correspondance.tax_dest_id if taxes_correspondance else tax
         return result
 
@@ -170,11 +170,7 @@ class AccountFiscalPosition(models.Model):
     def _get_fpos_by_region(self, country_id=False, state_id=False, zipcode=False, vat_required=False):
         if not country_id:
             return False
-        base_domain = [
-            ('auto_apply', '=', True),
-            ('vat_required', '=', vat_required),
-            ('company_id', 'in', [self.env.company.id, False]),
-        ]
+        base_domain = self._prepare_fpos_base_domain(vat_required)
         null_state_dom = state_domain = [('state_ids', '=', False)]
         null_zip_dom = zip_domain = [('zip_from', '=', False), ('zip_to', '=', False)]
         null_country_dom = [('country_id', '=', False), ('country_group_id', '=', False)]
@@ -207,6 +203,13 @@ class AccountFiscalPosition(models.Model):
             fpos = self.search(base_domain + null_country_dom, limit=1)
         return fpos
 
+    def _prepare_fpos_base_domain(self, vat_required):
+        return [
+            ('auto_apply', '=', True),
+            ('vat_required', '=', vat_required),
+            ('company_id', 'in', [self.env.company.id, False]),
+        ]
+
     @api.model
     def _get_fiscal_position(self, partner, delivery=None):
         """
@@ -228,7 +231,10 @@ class AccountFiscalPosition(models.Model):
             delivery = partner
 
         # partner manually set fiscal position always win
-        manual_fiscal_position = delivery.property_account_position_id or partner.property_account_position_id
+        manual_fiscal_position = (
+            delivery.with_company(company).property_account_position_id
+            or partner.with_company(company).property_account_position_id
+        )
         if manual_fiscal_position:
             return manual_fiscal_position
 
@@ -258,6 +264,7 @@ class AccountFiscalPositionTax(models.Model):
     company_id = fields.Many2one('res.company', string='Company', related='position_id.company_id', store=True)
     tax_src_id = fields.Many2one('account.tax', string='Tax on Product', required=True, check_company=True)
     tax_dest_id = fields.Many2one('account.tax', string='Tax to Apply', check_company=True)
+    tax_dest_active = fields.Boolean(related="tax_dest_id.active")
 
     _sql_constraints = [
         ('tax_src_dest_uniq',
@@ -304,6 +311,10 @@ class ResPartner(models.Model):
 
     @api.depends_context('company')
     def _credit_debit_get(self):
+        if not self.ids:
+            self.debit = False
+            self.credit = False
+            return
         tables, where_clause, where_params = self.env['account.move.line']._where_calc([
             ('parent_state', '=', 'posted'),
             ('company_id', '=', self.env.company.id)
@@ -341,7 +352,7 @@ class ResPartner(models.Model):
     def _asset_difference_search(self, account_type, operator, operand):
         if operator not in ('<', '=', '>', '>=', '<='):
             return []
-        if type(operand) not in (float, int):
+        if not isinstance(operand, (float, int)):
             return []
         sign = 1
         if account_type == 'liability_payable':
@@ -572,7 +583,7 @@ class ResPartner(models.Model):
             ('move_type', 'in', ('out_invoice', 'out_refund')),
             ('partner_id', 'in', all_child.ids)
         ]
-        action['context'] = {'default_move_type': 'out_invoice', 'move_type': 'out_invoice', 'journal_type': 'sale', 'search_default_unpaid': 1, 'active_test': False}
+        action['context'] = {'default_move_type': 'out_invoice', 'move_type': 'out_invoice', 'journal_type': 'sale', 'search_default_unpaid': 1}
         return action
 
     def action_view_partner_with_same_bank(self):
@@ -604,7 +615,7 @@ class ResPartner(models.Model):
         can_edit_vat = super(ResPartner, self).can_edit_vat()
         if not can_edit_vat:
             return can_edit_vat
-        has_invoice = self.env['account.move'].search([
+        has_invoice = self.env['account.move'].sudo().search([
             ('move_type', 'in', ['out_invoice', 'out_refund']),
             ('partner_id', 'child_of', self.commercial_partner_id.id),
             ('state', '=', 'posted')
@@ -641,20 +652,20 @@ class ResPartner(models.Model):
     def _increase_rank(self, field, n=1):
         if self.ids and field in ['customer_rank', 'supplier_rank']:
             try:
-                with self.env.cr.savepoint(flush=False):
+                with self.env.cr.savepoint(flush=False), mute_logger('odoo.sql_db'):
                     query = sql.SQL("""
-                        SELECT {field} FROM res_partner WHERE ID IN %(partner_ids)s FOR UPDATE NOWAIT;
+                        SELECT {field} FROM res_partner WHERE ID IN %(partner_ids)s FOR NO KEY UPDATE NOWAIT;
                         UPDATE res_partner SET {field} = {field} + %(n)s
                         WHERE id IN %(partner_ids)s
                     """).format(field=sql.Identifier(field))
                     self.env.cr.execute(query, {'partner_ids': tuple(self.ids), 'n': n})
-                    for partner in self:
-                        self.env.cache.remove(partner, partner._fields[field])
+                    self.invalidate_recordset([field])
             except DatabaseError as e:
-                if e.pgcode == '55P03':
-                    _logger.debug('Another transaction already locked partner rows. Cannot update partner ranks.')
-                else:
+                # 55P03 LockNotAvailable
+                # 40001 SerializationFailure
+                if e.pgcode not in ('55P03', '40001'):
                     raise e
+                _logger.debug('Another transaction already locked partner rows. Cannot update partner ranks.')
 
     @api.model
     def get_partner_localisation_fields_required_to_invoice(self, country_id):
@@ -667,3 +678,29 @@ class ResPartner(models.Model):
         :return: an array of ir.model.fields for which the user should provide values.
         """
         return []
+
+    def _merge_method(self, destination, source):
+        """
+        Prevent merging partners that are linked to already hashed journal items.
+        """
+        if self.env['account.move.line'].sudo().search([('move_id.inalterable_hash', '!=', False), ('partner_id', 'in', source.ids)], limit=1):
+            raise UserError(_('Partners that are used in hashed entries cannot be merged.'))
+        return super()._merge_method(destination, source)
+
+    def _run_vat_test(self, vat_number, default_country, partner_is_company=True):
+        """ Checks a VAT number syntactically to ensure its validity upon saving.
+        A first check is made by using the first two characters of the VAT as
+        the country code. If it fails, a second one is made using default_country instead.
+
+        :param vat_number: a string with the VAT number to check.
+        :param default_country: a res.country object
+        :param partner_is_company: True if the partner is a company, else False.
+            .. deprecated:: 16.0
+                Will be removed in 16.2
+
+        :return: The country code (in lower case) of the country the VAT number
+                 was validated for, if it was validated. False if it could not be validated
+                 against the provided or guessed country. None if no country was available
+                 for the check, and no conclusion could be made with certainty.
+        """
+        return default_country.code.lower()

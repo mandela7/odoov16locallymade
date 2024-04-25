@@ -20,14 +20,8 @@ class StockLocation(models.Model):
         for location in self:
             if location == location.company_id.subcontracting_location_id:
                 raise ValidationError(_("You cannot alter the company's subcontracting location"))
-            if location.is_subcontracting_location and (location.usage != 'internal' or location.warehouse_id):
-                raise ValidationError(_("In order to manage stock accurately, subcontracting locations must be type Internal, linked to the appropriate company and not specific to a warehouse."))
-
-    @api.constrains('is_subcontracting_location')
-    def _check_is_subcontracting_location(self):
-        for location in self:
-            if not location.is_subcontracting_location and location.subcontractor_ids:
-                raise ValidationError(_("You cannot change the subcontracting location as it is still linked to a subcontractor partner"))
+            if location.is_subcontracting_location and location.usage != 'internal':
+                raise ValidationError(_("In order to manage stock accurately, subcontracting locations must be type Internal, linked to the appropriate company."))
 
     @api.model_create_multi
     def create(self, vals_list):

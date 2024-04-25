@@ -82,7 +82,7 @@
                 <field name="user_id" widget="many2one_avatar_user" attrs="{'readonly':[('recurrency','=',True)]}" optional="hide"/>
                 <field name="partner_ids" widget="many2many_tags" attrs="{'readonly':[('recurrency','=',True)]}" optional="show"/>
                 <field name="alarm_ids" widget="many2many_tags" optional="hide" attrs="{'readonly':[('recurrency','=',True)]}"/>
-                <field name="categ_ids" widget="many2many_tags" optional="hide" attrs="{'readonly':[('recurrency','=',True)]}"/>
+                <field name="categ_ids" widget="many2many_tags" optional="hide" attrs="{'readonly':[('recurrency','=',True)]}" options="{'color_field': 'color'}" />
                 <field name="recurrency" optional="hide" readonly="1"/>
                 <field name="privacy" optional="hide" attrs="{'readonly':[('recurrency','=',True)]}"/>
                 <field name="show_as" optional="hide" attrs="{'readonly':[('recurrency','=',True)]}"/>
@@ -162,7 +162,7 @@
                                     <field name="location" />
                                     <label for="videocall_location"/>
                                     <div col="2" class="o_row">
-                                        <field name="videocall_location" class="oe_inline" string="Videocall URL" widget="CopyClipboardChar" force_save="1" readonly="1" attrs="{'readonly':[('videocall_source','=', 'discuss')]}"/>
+                                        <field name="videocall_location" class="oe_inline" string="Videocall URL" widget="CopyClipboardChar" force_save="1" attrs="{'readonly':[('videocall_source','=', 'discuss')]}"/>
                                         <button name="clear_videocall_location" type="object" class="btn btn-link"
                                             attrs="{'invisible': [('videocall_location', '=', False)]}" context="{'recurrence_update': recurrence_update}">
                                             <span class="fa fa-times"></span><span> Clear meeting</span>
@@ -297,7 +297,7 @@
                 <field name="description" attrs="{'invisible': [('display_description', '=', False)]}"/>
                 <field name="privacy"/>
                 <field name="alarm_ids" attrs="{'invisible': [('alarm_ids', '=', [])]}"/>
-                <field name="categ_ids" attrs="{'invisible': [('categ_ids', '=', [])]}"/>
+                <field name="categ_ids" attrs="{'invisible': [('categ_ids', '=', [])]}" options="{'color_field': 'color'}" />
                 <!-- For recurrence update Dialog -->
                 <field name="recurrency" invisible="1"/>
                 <field name="recurrence_update" invisible="1"/>

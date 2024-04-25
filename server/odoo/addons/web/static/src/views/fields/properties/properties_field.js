@@ -83,6 +83,21 @@ export class PropertiesField extends Component {
     }
 
     /**
+     * Return the current properties value splitted in multiple groups/columns.
+     *
+     * @returns {Array<Array>}
+     */
+    get groupedPropertiesList() {
+        const columns = this.env.isSmall ? 1 : this.props.columns;
+        // If no properties, assure that the "Add Property" button is shown.
+        const res = [...Array(columns)].map(col => []);
+        this.propertiesList.forEach((val, index) => {
+            res[index % columns].push(val);
+        });
+        return res;
+    }
+
+    /**
      * Return false if we should not close the popover containing the
      * properties definition based on the event received.
      *
@@ -121,6 +136,15 @@ export class PropertiesField extends Component {
         }
 
         return false;
+    }
+
+    /**
+     * Generate an unique ID to be used in the DOM.
+     *
+     * @returns {string}
+     */
+    generateUniqueDomID() {
+        return `property_${uuid()}`;
     }
 
     /* --------------------------------------------------------
@@ -181,10 +205,16 @@ export class PropertiesField extends Component {
      * @param {event} event
      * @param {string} propertyName
      */
-    onPropertyEdit(event, propertyName) {
+    async onPropertyEdit(event, propertyName) {
+        event.stopPropagation();
+        event.preventDefault();
+        if (!await this.checkDefinitionWriteAccess()) {
+            this.notification.add(_lt("You need to be able to edit parent first to configure property fields"), {
+                type: "warning",
+            });
+            return;
+        }
         if (event.target.classList.contains("disabled")) {
-            event.stopPropagation();
-            event.preventDefault();
             // remove the glitch if we click on the edit button
             // while the popover is already opened
             return;
@@ -218,6 +248,10 @@ export class PropertiesField extends Component {
      * @param {string} propertyName
      */
     onPropertyDelete(propertyName) {
+        if (this.popoverCloseFn) {
+            this.popoverCloseFn();
+            this.popoverCloseFn = null;
+        }
         const dialogProps = {
             title: _lt("Delete Property Field"),
             body: sprintf(
@@ -229,10 +263,6 @@ export class PropertiesField extends Component {
             ),
             confirmLabel: _lt("Delete"),
             confirm: () => {
-                if (this.popoverCloseFn) {
-                    this.popoverCloseFn();
-                    this.popoverCloseFn = null;
-                }
                 const propertiesDefinitions = this.propertiesList;
                 propertiesDefinitions.find(
                     (property) => property.name === propertyName
@@ -244,7 +274,13 @@ export class PropertiesField extends Component {
         this.dialogService.add(ConfirmationDialog, dialogProps);
     }
 
-    onPropertyCreate() {
+    async onPropertyCreate() {
+        if (!await this.checkDefinitionWriteAccess()) {
+            this.notification.add(_lt("You need to be able to edit parent first to configure property fields"), {
+                type: "warning",
+            });
+            return;
+        }
         const propertiesDefinitions = this.propertiesList || [];
 
         if (
@@ -270,6 +306,28 @@ export class PropertiesField extends Component {
         });
         this.openLastPropertyDefinition = true;
         this.props.update(propertiesDefinitions);
+    }
+
+    /**
+     * Verify that we can write on properties,
+     * if we don't have access for parent
+     */
+    async checkDefinitionWriteAccess() {
+        const definitionRecordId = this.props.record.data[this.definitionRecordField][0];
+        const definitionRecordModel = this.props.record.fields[this.definitionRecordField].relation;
+        try {
+            await this.orm.call(
+                definitionRecordModel,
+                "check_access_rule",
+                [definitionRecordId],
+                {
+                    operation: "write",
+                }
+            );
+        } catch (_e) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -438,6 +496,7 @@ export class PropertiesField extends Component {
             {
                 readonly: this.props.readonly || !this.state.canChangeDefinition,
                 canChangeDefinition: this.state.canChangeDefinition,
+                checkDefinitionWriteAccess: () => this.checkDefinitionWriteAccess(),
                 propertyDefinition: this.propertiesList.find(
                     (property) => property.name === currentName(propertyName)
                 ),
@@ -457,9 +516,28 @@ export class PropertiesField extends Component {
                 onClose: () => {
                     this.state.movedPropertyName = null;
                     target.classList.remove("disabled");
+                    if (isNewlyCreated) {
+                        this._setDefaultPropertyValue(currentName(propertyName));
+                    }
                 },
             },
         );
+    }
+
+    /**
+     * Write the default value on the given property.
+     *
+     * @param {string} propertyName
+     */
+    _setDefaultPropertyValue(propertyName) {
+        const propertiesValues = this.propertiesList;
+        const newProperty = propertiesValues.find((property) => property.name === propertyName);
+        newProperty.value = newProperty.default;
+        // it won't update the props, it's a trick because the onClose event of the popover
+        // is called not synchronously, and so if we click on "create a property", it will close
+        // the popover, calling this function, but the value will be overwritten because of onPropertyCreate
+        this.props.value = propertiesValues;
+        this.props.update(propertiesValues);
     }
 }
 

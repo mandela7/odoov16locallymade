@@ -1,6 +1,6 @@
 /** @odoo-module **/
 import { patienceDiff } from './patienceDiff.js';
-import { getRangePosition } from '../utils/utils.js';
+import { closestBlock, getRangePosition } from '../utils/utils.js';
 
 const REGEX_RESERVED_CHARS = /[\\^$.*+?()[\]{}|]/g;
 /**
@@ -114,9 +114,11 @@ export class Powerbox {
         commands = commands.filter(command => !command.isDisabled || !command.isDisabled()).sort(order);
         commands = this._groupCommands(commands, categories).flatMap(group => group[1]);
 
+        const selection = this.document.getSelection();
+        const currentBlock = (selection && closestBlock(selection.anchorNode)) || this.editable;
         this._context = {
             commands, categories, filteredCommands: commands, selectedCommand: undefined,
-            initialTarget: this.editable, initialValue: this.editable.textContent,
+            initialTarget: currentBlock, initialValue: currentBlock.textContent,
             lastText: undefined,
         }
         this.isOpen = true;
@@ -201,13 +203,17 @@ export class Powerbox {
                     this._context.selectedCommand = command;
                     commandElWrapper.classList.add('active');
                 });
-                commandElWrapper.addEventListener('mousedown', ev => {
+                commandElWrapper.addEventListener('click', ev => {
                         ev.preventDefault();
                         ev.stopImmediatePropagation();
                         this._pickCommand(command);
                     }, true,
                 );
             }
+        }
+        // Hide category name if there is only a single one.
+        if (this._mainWrapperElement.childElementCount === 1) {
+            this._mainWrapperElement.querySelector('.oe-powerbox-category').style.display = 'none';
         }
         this._resetPosition();
     }
@@ -272,14 +278,13 @@ export class Powerbox {
      * @private
      */
     _resetPosition() {
-        const position = getRangePosition(this.el, this.document);
+        let options = {};
+        if (this.getContextFromParentRect) {
+            options['parentContextRect'] = this.getContextFromParentRect();
+        }
+        const position = getRangePosition(this.el, this.document, options);
         if (position) {
             let { left, top } = position;
-            if (this.getContextFromParentRect) {
-                const parentContextRect = this.getContextFromParentRect();
-                left += parentContextRect.left;
-                top += parentContextRect.top;
-            }
             this.el.style.left = `${left}px`;
             this.el.style.top = `${top}px`;
         } else {
@@ -327,16 +332,27 @@ export class Powerbox {
                 this._context.initialTarget.textContent.split(''),
                 true,
             );
-            this._context.lastText = diff.bMove.join('');
-            if (this._context.lastText.match(/\s/)) {
+            this._context.lastText = diff.bMove.join('').replaceAll('\ufeff', '');
+            const selection = this.document.getSelection();
+            if (
+                this._context.lastText.match(/\s/) ||
+                !selection ||
+                this._context.initialTarget !== closestBlock(selection.anchorNode)
+            ) {
                 this.close();
             } else {
-                const term = this._context.lastText.toLowerCase().replaceAll(/\s/g, '\\s').replaceAll('\u200B', '');
+                const term = this._context.lastText.toLowerCase()
+                    .replaceAll(/\s/g, '\\s')
+                    .replaceAll('\u200B', '')
+                    .replace(REGEX_RESERVED_CHARS, '\\$&');
                 if (term.length) {
-                    const regex = new RegExp(term.split('').map(char => char.replace(REGEX_RESERVED_CHARS, '\\$&')).join('.*'));
-                    this._context.filteredCommands = this._context.commands.filter(command => (
-                        `${command.category} ${command.name}`.toLowerCase().match(regex)
-                    ));
+                    const exactRegex = new RegExp(term, 'i');
+                    const fuzzyRegex = new RegExp(term.match(/\\.|./g).join('.*'), 'i');
+                    this._context.filteredCommands = this._context.commands.filter(command => {
+                        const commandText = (command.category + ' ' + command.name);
+                        const commandDescription = command.description.replace(/\s/g, '');
+                        return commandText.match(fuzzyRegex) || commandDescription.match(exactRegex);
+                    });
                 } else {
                     this._context.filteredCommands = this._context.commands;
                 }
@@ -376,7 +392,10 @@ export class Powerbox {
                 this._context.selectedCommand = undefined;
             }
             this._render(this._context.filteredCommands, this._context.categories);
-            this.el.querySelector('.oe-powerbox-commandWrapper.active').scrollIntoView({block: 'nearest', inline: 'nearest'});
+            const activeCommand = this.el.querySelector('.oe-powerbox-commandWrapper.active');
+            if (activeCommand) {
+                activeCommand.scrollIntoView({block: 'nearest', inline: 'nearest'});
+            }
         }
     }
 }

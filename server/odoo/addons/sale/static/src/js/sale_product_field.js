@@ -2,51 +2,51 @@
 
 import { registry } from '@web/core/registry';
 import { Many2OneField } from '@web/views/fields/many2one/many2one_field';
+import { useEffect } from '@odoo/owl';
 
 export class SaleOrderLineProductField extends Many2OneField {
 
     setup() {
         super.setup();
-        const { update } = this;
-        this.update = async (value) => {
-            await update(value);
-            let newValue = false;
-            // NB: quick creation doesn't go through here, but through quickCreate
-            // below
-            if (value) {
-                if (Array.isArray(value[0]) && this.props.value != value[0]) {
-                    // product (existing)
-                    newValue = true;
-                } else {
-                    // new product (Create & edit)
-                    // value[0] is a dict of creation values
-                    newValue = true;
-                }
-            }
-            if (newValue) {
-                if (this.props.relation === 'product.template') {
-                    this._onProductTemplateUpdate();
-                } else {
-                    this._onProductUpdate();
-                }
-            }
+        let isMounted = false;
+        let isInternalUpdate = false;
+        const super_update = this.update;
+        this.update = (recordlist) => {
+            isInternalUpdate = true;
+            super_update(recordlist);
         };
-
         if (this.props.canQuickCreate) {
-            // HACK to make quick creation also open
-            //      configurators if needed
-            this.quickCreate = async (name, params = {}) => {
-                await this.props.record.update({ [this.props.name]: [false, name]});
-
-                if (this.props.relation === 'product.template') {
-                    this._onProductTemplateUpdate();
-                } else {
-                    this._onProductUpdate();
-                }
+            this.quickCreate = (name) => {
+                isInternalUpdate = true;
+                return this.props.update([false, name]);
             };
         }
+        useEffect(value => {
+            if (!isMounted) {
+                isMounted = true;
+            } else if (value && isInternalUpdate) {
+                // we don't want to trigger product update when update comes from an external sources,
+                // such as an onchange, or the product configuration dialog itself
+                if (this.props.relation === 'product.template') {
+                    this._onProductTemplateUpdate();
+                } else {
+                    this._onProductUpdate();
+                }
+            }
+            isInternalUpdate = false;
+        }, () => [Array.isArray(this.value) && this.value[0]]);
     }
 
+    get isProductClickable() {
+        // product form should be accessible if the widget field is readonly
+        // or if the line cannot be edited (e.g. locked SO)
+        return (
+            this.props.record.isReadonly(this.props.name)
+            || this.props.record.model.root.isReadonly
+            && this.props.record.model.root.activeFields.order_line
+            && this.props.record.model.root.isReadonly('order_line')
+        )
+    }
     get hasExternalButton() {
         // Keep external button, even if field is specified as 'no_open' so that the user is not
         // redirected to the product when clicking on the field content
@@ -69,6 +69,17 @@ export class SaleOrderLineProductField extends Many2OneField {
 
     configurationButtonFAIcon() {
         return 'fa-pencil';
+    }
+
+    onClick(ev) {
+        // Override to get internal link to products in SOL that cannot be edited
+        if (this.props.readonly) {
+            ev.stopPropagation();
+            this.openAction();
+        }
+        else {
+            super.onClick(ev);
+        }
     }
 
     async _onProductTemplateUpdate() { }

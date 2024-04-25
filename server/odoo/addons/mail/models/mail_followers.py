@@ -158,7 +158,7 @@ class Followers(models.Model):
            sub_followers.is_follower as _insert_followerslower
       FROM res_partner partner
       JOIN sub_followers ON sub_followers.pid = partner.id
-                        AND (NOT sub_followers.internal OR NOT partner.partner_share)
+                        AND (sub_followers.internal IS NOT TRUE OR partner.partner_share IS NOT TRUE)
  LEFT JOIN LATERAL (
         SELECT users.id AS uid,
                users.share AS share,
@@ -322,6 +322,8 @@ class Followers(models.Model):
           share status of partner (returned only if include_pshare is True)
           active flag status of partner (returned only if include_active is True)
         """
+        self.env['mail.followers'].flush_model()
+        self.env['res.partner'].flush_model()
         # base query: fetch followers of given documents
         where_clause = ' OR '.join(['fol.res_model = %s AND fol.res_id IN %s'] * len(doc_data))
         where_params = list(itertools.chain.from_iterable((rm, tuple(rids)) for rm, rids in doc_data))

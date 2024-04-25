@@ -8,16 +8,19 @@
 # karolína schusterová <karolina.schusterova@vdp.sk>, 2022
 # Martin Trigaux, 2022
 # Rastislav Brencic <rastislav.brencic@azet.sk>, 2022
-# trendspotter <jirka.p@volny.cz>, 2022
+# Jiří Podhorecký, 2022
+# Tomáš Píšek, 2023
+# Aleš Fiala <f.ales1@seznam.cz>, 2023
+# Jakub Smolka, 2024
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:24+0000\n"
+"POT-Creation-Date: 2022-12-15 12:45+0000\n"
 "PO-Revision-Date: 2022-09-22 05:56+0000\n"
-"Last-Translator: trendspotter <jirka.p@volny.cz>, 2022\n"
-"Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
+"Last-Translator: Jakub Smolka, 2024\n"
+"Language-Team: Czech (https://app.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -25,19 +28,19 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #, python-format
 msgid " Flag"
-msgstr ""
+msgstr " Vlaječka"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #, python-format
 msgid " Flagged"
-msgstr ""
+msgstr "Označeno"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_forum__total_answers
@@ -48,7 +51,7 @@ msgstr "# Odpovědi"
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_forum__total_favorites
 msgid "# Favorites"
-msgstr ""
+msgstr "# Oblíbené"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_forum__total_posts
@@ -62,72 +65,84 @@ msgid "# Views"
 msgstr "počet zobrazení"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to accept or refuse an answer."
 msgstr "%d karma vyžadována k přijetí nebo odmítnutí odpovědi"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to answer a question."
 msgstr "%d karma vyžadována k odpovědi na otázku."
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to close or reopen a post."
 msgstr "%d karma vyžadována k uzavření a znovu otevření příspěvku."
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to comment."
 msgstr "%d karma vyžadována ke komentování."
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to convert a comment to an answer."
 msgstr "%d karma vyžadována pro převod komentáře na odpověď. "
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to convert an answer to a comment."
 msgstr "%d karma vyžadována pro převod odpovědi na komentář. "
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to convert your comment to an answer."
 msgstr "%d karma vyžadována k převedení vašeho komentáře na odpověď."
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to create a new Tag."
 msgstr "%d karma vyžadována k vytvoření nové Značky."
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to create a new question."
 msgstr "%d karma vyžadována k vytvoření nové otázky."
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to delete or reactivate a post."
 msgstr "%d karma vyžadována ke smazání nebo znovu aktivování příspěvku."
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to downvote."
 msgstr "%d karma vyžadována pro snížení úrovně hlasováním."
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
@@ -135,6 +150,7 @@ msgid "%d karma required to edit a post."
 msgstr "%d karma vyžadována k úpravě příspěvku."
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
@@ -142,6 +158,7 @@ msgid "%d karma required to flag a post."
 msgstr "%d karma vyžadována k označení příspěvku vlaječkou."
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/controllers/main.py:0
 #: code:addons/website_forum/controllers/main.py:0
 #: code:addons/website_forum/models/forum.py:0
@@ -150,42 +167,49 @@ msgid "%d karma required to mark a post as offensive."
 msgstr "%d karma vyžadována k označení příspěvku jako urážlivého."
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to post an image or link."
 msgstr "%d karma vyžadována k vložení obrázku nebo odkazu."
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to refuse a post."
 msgstr "%d karma vyžadována k odmítnutí příspěvku."
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to retag."
 msgstr "%d karma vyžadována ke změně Značky."
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to unlink a comment."
 msgstr "%d karma vyžadována k odpojení komentáře. "
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to unlink a post."
 msgstr "%d karma vyžadována k odpojení příspěvku."
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to upvote."
 msgstr "%d karma vyžadována k posunutí výše hlasováním. "
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "%d karma required to validate a post."
@@ -216,7 +240,7 @@ msgstr ", od "
 #: model_terms:ir.ui.view,arch_db:website_forum.edit_post
 #: model_terms:ir.ui.view,arch_db:website_forum.new_question
 msgid ", consider <b>adding an example</b>."
-msgstr ""
+msgstr ", zvažte <b>přidání příkladu</b>."
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.view_forum_forum_form
@@ -229,14 +253,14 @@ msgid "0 Answers"
 msgstr "0 Odpovědí"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/xml/public_templates.xml:0
 #, python-format
 msgid "45% of questions shared"
 msgstr "45% otázek je sdíleno"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/xml/public_templates.xml:0
 #, python-format
 msgid ""
@@ -272,7 +296,7 @@ msgstr ""
 #: model_terms:forum.forum,faq:website_forum.forum_help
 #: model_terms:ir.ui.view,arch_db:website_forum.default_faq
 msgid ""
-"<b>Answers should not add or expand questions</b>. Insteadeither edit the "
+"<b>Answers should not add or expand questions</b>. Instead, either edit the "
 "question or add a comment."
 msgstr ""
 "<b>Odpovědi by neměly přidávat ani rozšiřovat otázky</b>. Místo toho buď "
@@ -397,7 +421,7 @@ msgstr ""
 #: model_terms:forum.forum,faq:website_forum.forum_help
 #: model_terms:ir.ui.view,arch_db:website_forum.default_faq
 msgid "<b>What kinds of questions can I ask here?</b>"
-msgstr ""
+msgstr "<b>Jaké druhy otázek zde mohu pokládat?</b>"
 
 #. module: website_forum
 #: model_terms:forum.forum,faq:website_forum.forum_help
@@ -409,7 +433,7 @@ msgstr "<b>Čemu se mám ve svých odpovědích vyhnout?</b>"
 #: model_terms:forum.forum,faq:website_forum.forum_help
 #: model_terms:ir.ui.view,arch_db:website_forum.default_faq
 msgid "<b>What should I avoid in my questions?</b>"
-msgstr ""
+msgstr "<b>Čemu se mám ve svých otázkách vyhnout?</b>"
 
 #. module: website_forum
 #: model_terms:forum.forum,faq:website_forum.forum_help
@@ -434,6 +458,8 @@ msgid ""
 "<b>|</b>\n"
 "                    <span class=\"fa fa-trophy bg-gold ms-2\" role=\"img\" aria-label=\"Gold badge\" title=\"Gold badge\"/>"
 msgstr ""
+"<b>|</b>\n"
+"                    <span class=\"fa fa-trophy bg-gold ms-2\" role=\"img\" aria-label=\"Gold badge\" title=\"Gold badge\"/>"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.tag
@@ -443,7 +469,7 @@ msgstr "<em class=\"d-block mb-2\">nebo</em>"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.post_description_full
 msgid "<i class=\" fa fa-comment text-muted me-1\"/>Comment"
-msgstr ""
+msgstr "<i class=\" fa fa-comment text-muted me-1\"/>Komentář"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.user_sidebar
@@ -458,7 +484,7 @@ msgstr "<i class=\"fa fa-bug\"/> Filtrovací nástroj"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.post_description_full
 msgid "<i class=\"fa fa-check fa-fw me-1\"/>Accept"
-msgstr ""
+msgstr "<i class=\"fa fa-check fa-fw me-1\"/>Přijmout"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.moderation_queue
@@ -483,12 +509,12 @@ msgstr "<i class=\"fa fa-check-square-o fa-fw\"/> K ověření"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_nav_header
 msgid "<i class=\"fa fa-chevron-left me-1\"/>Back"
-msgstr ""
+msgstr "<i class=\"fa fa-chevron-left me-1\"/>Zpět"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.new_question
 msgid "<i class=\"fa fa-chevron-left me-2\"/>Back to All Topics"
-msgstr ""
+msgstr "<i class=\"fa fa-chevron-left me-2\"/>Zpět na všechna témata"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.user_profile_sub_nav
@@ -498,12 +524,12 @@ msgstr "<i class=\"fa fa-chevron-left small\"/> Zpět"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_post_view_kanban
 msgid "<i class=\"fa fa-comments-o me-1\" title=\"Forum\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-comments-o me-1\" title=\"Fórum\"/>"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_post_view_kanban
 msgid "<i class=\"fa fa-eye me-1\" title=\"Views\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-eye me-1\" title=\"Zobrazení\"/>"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.user_sidebar
@@ -516,6 +542,8 @@ msgid ""
 "<i class=\"fa fa-flag ms-4 mr4\"/>\n"
 "                                    Flagged"
 msgstr ""
+"<i class=\"fa fa-flag ms-4 mr4\"/>\n"
+"                                    Označeno vlaječkou"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.moderation_queue
@@ -525,7 +553,7 @@ msgstr "<i class=\"fa fa-flag\"/> Země"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_post_view_kanban
 msgid "<i class=\"fa fa-globe me-1\" title=\"Website\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-globe me-1\" title=\"Website\"/>"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.post_answers
@@ -544,12 +572,12 @@ msgstr "<i class=\"fa fa-question-circle-o fa-fw\"/> Moje příspěvky"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.post_description_full
 msgid "<i class=\"fa fa-reply me-1\"/>Answer"
-msgstr ""
+msgstr "<i class=\"fa fa-reply me-1\"/>Odpověď"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.post_description_full
 msgid "<i class=\"fa fa-share-alt text-muted me-1\"/>Share"
-msgstr ""
+msgstr "<i class=\"fa fa-share-alt text-muted me-1\"/>Sdílet"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.post_answers
@@ -576,6 +604,8 @@ msgid ""
 "<i class=\"fa fa-thumbs-down text-danger ms-3\" role=\"img\" aria-"
 "label=\"Negative votes\" title=\"Negative votes\"/>"
 msgstr ""
+"<i class=\"fa fa-thumbs-down text-danger ms-3\" role=\"img\" aria-"
+"label=\"Negative votes\" title=\"Negative votes\"/>"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.user_profile_content
@@ -589,7 +619,7 @@ msgstr ""
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.post_description_full
 msgid "<i class=\"fa fa-times fa-fw me-1\"/>Reject"
-msgstr ""
+msgstr "<i class=\"fa fa-times fa-fw me-1\"/>Odmítnout"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.edit_post
@@ -609,7 +639,7 @@ msgstr "<i class=\"fa fa-user\"/> Uživatel"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.user_profile_content
 msgid "<small class=\"fw-bold\">Votes</small>"
-msgstr ""
+msgstr "<small class=\"fw-bold\">Hlasy</small>"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.moderation_display_post_answer
@@ -625,7 +655,7 @@ msgstr ""
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.post_description_full
 msgid "<span class=\"badge text-bg-info\">Closed</span>"
-msgstr ""
+msgstr "<span class=\"badge text-bg-info\">Uzavřeno</span>"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.contact
@@ -633,6 +663,8 @@ msgid ""
 "<span class=\"fa fa-trophy bg-bronze ms-2\" role=\"img\" aria-label=\"Bronze"
 " badge\" title=\"Bronze badge\"/>"
 msgstr ""
+"<span class=\"fa fa-trophy bg-bronze ms-2\" role=\"img\" aria-label=\"Bronze"
+" badge\" title=\"Bronzový odznak\"/>"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.contact
@@ -640,16 +672,18 @@ msgid ""
 "<span class=\"fa fa-trophy bg-silver ms-2\" role=\"img\" aria-label=\"Silver"
 " badge\" title=\"Silver badge\"/>"
 msgstr ""
+"<span class=\"fa fa-trophy bg-silver ms-2\" role=\"img\" aria-label=\"Silver"
+" badge\" title=\"Stříbrný odznak\"/>"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.user_profile_content
 msgid "<span class=\"fw-bold\">No answer posted yet.</span>"
-msgstr ""
+msgstr "<span class=\"fw-bold\">Zatím žádná odpověď.</span>"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.user_profile_content
 msgid "<span class=\"fw-bold\">No question posted yet.</span>"
-msgstr ""
+msgstr "<span class=\"fw-bold\">Zatím žádná otázka.</span>"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.display_post_question_block
@@ -683,12 +717,12 @@ msgstr "<span class=\"mx-3  mx-lg-2 text-400 d-none d-md-inline\">|</span>"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_nav_header
 msgid "<span class=\"navbar-text me-1\">Go to:</span>"
-msgstr ""
+msgstr "<span class=\"navbar-text me-1\">Jít na:</span>"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.tag
 msgid "<span class=\"navbar-text me-3\">Show Tags Starting By</span>"
-msgstr ""
+msgstr "<span class=\"navbar-text me-3\">Zobrazit značky začínající na</span>"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.view_forum_forum_form
@@ -699,12 +733,12 @@ msgstr "<span class=\"o_stat_text\">Oblíbené</span>"
 #: model_terms:ir.ui.view,arch_db:website_forum.view_forum_forum_form
 #: model_terms:ir.ui.view,arch_db:website_forum.view_forum_post_form
 msgid "<span class=\"o_stat_text\">Go to <br/>Website</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">Přejít na <br/>webovou stránku</span>"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.view_forum_forum_form
 msgid "<span class=\"o_stat_text\">Posts</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">Příspěvky</span>"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.post_answers
@@ -713,6 +747,9 @@ msgid ""
 "                            Best Answer\n"
 "                        </span>"
 msgstr ""
+"<span class=\"o_wforum_answer_correct_badge border small border-success rounded-pill fw-bold text-success ms-2 px-2\">\n"
+"                            Nejlepší odpověď\n"
+"                        </span>"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.moderation_queue
@@ -722,7 +759,7 @@ msgstr "<span>Od</span>"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.new_question
 msgid "A clear, explicit and concise title"
-msgstr ""
+msgstr "Jasný, konkrétní a výstižný název"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_post_template_new_answer
@@ -761,7 +798,7 @@ msgid "Accepting an answer"
 msgstr "Přijetí odpovědi"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #: code:addons/website_forum/static/src/js/website_forum.js:0
@@ -804,6 +841,7 @@ msgstr ""
 "sociální sítě, což umožní šíření obsahu fóra ze sociálních sítí."
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/controllers/main.py:0
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 #, python-format
@@ -813,7 +851,7 @@ msgstr "Vše"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_nav_header
 msgid "All Forums"
-msgstr ""
+msgstr "Všechna fóra"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.header
@@ -839,7 +877,7 @@ msgstr "Povolit Bump"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 msgid "Amazing! There are no unanswered questions left!"
-msgstr ""
+msgstr "Úžasné! Nezůstaly zde žádné nezodpovězené otázky!"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.display_post_question_block
@@ -848,6 +886,7 @@ msgid "Answer"
 msgstr "Odpovědět"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #: model:mail.message.subtype,description:website_forum.mt_answer_edit
 #: model:mail.message.subtype,name:website_forum.mt_answer_edit
@@ -913,7 +952,7 @@ msgstr "Odpovězeno"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.view_forum_post_search
 msgid "Answered Posts"
-msgstr ""
+msgstr "Zodpovězené příspěvky"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.view_forum_post_form
@@ -995,6 +1034,11 @@ msgid "Asking a question"
 msgstr "Zeptat se na otázku"
 
 #. module: website_forum
+#: model:ir.model,name:website_forum.model_ir_attachment
+msgid "Attachment"
+msgstr "Příloha"
+
+#. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_forum__message_attachment_count
 #: model:ir.model.fields,field_description:website_forum.field_forum_post__message_attachment_count
 #: model:ir.model.fields,field_description:website_forum.field_forum_tag__message_attachment_count
@@ -1039,6 +1083,7 @@ msgid "Back to Question"
 msgstr "Zpět na otázku"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/controllers/main.py:0
 #: code:addons/website_forum/controllers/main.py:0
 #, python-format
@@ -1072,7 +1117,7 @@ msgid "Bumped on"
 msgstr "Oživeno"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/xml/public_templates.xml:0
 #, python-format
 msgid "By sharing you answer, you will get additional"
@@ -1144,6 +1189,11 @@ msgid "Can Upvote"
 msgstr "Lze hlasováním posunout nahoru"
 
 #. module: website_forum
+#: model:ir.model.fields,field_description:website_forum.field_forum_post__can_use_full_editor
+msgid "Can Use Full Editor"
+msgstr "Může používat plný editor"
+
+#. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_post__can_view
 msgid "Can View"
 msgstr "Může zobrazit"
@@ -1176,28 +1226,28 @@ msgid "Chief Commentator"
 msgstr "Hlavní komentátor"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/tours/website_forum.js:0
 #, python-format
 msgid "Click here to accept this answer."
 msgstr "Klikněte zde pro přijetí této odpovědi."
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/tours/website_forum.js:0
 #, python-format
 msgid "Click to answer."
 msgstr "Kliknutím odpovíte."
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/tours/website_forum.js:0
 #, python-format
 msgid "Click to post your answer."
 msgstr "Kliknutím odešlete odpověď."
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/tours/website_forum.js:0
 #, python-format
 msgid "Click to post your question."
@@ -1216,7 +1266,7 @@ msgstr "Uzavřít příspěvek"
 #. module: website_forum
 #: model:ir.ui.menu,name:website_forum.menu_forum_post_reasons
 msgid "Close Reasons"
-msgstr "Důvody uzavření"
+msgstr "Důvody moderace příspěvků"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_forum__karma_close_all
@@ -1283,8 +1333,6 @@ msgstr "Komentujte tento příspěvek ..."
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_p_2
 #: model:gamification.challenge,name:website_forum.challenge_commentator
-#: model:gamification.challenge.line,name:website_forum.line_chief_commentator
-#: model:gamification.challenge.line,name:website_forum.line_commentator
 #: model:gamification.goal.definition,name:website_forum.definition_commentator
 msgid "Commentator"
 msgstr "Komentátor"
@@ -1301,7 +1349,6 @@ msgid "Complete own biography"
 msgstr "Dokonči vlastní biografii"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_configure_profile
 #: model:gamification.goal.definition,name:website_forum.definition_configure_profile
 #: model_terms:gamification.badge,description:website_forum.badge_p_1
 msgid "Completed own biography"
@@ -1365,7 +1412,7 @@ msgid "Create a new forum post"
 msgstr "Vytvořit nový příspěvek na fóru"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/tours/website_forum.js:0
 #, python-format
 msgid "Create a new post in this forum by clicking on the button."
@@ -1411,7 +1458,6 @@ msgstr "Důvěryhodná otázka"
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_5
 #: model:gamification.challenge,name:website_forum.challenge_critic
-#: model:gamification.challenge.line,name:website_forum.line_critic
 #: model:gamification.goal.definition,name:website_forum.definition_critic
 msgid "Critic"
 msgstr "Kritik"
@@ -1424,12 +1470,12 @@ msgstr "Datum"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_searchbar_input_snippet_options
 msgid "Date (high to low)"
-msgstr ""
+msgstr "Datum (od nejvyšší po nejnižší)"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_searchbar_input_snippet_options
 msgid "Date (low to high)"
-msgstr ""
+msgstr "Datum (od nejnižší po nejvyšší)"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_forum__default_order
@@ -1439,7 +1485,7 @@ msgstr "Výchozí"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.view_forum_forum_form
 msgid "Default Sort"
-msgstr ""
+msgstr "Výchozí řazení"
 
 #. module: website_forum
 #: model:ir.model.fields,help:website_forum.field_gamification_challenge__challenge_category
@@ -1490,7 +1536,7 @@ msgstr "Popis"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.view_forum_forum_form
 msgid "Description visible on website"
-msgstr ""
+msgstr "Popis viditelný na webové stránce"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.edit_post
@@ -1504,7 +1550,6 @@ msgstr "Zrušit"
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_6
 #: model:gamification.challenge,name:website_forum.challenge_disciplined
-#: model:gamification.challenge.line,name:website_forum.line_disciplined
 #: model:gamification.goal.definition,name:website_forum.definition_disciplined
 msgid "Disciplined"
 msgstr "Potrestaný"
@@ -1512,7 +1557,7 @@ msgstr "Potrestaný"
 #. module: website_forum
 #: model:ir.model.fields.selection,name:website_forum.selection__forum_forum__mode__discussions
 msgid "Discussions (multiple answers)"
-msgstr ""
+msgstr "Diskuze (více odpovědí)"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_forum__display_name
@@ -1577,20 +1622,19 @@ msgstr "Upravit svůj příspěvek"
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_7
 #: model:gamification.challenge,name:website_forum.challenge_editor
-#: model:gamification.challenge.line,name:website_forum.line_editor
 #: model:gamification.goal.definition,name:website_forum.definition_editor
 msgid "Editor"
 msgstr "Editor"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_forum__karma_editor
+#: model:ir.model.fields,help:website_forum.field_forum_post__can_use_full_editor
 msgid "Editor Features: image and links"
 msgstr "Vlastnosti editoru: obrázek a odkazy"
 
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_a_5
 #: model:gamification.challenge,name:website_forum.challenge_enlightened
-#: model:gamification.challenge.line,name:website_forum.line_enlightened
 #: model:gamification.goal.definition,name:website_forum.definition_enlightened
 msgid "Enlightened"
 msgstr "Osvícený"
@@ -1614,7 +1658,7 @@ msgstr "Slavná otázka"
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_post__favourite_count
 msgid "Favorite"
-msgstr ""
+msgstr "Oblíbené"
 
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_q_5
@@ -1628,19 +1672,16 @@ msgid "Favourite"
 msgstr "Oblíbené"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_favorite_question_1
 #: model:gamification.goal.definition,name:website_forum.definition_favorite_question_1
 msgid "Favourite Question (1)"
 msgstr "Oblíbená otázka (1)"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_stellar_question_25
 #: model:gamification.goal.definition,name:website_forum.definition_stellar_question_25
 msgid "Favourite Question (25)"
 msgstr "Oblíbená otázka (25)"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_favorite_question_5
 #: model:gamification.goal.definition,name:website_forum.definition_favorite_question_5
 msgid "Favourite Question (5)"
 msgstr "Oblíbená otázka (5)"
@@ -1734,18 +1775,19 @@ msgid ""
 "For example, if you ask an interesting question or give a helpful answer, "
 "your input will be upvoted. On the other hand if the answer is misleading - "
 "it will be downvoted. Each vote in favor will generate 10 points, each vote "
-"against will subtract 10 points. There is a limit of 200 points that can be "
+"against will subtract 2 points. There is a limit of 200 points that can be "
 "accumulated for a question or answer per day. The table given at the end "
 "explains reputation point requirements for each type of moderation task."
 msgstr ""
 "Pokud například položíte zajímavou otázku nebo poskytnete užitečnou odpověď,"
 " váš příspěvek bude hlasováním posunut nahoru. Na druhou stranu, pokud je "
-"odpověď zavádějící - bude hlasováním posunut dolu. Každým kladným hlasem "
-"získá 10 bodů, každý hlas proti odečte 10 bodů. Limit je 200 bodů denně, "
+"odpověď zavádějící - bude hlasováním posunut dolů. Každým kladným hlasem "
+"získá 10 bodů, každý hlas proti odečte 2 body. Limit je 200 bodů denně, "
 "které lze nashromáždit za otázku nebo odpověď. Tabulka uvedená na konci "
 "vysvětluje požadavky na reputaci bodů pro každý typ úkolu moderování."
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/website.py:0
 #: code:addons/website_forum/models/website.py:0
 #: model:ir.actions.act_url,name:website_forum.action_open_forum
@@ -1765,7 +1807,7 @@ msgstr "Fórum"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_forum_view_form_add
 msgid "Forum Mode"
-msgstr ""
+msgstr "Režim fóra"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_forum__name
@@ -1776,7 +1818,7 @@ msgstr "Název fóra"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.snippet_options
 msgid "Forum Page"
-msgstr ""
+msgstr "Stránka fóra"
 
 #. module: website_forum
 #: model:ir.model,name:website_forum.model_forum_post
@@ -1787,7 +1829,7 @@ msgstr "Příspěvek fóra"
 #. module: website_forum
 #: model:ir.actions.act_window,name:website_forum.action_forum_post
 msgid "Forum Post Pages"
-msgstr ""
+msgstr "Stránky příspěvků na fóru"
 
 #. module: website_forum
 #: model:ir.ui.menu,name:website_forum.menu_forum_post_pages
@@ -1797,7 +1839,7 @@ msgstr "Příspěvky fóra"
 #. module: website_forum
 #: model:ir.model,name:website_forum.model_forum_tag
 msgid "Forum Tag"
-msgstr ""
+msgstr "Štítek fóra"
 
 #. module: website_forum
 #: model:ir.actions.act_window,name:website_forum.action_forum_forum
@@ -1810,7 +1852,7 @@ msgstr "Fóra"
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_website__forums_count
 msgid "Forums Count"
-msgstr ""
+msgstr "Počet fór"
 
 #. module: website_forum
 #: model:ir.model,name:website_forum.model_gamification_challenge
@@ -1818,7 +1860,7 @@ msgid "Gamification Challenge"
 msgstr "Gamifikační výzva"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/tours/website_forum.js:0
 #, python-format
 msgid "Give your post title."
@@ -1831,7 +1873,6 @@ msgid "Good Answer"
 msgstr "Dobrá odpověď"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_good_answer
 #: model:gamification.goal.definition,name:website_forum.definition_good_answer
 msgid "Good Answer (6)"
 msgstr "Dobrá odpověď (6)"
@@ -1854,7 +1895,6 @@ msgid "Great Answer"
 msgstr "Skvělá odpověď"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_great_answer
 #: model:gamification.goal.definition,name:website_forum.definition_great_answer
 msgid "Great Answer (15)"
 msgstr "Skvělá odpověď (15)"
@@ -1888,7 +1928,6 @@ msgid "Guru"
 msgstr "Guru"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_guru
 #: model:gamification.goal.definition,name:website_forum.definition_guru
 msgid "Guru (15)"
 msgstr "Guru (15)"
@@ -1924,12 +1963,12 @@ msgstr "Skrýt intro"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 msgid "I'm <b>Following</b>"
-msgstr ""
+msgstr "<b>Odebírám</b>"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_nav_header
 msgid "I'm Following"
-msgstr ""
+msgstr "Odebírám"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_forum__id
@@ -2037,7 +2076,7 @@ msgid "Inappropriate and unacceptable statements"
 msgstr "Nevhodná a nepřijatelná prohlášení"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/tours/website_forum.js:0
 #, python-format
 msgid "Insert tags related to your question."
@@ -2071,12 +2110,14 @@ msgid "Is the author's biography visible from his post"
 msgstr "Je jeho životopis viditelný z jeho příspěvku"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "It is not allowed to modify someone else's vote."
 msgstr "Není dovoleno měnit hlasování někoho jiného."
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "It is not allowed to vote for its own post."
@@ -2088,21 +2129,21 @@ msgid "Karma"
 msgstr "Karma"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #, python-format
 msgid "Karma Error"
-msgstr ""
+msgstr "Chyba karmy"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.view_forum_forum_form
 msgid "Karma Gains"
-msgstr ""
+msgstr "Zisky karmy"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.view_forum_forum_form
 msgid "Karma Related Rights"
-msgstr ""
+msgstr "S karmou souvisící práva"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_post__karma_close
@@ -2112,12 +2153,12 @@ msgstr "Karma k uzavření"
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_post__karma_comment
 msgid "Karma to comment"
-msgstr ""
+msgstr "Karma na komentování"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_post__karma_comment_convert
 msgid "Karma to convert comment to answer"
-msgstr ""
+msgstr "Karma na konvertování komentáře na odpověď"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_post__karma_edit
@@ -2127,7 +2168,7 @@ msgstr " Karma k úpravě"
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_post__karma_unlink
 msgid "Karma to unlink"
-msgstr ""
+msgstr "Karma na zrušení odkazu"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_forum____last_update
@@ -2147,7 +2188,7 @@ msgstr "Poslední příspěvek"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_post_options
 msgid "Last Post:"
-msgstr ""
+msgstr "Poslední příspěvek:"
 
 #. module: website_forum
 #: model:ir.model.fields.selection,name:website_forum.selection__forum_forum__default_order__write_date_desc
@@ -2200,12 +2241,12 @@ msgstr "Hlavní příloha"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.post_answers
 msgid "Mark as Best Answer"
-msgstr ""
+msgstr "Označit jako nejlepší odpověď"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.show_flag_validator
 msgid "Mark as Offensive"
-msgstr ""
+msgstr "Označit jako útočný"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.mark_as_offensive
@@ -2216,7 +2257,7 @@ msgstr "Označit jako útočný"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.moderation_queue
 msgid "Mark as spam"
-msgstr ""
+msgstr "Označit jako spam"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_forum__menu_id
@@ -2255,7 +2296,7 @@ msgstr "Umírněnost"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.user_sidebar
 msgid "Moderation tools"
-msgstr ""
+msgstr "Nástroje pro moderování"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.post_answers
@@ -2284,7 +2325,7 @@ msgid "Most voted"
 msgstr "Nejvíce hlasovalo"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/xml/public_templates.xml:0
 #, python-format
 msgid ""
@@ -2296,7 +2337,7 @@ msgstr ""
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 msgid "My <b>Favourites</b>"
-msgstr ""
+msgstr "Moje <b>Oblíbené</b>"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
@@ -2306,7 +2347,7 @@ msgstr "Moje <b>Příspěvky</b>"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_nav_header
 msgid "My Favourites"
-msgstr ""
+msgstr "Moje oblíbené"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_nav_header
@@ -2322,7 +2363,7 @@ msgstr "Moje hlasování"
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_nav_header
 #: model_terms:ir.ui.view,arch_db:website_forum.user_sidebar
 msgid "My profile"
-msgstr ""
+msgstr "Můj profil"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_tag__name
@@ -2373,7 +2414,6 @@ msgid "Nice Answer"
 msgstr "Pěkná odpověď"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_nice_answer
 #: model:gamification.goal.definition,name:website_forum.definition_nice_answer
 msgid "Nice Answer (4)"
 msgstr "Pěkná odpověď (4)"
@@ -2392,27 +2432,27 @@ msgstr "Ještě žádné aktivity"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 msgid "No favourite questions in this forum (yet).<br/>"
-msgstr ""
+msgstr "Žádné oblíbené otázky v tomto fóru (zatím).<br/>"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.moderation_queue
 msgid "No flagged posts"
-msgstr ""
+msgstr "Žádné označené příspěvky"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_all
 msgid "No forum is available yet."
-msgstr ""
+msgstr "Dosud není k dispozici žádné fórum."
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.moderation_queue
 msgid "No post to be validated"
-msgstr ""
+msgstr "Žádný příspěvek k ověření"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.tag
 msgid "No tags"
-msgstr ""
+msgstr "Žádné štítky"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.user_votes
@@ -2468,8 +2508,8 @@ msgstr "Počet označených příspěvků"
 #: model:ir.model.fields,help:website_forum.field_forum_forum__message_needaction_counter
 #: model:ir.model.fields,help:website_forum.field_forum_post__message_needaction_counter
 #: model:ir.model.fields,help:website_forum.field_forum_tag__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "Počet zpráv, které vyžadují akci"
+msgid "Number of messages requiring action"
+msgstr "Počet zpráv vyžadujících akci"
 
 #. module: website_forum
 #: model:ir.model.fields,help:website_forum.field_forum_forum__message_has_error_counter
@@ -2499,7 +2539,7 @@ msgid "Offensive"
 msgstr "Urážlivý"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #: model_terms:ir.ui.view,arch_db:website_forum.header
 #, python-format
@@ -2507,7 +2547,7 @@ msgid "Offensive Post"
 msgstr "Útočný příspěvek"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/xml/public_templates.xml:0
 #, python-format
 msgid "On average,"
@@ -2516,7 +2556,7 @@ msgstr "V průměru,"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.post_answers
 msgid "Only one answer per question is allowed"
-msgstr ""
+msgstr "Je povolena pouze jedna odpověď na otázku"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.view_forum_forum_form
@@ -2526,7 +2566,7 @@ msgstr "Možnosti"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.view_forum_forum_form
 msgid "Order and Visibility"
-msgstr ""
+msgstr "Pořadí a viditelnost"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
@@ -2541,10 +2581,9 @@ msgstr "Naše fóra"
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_23
 #: model:gamification.challenge,name:website_forum.challenge_peer_pressure
-#: model:gamification.challenge.line,name:website_forum.line_peer_pressure
 #: model:gamification.goal.definition,name:website_forum.definition_peer_pressure
 msgid "Peer Pressure"
-msgstr ""
+msgstr "Tlak vrstevníků"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_nav_header
@@ -2562,6 +2601,8 @@ msgid ""
 "Please wait for a moderator to validate your previous post before "
 "continuing."
 msgstr ""
+"Než budete pokračovat, počkejte, až moderátor potvrdí váš předchozí "
+"příspěvek."
 
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_q_1
@@ -2570,19 +2611,16 @@ msgid "Popular Question"
 msgstr "Oblíbená otázka"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_popular_question
 #: model:gamification.goal.definition,name:website_forum.definition_popular_question
 msgid "Popular Question (150)"
 msgstr "Populární otázka (150)"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_notable_question
 #: model:gamification.goal.definition,name:website_forum.definition_notable_question
 msgid "Popular Question (250)"
 msgstr "Populární otázka (250)"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_famous_question
 #: model:gamification.goal.definition,name:website_forum.definition_famous_question
 msgid "Popular Question (500)"
 msgstr "Populární otázka (500)"
@@ -2628,12 +2666,12 @@ msgstr "Odeslat komentář"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.snippet_options
 msgid "Post Count"
-msgstr ""
+msgstr "Počet příspěvků"
 
 #. module: website_forum
 #: model:ir.model,name:website_forum.model_forum_post_vote
 msgid "Post Vote"
-msgstr ""
+msgstr "Příspěvek hlasování"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.new_question
@@ -2656,10 +2694,11 @@ msgid "Posted 100 comments"
 msgstr "Publikováno 100 komentářů"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "Posting answer on a [Deleted] or [Closed] question is not possible."
-msgstr ""
+msgstr "Není možné odesílat odpověď na [Smazané] a [Uzavřené] otázky."
 
 #. module: website_forum
 #: model:ir.actions.act_window,name:website_forum.action_forum_posts
@@ -2698,20 +2737,19 @@ msgstr ""
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_25
 #: model:gamification.challenge,name:website_forum.challenge_pundit
-#: model:gamification.challenge.line,name:website_forum.line_pundit
 #: model:gamification.goal.definition,name:website_forum.definition_pundit
 msgid "Pundit"
 msgstr "Učenec"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/tours/website_forum.js:0
 #, python-format
 msgid "Put your answer here."
 msgstr "Zde odpovězte."
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/tours/website_forum.js:0
 #, python-format
 msgid "Put your question here."
@@ -2725,6 +2763,7 @@ msgid "Question"
 msgstr "Otázka"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #: model:mail.message.subtype,description:website_forum.mt_question_edit
 #: model:mail.message.subtype,name:website_forum.mt_question_edit
@@ -2735,7 +2774,7 @@ msgstr "Otázka upravena"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.edit_post
 msgid "Question by"
-msgstr ""
+msgstr "Otázka od uživatele"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_forum__karma_gen_question_downvote
@@ -2750,7 +2789,7 @@ msgstr "Otázka nebyla nalezena."
 #. module: website_forum
 #: model_terms:gamification.badge,description:website_forum.badge_q_4
 msgid "Question set as favorite by 1 user"
-msgstr ""
+msgstr "Otázka nastavena jako oblíbená 1 uživatelem"
 
 #. module: website_forum
 #: model_terms:gamification.badge,description:website_forum.badge_q_6
@@ -2763,6 +2802,7 @@ msgid "Question set as favorite by 5 users"
 msgstr "Dotaz nastaven jako oblíbený 5 uživateli"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/controllers/main.py:0
 #, python-format
 msgid "Question should not be empty."
@@ -2771,7 +2811,7 @@ msgstr "Otázka by neměla být prázdná."
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_forum__karma_gen_question_upvote
 msgid "Question upvoted"
-msgstr ""
+msgstr "Otázka hlasována kladně"
 
 #. module: website_forum
 #: model_terms:gamification.badge,description:website_forum.badge_q_10
@@ -2796,7 +2836,7 @@ msgstr "Otázky"
 #. module: website_forum
 #: model:ir.model.fields.selection,name:website_forum.selection__forum_forum__mode__questions
 msgid "Questions (1 answer)"
-msgstr ""
+msgstr "Otázky (1 odpověď)"
 
 #. module: website_forum
 #: model:ir.model.fields,help:website_forum.field_forum_forum__mode
@@ -2818,6 +2858,7 @@ msgid "Ranks"
 msgstr "Úrovně"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
@@ -2825,16 +2866,16 @@ msgid "Re: %s"
 msgstr "Re: %s"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #, python-format
 msgid "Read the guidelines to know how to gain karma."
-msgstr ""
+msgstr "Přečtěte si pokyny, abyste věděli, jak získat karmu."
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.display_post_question_block
 msgid "Read: #{question.name}"
-msgstr ""
+msgstr "Přečteno: #{question.name}"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_post__closed_reason_id
@@ -2859,7 +2900,7 @@ msgstr "Důvody"
 #. module: website_forum
 #: model_terms:gamification.badge,description:website_forum.badge_a_1
 msgid "Received at least 3 upvote for an answer for the first time"
-msgstr ""
+msgstr "Obdržena nejméně 3 kladná hodnocení za odpověď poprvé"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.moderation_queue
@@ -2889,10 +2930,11 @@ msgid "Reopen"
 msgstr "Znovu otevřít"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/controllers/main.py:0
 #, python-format
 msgid "Reply should not be empty."
-msgstr ""
+msgstr "Odpověď by neměla být prázdná."
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_post__self_reply
@@ -2942,7 +2984,6 @@ msgstr "Uložit změny"
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_26
 #: model:gamification.challenge,name:website_forum.challenge_scholar
-#: model:gamification.challenge.line,name:website_forum.line_scholar
 #: model:gamification.goal.definition,name:website_forum.definition_scholar
 msgid "Scholar"
 msgstr "Odborník"
@@ -2950,7 +2991,7 @@ msgstr "Odborník"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 msgid "Search Tips"
-msgstr ""
+msgstr "Tipy pro hledání"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.view_forum_post_search
@@ -2970,7 +3011,7 @@ msgstr "Druhý parametr významnosti"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.tag
 msgid "See"
-msgstr ""
+msgstr "Podívat se"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_post_template_new_answer
@@ -2990,7 +3031,6 @@ msgstr "Vybrat vše"
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_a_8
 #: model:gamification.challenge,name:website_forum.challenge_self_learner
-#: model:gamification.challenge.line,name:website_forum.line_self_learner
 #: model:gamification.goal.definition,name:website_forum.definition_self_learner
 msgid "Self-Learner"
 msgstr "Samouk"
@@ -3008,7 +3048,7 @@ msgid "Sequence"
 msgstr "Číselná řada"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/xml/public_templates.xml:0
 #, python-format
 msgid ""
@@ -3026,17 +3066,17 @@ msgstr "Možnosti sdílení"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 msgid "Show"
-msgstr "Šou"
+msgstr "Zobrazit"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.tag
 msgid "Show Tags Starting By"
-msgstr ""
+msgstr "Zobrazit značky počínaje"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 msgid "Showing results for"
-msgstr ""
+msgstr "Zobrazeny příspěvky pro"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.post_description_full
@@ -3057,31 +3097,31 @@ msgstr "Vyřešeno"
 #. module: website_forum
 #: model:ir.model.fields.selection,name:website_forum.selection__forum_forum__privacy__private
 msgid "Some users"
-msgstr ""
+msgstr "Někteří uživatelé"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #, python-format
 msgid "Sorry you must be logged in to perform this action"
 msgstr "Je nám líto, k provedení této akce musíte být přihlášeni"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #, python-format
 msgid "Sorry you must be logged to flag a post"
 msgstr "Je nám líto, ale musíte být přihlášeni k označení příspěvku"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #, python-format
 msgid "Sorry you must be logged to vote"
 msgstr "Musíte být přihlášeni, abyste mohli hlasovat"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #, python-format
 msgid "Sorry, anonymous users cannot choose correct answer."
@@ -3096,9 +3136,10 @@ msgstr "Je nám líto, ale tato otázka již není k dispozici."
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 msgid "Sorry, we could not find any <b>%s</b> result <b>%s</b> %s%s%s."
 msgstr ""
+"Je nám líto, ale nenašli jsme žádný <b>%s</b> výsledek <b>%s</b> %s%s%s."
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #, python-format
 msgid "Sorry, you cannot vote for your own posts"
@@ -3107,7 +3148,7 @@ msgstr "Litujeme, ale nemůžete hlasovat pro své vlastní příspěvky"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.moderation_queue
 msgid "Spam all post"
-msgstr ""
+msgstr "Ospamovat všechny příspěvky"
 
 #. module: website_forum
 #: model:forum.post.reason,name:website_forum.reason_8
@@ -3134,7 +3175,6 @@ msgstr "Student"
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_31
 #: model:gamification.challenge,name:website_forum.challenge_supporter
-#: model:gamification.challenge.line,name:website_forum.line_supporter
 #: model:gamification.goal.definition,name:website_forum.definition_supporter
 msgid "Supporter"
 msgstr "Podporovatel"
@@ -3159,17 +3199,16 @@ msgstr "Název značky již existuje!"
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_tag_view_list
 #: model_terms:ir.ui.view,arch_db:website_forum.new_question
 msgid "Tags"
-msgstr "Tagy"
+msgstr "Štítky"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_nav_header
 msgid "Tags I Follow"
-msgstr ""
+msgstr "Značky, které sleduji"
 
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_32
 #: model:gamification.challenge,name:website_forum.challenge_taxonomist
-#: model:gamification.challenge.line,name:website_forum.line_taxonomist
 #: model:gamification.goal.definition,name:website_forum.definition_taxonomist
 msgid "Taxonomist"
 msgstr "Taxonomista"
@@ -3177,7 +3216,6 @@ msgstr "Taxonomista"
 #. module: website_forum
 #: model:gamification.badge,name:website_forum.badge_a_1
 #: model:gamification.challenge,name:website_forum.challenge_teacher
-#: model:gamification.challenge.line,name:website_forum.line_teacher
 #: model:gamification.goal.definition,name:website_forum.definition_teacher
 msgid "Teacher"
 msgstr "Učitel"
@@ -3199,7 +3237,7 @@ msgstr ""
 " není aktuálně podporováno a toto pole je řešením."
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/xml/public_templates.xml:0
 #, python-format
 msgid "Thanks for posting!"
@@ -3252,6 +3290,8 @@ msgid ""
 "This community is for professional and enthusiast users, partners and "
 "programmers. You can ask questions about:"
 msgstr ""
+"Tato komunita je pro profesionální a nadšené uživatele, partnery a "
+"programátory. Můžete klást otázky týkající se:"
 
 #. module: website_forum
 #: model_terms:forum.forum,welcome_message:website_forum.forum_help
@@ -3290,14 +3330,14 @@ msgid "This forum has been archived."
 msgstr "Toto fórum bylo archivováno."
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #, python-format
 msgid "This post can not be flagged"
 msgstr "Tento příspěvek nelze označit"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/js/website_forum.js:0
 #, python-format
 msgid "This post is already flagged"
@@ -3309,11 +3349,13 @@ msgid ""
 "This post is currently awaiting moderation and it's not published yet.<br/>\n"
 "                Do you want <b>Accept</b> or <b>Reject</b> this post ?"
 msgstr ""
+"Tento příspěvek v současné době čeká na moderování a ještě není zveřejněn.<br/>\n"
+"                Chcete <b>Přijmout</b> nebo <b>Odmítnout</b> tento příspěvek?"
 
 #. module: website_forum
 #: model:forum.post.reason,name:website_forum.reason_14
 msgid "Threatening language"
-msgstr ""
+msgstr "Výhružný jazyk"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_post__name
@@ -3329,6 +3371,7 @@ msgid "Title must not be empty"
 msgstr "Název nesmí být prázdný"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/controllers/main.py:0
 #, python-format
 msgid "Title should not be empty."
@@ -3367,17 +3410,17 @@ msgstr "Příliš lokalizované"
 #. module: website_forum
 #: model:forum.post.reason,name:website_forum.reason_3
 msgid "Too subjective and argumentative"
-msgstr ""
+msgstr "Příliš subjektivní a argumentační"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.tag
 msgid "Toolbar with button groups"
-msgstr ""
+msgstr "Panel nástrojů se skupiny tlačítek"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_nav_header
 msgid "Topics"
-msgstr ""
+msgstr "Témata"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.view_forum_post_list
@@ -3387,7 +3430,7 @@ msgstr "Celkem odpovědí"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.view_forum_forum_list
 msgid "Total Posts"
-msgstr ""
+msgstr "Celkem příspěvků"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.view_forum_forum_list
@@ -3403,12 +3446,12 @@ msgstr "Celkový počet hlasů"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 msgid "Trending"
-msgstr ""
+msgstr "Trendy"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 msgid "Try searching for one or two words"
-msgstr ""
+msgstr "Zkuste vyhledávat jedno nebo dvě slova"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
@@ -3418,7 +3461,7 @@ msgstr "Nezodpovězeno"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.question_dropdown
 msgid "Undelete"
-msgstr ""
+msgstr "Obnovit"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_forum__karma_comment_unlink_all
@@ -3433,12 +3476,12 @@ msgstr "Odpojit vlastní komentáře"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.post_answers
 msgid "Unmark as Best Answer"
-msgstr ""
+msgstr "Zrušit označení jako nejlepší odpověď"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 msgid "Unsolved"
-msgstr ""
+msgstr "Nevyřešeno"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_post__write_uid
@@ -3456,28 +3499,24 @@ msgid "Upvote"
 msgstr "Hlasování pro zvýšení"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_student
 #: model:gamification.goal.definition,name:website_forum.definition_student
 msgid "Upvoted question (1)"
 msgstr "Otázka posunutá nahoru (1)"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_great_question
 #: model:gamification.goal.definition,name:website_forum.definition_great_question
 msgid "Upvoted question (15)"
-msgstr ""
+msgstr "Kladně hodnocená otázka (15)"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_nice_question
 #: model:gamification.goal.definition,name:website_forum.definition_nice_question
 msgid "Upvoted question (4)"
 msgstr "Otázka s hlasy pro zvýšení pozice (4)"
 
 #. module: website_forum
-#: model:gamification.challenge.line,name:website_forum.line_good_question
 #: model:gamification.goal.definition,name:website_forum.definition_good_question
 msgid "Upvoted question (6)"
-msgstr ""
+msgstr "Kladně hodnocená otázka (6)"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.edit_post
@@ -3521,7 +3560,7 @@ msgstr "Zobrazení"
 #. module: website_forum
 #: model:forum.post.reason,name:website_forum.reason_12
 msgid "Violent language"
-msgstr ""
+msgstr "Násilný jazyk"
 
 #. module: website_forum
 #: model:ir.model.fields,field_description:website_forum.field_forum_post_vote__vote
@@ -3632,20 +3671,25 @@ msgid ""
 "rough measure of the community trust to him/her. Various moderation tasks "
 "are gradually assigned to the users based on those points."
 msgstr ""
+"Když je otázka nebo odpověď kladně hlasována, uživatel, který ji zveřejnil, "
+"získá nějaké body, které se nazývají „body karmy“. Tyto body slouží jako "
+"hrubé měřítko důvěry komunity k němu/ní. Na základě těchto bodů jsou "
+"uživatelům postupně přidělovány různé moderátorské úkoly."
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 msgid "You already have a pending post"
-msgstr ""
+msgstr "Již máte čekající příspěvek"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/xml/public_templates.xml:0
 #, python-format
 msgid "You can share your question once it has been validated"
 msgstr "Jakmile bude vaše otázka ověřena, můžete ji sdílet"
 
 #. module: website_forum
+#. odoo-python
 #: code:addons/website_forum/models/forum.py:0
 #, python-format
 msgid "You cannot create recursive forum posts."
@@ -3669,7 +3713,7 @@ msgstr "Nyní se můžete účastnit našich fór."
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.edit_post
 msgid "You need to have sufficient karma to edit tags"
-msgstr ""
+msgstr "Musíte mít dostatečnou karmu pro úpravu značek"
 
 #. module: website_forum
 #: model_terms:forum.forum,faq:website_forum.forum_help
@@ -3686,7 +3730,7 @@ msgstr ""
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 msgid "You're not following any topic in this forum (yet).<br/>"
-msgstr ""
+msgstr "V tomto fóru neodebíráte žádné téma (dosud).<br/>"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.edit_post
@@ -3702,22 +3746,22 @@ msgstr "Vaše odpověď"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.display_post_question_block
 msgid "Your favourite"
-msgstr ""
+msgstr "Vaše oblíbené"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.display_post_question_block
 msgid "[Closed]"
-msgstr ""
+msgstr "[Uzavřené]"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.display_post_question_block
 msgid "[Deleted]"
-msgstr ""
+msgstr "[Smazané]"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.display_post_question_block
 msgid "[Offensive]"
-msgstr ""
+msgstr "[Urážlivé]"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.faq_karma
@@ -3727,12 +3771,12 @@ msgstr "přijmout jakoukoliv odpověď"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 msgid "activity date"
-msgstr ""
+msgstr "datum aktivity"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.header
 msgid "and join this Forum"
-msgstr ""
+msgstr "a připojte se k tomuto fóru"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.header
@@ -3772,22 +3816,22 @@ msgstr "hlasování pro snížení"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.view_forum_forum_form
 msgid "e.g. Help"
-msgstr ""
+msgstr "např. Nápověda"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_forum_view_form_add
 msgid "e.g. Technical Assistance"
-msgstr ""
+msgstr "např. Technická asistence"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.view_forum_post_form
 msgid "e.g. When should I plant my tomatoes?"
-msgstr ""
+msgstr "např. Kdy bych měl zasadit rajčata?"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.faq_karma
 msgid "edit any post, view offensive flags"
-msgstr ""
+msgstr "upravit jakýkoliv příspěvek, zobrazit ofenzivní označení"
 
 #. module: website_forum
 #: model_terms:forum.forum,faq:website_forum.forum_help
@@ -3824,7 +3868,7 @@ msgid "has been posted. Click here to access the question :"
 msgstr "byl odeslán. Kliknutím sem získáte přístup k otázce:"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/xml/public_templates.xml:0
 #, python-format
 msgid "here"
@@ -3850,7 +3894,7 @@ msgid "how to install Odoo on a specific infrastructure,"
 msgstr "jak nainstalovat Odoo na konkrétní infrastrukturu,"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/xml/public_templates.xml:0
 #, python-format
 msgid ""
@@ -3863,17 +3907,17 @@ msgstr ""
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 msgid "in your favourites"
-msgstr ""
+msgstr "ve vašich oblíbených"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 msgid "in your followed list"
-msgstr ""
+msgstr "ve vašem seznamu odebíraných"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 msgid "in your posts"
-msgstr ""
+msgstr "ve vašich příspěvcích"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.faq_karma
@@ -3883,7 +3927,7 @@ msgstr "Vložit textový odkaz, nahrát soubory"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 msgid "instead."
-msgstr ""
+msgstr "namísto."
 
 #. module: website_forum
 #: model_terms:forum.forum,faq:website_forum.forum_help
@@ -3893,7 +3937,7 @@ msgstr ""
 "jsou ty řeči maskované jako otázka “________ akorát otravuje, nemám pravdu?”"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/xml/public_templates.xml:0
 #, python-format
 msgid "karma points"
@@ -3902,22 +3946,22 @@ msgstr "body karmy"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 msgid "matching \""
-msgstr ""
+msgstr "odpovídající *"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 msgid "most answered"
-msgstr ""
+msgstr "nejvíce odpovědí"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 msgid "most voted"
-msgstr ""
+msgstr "nejvíce hlasovalo"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 msgid "newest"
-msgstr ""
+msgstr "nejnovější"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_post_template_new_question
@@ -3927,7 +3971,7 @@ msgid "on"
 msgstr "na"
 
 #. module: website_forum
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_forum/static/src/xml/public_templates.xml:0
 #, python-format
 msgid ""
@@ -3945,18 +3989,18 @@ msgstr "příspěvek"
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 msgid "solved"
-msgstr ""
+msgstr "vyřešeno"
 
 #. module: website_forum
 #: model_terms:forum.forum,faq:website_forum.forum_help
 #: model_terms:ir.ui.view,arch_db:website_forum.default_faq
 msgid "specific questions about Odoo service offers, etc."
-msgstr ""
+msgstr "konkrétní otázky týkající se nabídky služeb Odoo atd."
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 msgid "tag"
-msgstr ""
+msgstr "štítek"
 
 #. module: website_forum
 #: model_terms:forum.forum,faq:website_forum.forum_help
@@ -3971,32 +4015,32 @@ msgstr ""
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.post_description_full
 msgid "to partecipate"
-msgstr ""
+msgstr "účastnit se"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 msgid "trending"
-msgstr ""
+msgstr "trendy"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 msgid "unanswered"
-msgstr ""
+msgstr "nezodpovězeno"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 msgid "unsolved"
-msgstr ""
+msgstr "nevyřešeno"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.faq_karma
 msgid "upvote, add comments"
-msgstr ""
+msgstr "hlasovat kladně, přidat komentáře"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.forum_index
 msgid "using the"
-msgstr ""
+msgstr "za použití"
 
 #. module: website_forum
 #: model_terms:forum.forum,faq:website_forum.forum_help
@@ -4025,18 +4069,20 @@ msgid ""
 "your answer is provided along with the question, and you expect more "
 "answers: “I use ______ for ______, what do you use?”"
 msgstr ""
+"vaše odpověď je poskytnuta spolu s otázkou, a vy očekáváte víc odpovědí: "
+"\"Používám ______ pro ______, co používáte vy?\""
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.faq_karma
 msgid "your biography can be seen as tooltip"
-msgstr ""
+msgstr "vás životopis může být vidět jako nápověda"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.display_post_question_block
 msgid "| Flagged"
-msgstr ""
+msgstr "| Označeno"
 
 #. module: website_forum
 #: model_terms:ir.ui.view,arch_db:website_forum.moderation_queue
 msgid "圾 Text"
-msgstr ""
+msgstr "圾 Text"

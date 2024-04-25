@@ -6,6 +6,7 @@
     'category': 'Accounting/Payment Providers',
     'sequence': 350,
     'summary': "An payment provider based in Hong Kong covering most Asian countries.",
+    'description': " ",  # Non-empty string to avoid loading the README file.
     'depends': ['payment'],
     'data': [
         'views/payment_asiapay_templates.xml',
@@ -13,7 +14,7 @@
 
         'data/payment_provider_data.xml',
     ],
-    'application': True,
+    'application': False,
     'post_init_hook': 'post_init_hook',
     'uninstall_hook': 'uninstall_hook',
     'license': 'LGPL-3',

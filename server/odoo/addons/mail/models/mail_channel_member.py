@@ -17,13 +17,13 @@ class ChannelMember(models.Model):
     # identity
     partner_id = fields.Many2one('res.partner', string='Recipient', ondelete='cascade', index=True)
     guest_id = fields.Many2one(string="Guest", comodel_name='mail.guest', ondelete='cascade', readonly=True, index=True)
-    partner_email = fields.Char('Email', related='partner_id.email', readonly=False)
+    partner_email = fields.Char('Email', related='partner_id.email', related_sudo=False)
     # channel
     channel_id = fields.Many2one('mail.channel', string='Channel', ondelete='cascade', readonly=True, required=True)
     # state
     custom_channel_name = fields.Char('Custom channel name')
-    fetched_message_id = fields.Many2one('mail.message', string='Last Fetched')
-    seen_message_id = fields.Many2one('mail.message', string='Last Seen')
+    fetched_message_id = fields.Many2one('mail.message', string='Last Fetched', index='btree_not_null')
+    seen_message_id = fields.Many2one('mail.message', string='Last Seen', index='btree_not_null')
     message_unread_counter = fields.Integer('Unread Messages Counter', compute='_compute_message_unread', compute_sudo=True)
     fold_state = fields.Selection([('open', 'Open'), ('folded', 'Folded'), ('closed', 'Closed')], string='Conversation Fold State', default='open')
     is_minimized = fields.Boolean("Conversation is minimized")
@@ -36,26 +36,29 @@ class ChannelMember(models.Model):
 
     @api.depends('channel_id.message_ids', 'seen_message_id')
     def _compute_message_unread(self):
-        self.env['mail.message'].flush_model()
-        self.flush_recordset(['channel_id', 'seen_message_id'])
-        self.env.cr.execute("""
-                 SELECT count(mail_message.id) AS count,
-                        mail_channel_member.id
-                   FROM mail_message
-             INNER JOIN mail_channel_member
-                     ON mail_channel_member.channel_id = mail_message.res_id
-                  WHERE mail_message.model = 'mail.channel'
-                    AND mail_message.message_type NOT IN ('notification', 'user_notification')
-                    AND (
-                        mail_message.id > mail_channel_member.seen_message_id
-                     OR mail_channel_member.seen_message_id IS NULL
-                    )
-                    AND mail_channel_member.id IN %(ids)s
-               GROUP BY mail_channel_member.id
-        """, {'ids': tuple(self.ids)})
-        unread_counter_by_member = {res['id']: res['count'] for res in self.env.cr.dictfetchall()}
-        for member in self:
-            member.message_unread_counter = unread_counter_by_member.get(member.id)
+        if self.ids:
+            self.env['mail.message'].flush_model()
+            self.flush_recordset(['channel_id', 'seen_message_id'])
+            self.env.cr.execute("""
+                     SELECT count(mail_message.id) AS count,
+                            mail_channel_member.id
+                       FROM mail_message
+                 INNER JOIN mail_channel_member
+                         ON mail_channel_member.channel_id = mail_message.res_id
+                      WHERE mail_message.model = 'mail.channel'
+                        AND mail_message.message_type NOT IN ('notification', 'user_notification')
+                        AND (
+                            mail_message.id > mail_channel_member.seen_message_id
+                         OR mail_channel_member.seen_message_id IS NULL
+                        )
+                        AND mail_channel_member.id IN %(ids)s
+                   GROUP BY mail_channel_member.id
+            """, {'ids': tuple(self.ids)})
+            unread_counter_by_member = {res['id']: res['count'] for res in self.env.cr.dictfetchall()}
+            for member in self:
+                member.message_unread_counter = unread_counter_by_member.get(member.id)
+        else:
+            self.message_unread_counter = 0
 
     def name_get(self):
         return [(record.id, record.partner_id.name or record.guest_id.name) for record in self]
@@ -148,7 +151,7 @@ class ChannelMember(models.Model):
                 if member.partner_id:
                     persona = {'partner': member._get_partner_data(fields=fields.get('persona', {}).get('partner'))}
                 if member.guest_id:
-                    persona = {'guest': member.guest_id._guest_format(fields=fields.get('persona', {}).get('guest')).get(member.guest_id)}
+                    persona = {'guest': member.guest_id.sudo()._guest_format(fields=fields.get('persona', {}).get('guest')).get(member.guest_id)}
                 data['persona'] = persona
             members_formatted_data[member] = data
         return members_formatted_data

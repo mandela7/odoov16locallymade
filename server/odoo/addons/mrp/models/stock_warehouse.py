@@ -3,6 +3,7 @@
 
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError, UserError
+from odoo.tools import split_every
 
 
 class StockWarehouse(models.Model):
@@ -274,6 +275,13 @@ class StockWarehouse(models.Model):
         })
         return data
 
+    def _create_missing_locations(self, vals):
+        super()._create_missing_locations(vals)
+        for company_id in self.company_id:
+            location = self.env['stock.location'].search([('usage', '=', 'production'), ('company_id', '=', company_id.id)], limit=1)
+            if not location:
+                company_id._create_production_location()
+
     def write(self, vals):
         if any(field in vals for field in ('manufacture_steps', 'manufacture_to_resupply')):
             for warehouse in self:
@@ -308,6 +316,9 @@ class Orderpoint(models.Model):
             raise ValidationError(_("A product with a kit-type bill of materials can not have a reordering rule."))
 
     def _get_orderpoint_products(self):
-        products = super()._get_orderpoint_products()
-        kit_products = self.env['mrp.bom']._bom_find(products, bom_type='phantom').keys()
-        return products.filtered(lambda p: p not in kit_products)
+        non_kit_ids = []
+        for products in split_every(2000, super()._get_orderpoint_products().ids, self.env['product.product'].browse):
+            kit_ids = set(k.id for k in self.env['mrp.bom']._bom_find(products, bom_type='phantom').keys())
+            non_kit_ids.extend(id_ for id_ in products.ids if id_ not in kit_ids)
+            products.invalidate_recordset()
+        return self.env['product.product'].browse(non_kit_ids)

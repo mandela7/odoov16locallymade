@@ -5,6 +5,8 @@ const config = require('web.config');
 var publicWidget = require('web.public.widget');
 var animations = require('website.content.snippets.animation');
 const extraMenuUpdateCallbacks = [];
+const weUtils = require('web_editor.utils');
+const dom = require('web.dom');
 
 const BaseAnimatedHeader = animations.Animation.extend({
     disabledInEditableMode: false,
@@ -31,6 +33,10 @@ const BaseAnimatedHeader = animations.Animation.extend({
      * @override
      */
     start: function () {
+        // Used to prevent the editor's unbreakable protection from restoring
+        // the menu's auto-hide updates in edit mode.
+        this.el.addEventListener("autoMoreMenu.willAdapt", () => this.options.wysiwyg
+            && this.options.wysiwyg.odooEditor.unbreakableStepUnactive());
         this.$main = this.$el.next('main');
         this.isOverlayHeader = !!this.$el.closest('.o_header_overlay, .o_header_overlay_theme').length;
         this.$dropdowns = this.$el.find('.dropdown, .dropdown-menu');
@@ -38,7 +44,7 @@ const BaseAnimatedHeader = animations.Animation.extend({
 
         // While scrolling through navbar menus on medium devices, body should not be scrolled with it
         this.$navbarCollapses.on('show.bs.collapse.BaseAnimatedHeader', function () {
-            if (config.device.size_class <= config.device.SIZES.SM) {
+            if (config.device.size_class < config.device.SIZES.LG) {
                 $(document.body).addClass('overflow-hidden');
             }
         }).on('hide.bs.collapse.BaseAnimatedHeader', function () {
@@ -78,17 +84,7 @@ const BaseAnimatedHeader = animations.Animation.extend({
      * @private
      */
     _adaptFixedHeaderPosition() {
-        // Compensate scrollbar
-        this.el.style.removeProperty('right');
-        if (this.fixedHeader) {
-            const scrollableEl = $(this.el).parent().closestScrollable()[0];
-            const style = window.getComputedStyle(this.el);
-            const borderLeftWidth = parseInt(style.borderLeftWidth.replace('px', ''));
-            const borderRightWidth = parseInt(style.borderRightWidth.replace('px', ''));
-            const bordersWidth = borderLeftWidth + borderRightWidth;
-            const newValue = parseInt(style['right']) + scrollableEl.offsetWidth - scrollableEl.clientWidth - bordersWidth;
-            this.el.style.setProperty('right', `${newValue}px`, 'important');
-        }
+        dom.compensateScrollbar(this.el, this.fixedHeader, false, 'right');
     },
     /**
      * @private
@@ -231,8 +227,12 @@ const BaseAnimatedHeader = animations.Animation.extend({
         }
 
         if (this.closeOpenedMenus) {
-            this.$dropdowns.removeClass('show');
-            this.$navbarCollapses.removeClass('show').attr('aria-expanded', false);
+            // TODO master: make this.$dropdowns the .dropdown-toggle directly.
+            for (const dropdownMenuEl of this.$dropdowns) {
+                Dropdown.getOrCreateInstance(
+                    dropdownMenuEl.closest('.dropdown').querySelector('.dropdown-toggle')
+                ).hide();
+            }
         }
     },
     /**
@@ -243,7 +243,7 @@ const BaseAnimatedHeader = animations.Animation.extend({
     _updateHeaderOnResize: function () {
         this._adaptFixedHeaderPosition();
         if (document.body.classList.contains('overflow-hidden')
-                && config.device.size_class > config.device.SIZES.SM) {
+                && config.device.size_class >= config.device.SIZES.LG) {
             document.body.classList.remove('overflow-hidden');
             this.$el.find('.navbar-collapse').removeClass('show');
         }
@@ -483,7 +483,10 @@ publicWidget.registry.FadeOutHeader = BaseDisappearingHeader.extend({
  * Note: this works well with the affixMenu... by chance (menuDirection is
  * called after alphabetically).
  *
- * @todo check bootstrap v4: maybe handled automatically now ?
+ * @todo @deprecated For the moment, dynamic positioning of dropdown elements is
+ * explicitly disabled by Bootstrap on dropdowns that are in the navbar. In
+ * master, we will patch the BS dropdown to allow this and remove the following
+ * widget.
  */
 publicWidget.registry.menuDirection = publicWidget.Widget.extend({
     selector: 'header .navbar .nav',
@@ -496,7 +499,8 @@ publicWidget.registry.menuDirection = publicWidget.Widget.extend({
      * @override
      */
     start: function () {
-        this.defaultAlignment = this.$el.is('.ms-auto, .ms-auto ~ *') ? 'right' : 'left';
+        this.defaultAlignment = this.$el.is('.ms-auto, .ms-auto ~ *') ? 'end' : 'start';
+        this.isRtl = !!this.el.closest('#wrapwrap.o_rtl');
         return this._super.apply(this, arguments);
     },
 
@@ -506,7 +510,7 @@ publicWidget.registry.menuDirection = publicWidget.Widget.extend({
 
     /**
      * @private
-     * @param {string} alignment - either 'left' or 'right'
+     * @param {string} alignment - either 'start' or 'end'
      * @param {integer} liOffset
      * @param {integer} liWidth
      * @param {integer} menuWidth
@@ -514,7 +518,7 @@ publicWidget.registry.menuDirection = publicWidget.Widget.extend({
      * @returns {boolean}
      */
     _checkOpening: function (alignment, liOffset, liWidth, menuWidth, pageWidth) {
-        if (alignment === 'left') {
+        if (alignment === 'start' && !this.isRtl || alignment === 'end' && this.isRtl) {
             // Check if ok to open the dropdown to the right (no window overflow)
             return (liOffset + menuWidth <= pageWidth);
         } else {
@@ -531,19 +535,20 @@ publicWidget.registry.menuDirection = publicWidget.Widget.extend({
      * @private
      */
     _onDropdownShow: function (ev) {
-        var $li = $(ev.target);
-        var $menu = $li.children('.dropdown-menu');
-        var liOffset = $li.offset().left;
-        var liWidth = $li.outerWidth();
+        const $dropdown = $(ev.target).closest('.dropdown, .dropup');
+        var $menu = $dropdown.children('.dropdown-menu');
+        var liOffset = $dropdown.offset().left;
+        var liWidth = $dropdown.outerWidth();
         var menuWidth = $menu.outerWidth();
         var pageWidth = $('#wrapwrap').outerWidth();
 
         $menu.removeClass('dropdown-menu-start dropdown-menu-end');
 
         var alignment = this.defaultAlignment;
-        if ($li.nextAll(':visible').length === 0) {
-            // The dropdown is the last menu item, open to the left
-            alignment = 'right';
+        if ($dropdown.nextAll(':visible').length === 0) {
+            // The dropdown is the last menu item, open to the left side
+            // (right side with rtl languages).
+            alignment = 'end';
         }
 
         // If can't open in the current direction because it would overflow the
@@ -551,7 +556,7 @@ publicWidget.registry.menuDirection = publicWidget.Widget.extend({
         // same, change back the direction.
         for (var i = 0; i < 2; i++) {
             if (!this._checkOpening(alignment, liOffset, liWidth, menuWidth, pageWidth)) {
-                alignment = (alignment === 'left' ? 'right' : 'left');
+                alignment = (alignment === 'start' ? 'end' : 'start');
             }
         }
 
@@ -575,9 +580,22 @@ publicWidget.registry.hoverableDropdown = animations.Animation.extend({
      * @override
      */
     start: function () {
+        if (this.editableMode) {
+            this._onPageClick = this._onPageClick.bind(this);
+            this.el.closest('#wrapwrap').addEventListener('click', this._onPageClick, {capture: true});
+        }
         this.$dropdownMenus = this.$el.find('.dropdown-menu');
         this.$dropdownToggles = this.$el.find('.dropdown-toggle');
         this._dropdownHover();
+        return this._super.apply(this, arguments);
+    },
+    /**
+     * @override
+     */
+    destroy() {
+        if (this.editableMode) {
+            this.el.closest('#wrapwrap').removeEventListener('click', this._onPageClick, {capture: true});
+        }
         return this._super.apply(this, arguments);
     },
 
@@ -590,12 +608,40 @@ publicWidget.registry.hoverableDropdown = animations.Animation.extend({
      */
     _dropdownHover: function () {
         this.$dropdownMenus.attr('data-bs-popper', 'none');
-        if (config.device.size_class > config.device.SIZES.SM) {
+        if (config.device.size_class >= config.device.SIZES.LG) {
             this.$dropdownMenus.css('margin-top', '0');
             this.$dropdownMenus.css('top', 'unset');
         } else {
             this.$dropdownMenus.css('margin-top', '');
             this.$dropdownMenus.css('top', '');
+        }
+    },
+    /**
+     * Hides all opened dropdowns.
+     *
+     * @private
+     */
+    _hideDropdowns() {
+        for (const toggleEl of this.el.querySelectorAll('.dropdown-toggle.show')) {
+            Dropdown.getOrCreateInstance(toggleEl).hide();
+        }
+    },
+    /**
+     * @private
+     * @param {Event} ev
+     * @param {String} method bootstrap dropdowns method name
+     */
+    _updateDropdownVisibility: function (ev, method) {
+        const { currentTarget } = ev;
+        if (config.device.size_class < config.device.SIZES.LG) {
+            return;
+        }
+        if (currentTarget.classList.contains('o_extra_menu_items')) {
+            return;
+        }
+        const dropdownToggle = currentTarget.querySelector('.dropdown-toggle');
+        if (dropdownToggle) {
+            Dropdown.getOrCreateInstance(dropdownToggle)[method]();
         }
     },
 
@@ -608,28 +654,51 @@ publicWidget.registry.hoverableDropdown = animations.Animation.extend({
      * @param {Event} ev
      */
     _onMouseEnter: function (ev) {
-        if (config.device.size_class <= config.device.SIZES.SM) {
-            return;
+        if (this.editableMode) {
+            // Do not handle hover if another dropdown is opened.
+            if (this.el.querySelector('.dropdown-toggle.show')) {
+                return;
+            }
         }
+        // Get the previously focused element of the page.
+        const focusedEl = this.el.ownerDocument.querySelector(":focus")
+            || window.frameElement && window.frameElement.ownerDocument.querySelector(":focus");
 
-        const $dropdown = $(ev.currentTarget);
-        $dropdown.addClass('show');
-        $dropdown.find(this.$dropdownToggles).attr('aria-expanded', 'true');
-        $dropdown.find(this.$dropdownMenus).addClass('show');
+        // The user must click on the dropdown if he is on mobile (no way to
+        // hover) or if the dropdown is the extra menu ('+').
+        this._updateDropdownVisibility(ev, 'show');
+
+        // Keep the focus on the previously focused element if any, otherwise do
+        // not focus the dropdown on hover.
+        if (focusedEl) {
+            focusedEl.focus();
+        } else {
+            ev.currentTarget.querySelector(".dropdown-toggle").blur();
+        }
     },
     /**
      * @private
      * @param {Event} ev
      */
     _onMouseLeave: function (ev) {
-        if (config.device.size_class <= config.device.SIZES.SM) {
+        if (this.editableMode) {
+            // Cancel handling from view mode.
             return;
         }
-
-        const $dropdown = $(ev.currentTarget);
-        $dropdown.removeClass('show');
-        $dropdown.find(this.$dropdownToggles).attr('aria-expanded', 'false');
-        $dropdown.find(this.$dropdownMenus).removeClass('show');
+        this._updateDropdownVisibility(ev, 'hide');
+    },
+    /**
+     * Called when the page is clicked anywhere.
+     * Closes the shown dropdown if the click is outside of it.
+     *
+     * @private
+     * @param {Event} ev
+     */
+    _onPageClick(ev) {
+        if (ev.target.closest('.dropdown-menu.show')) {
+            return;
+        }
+        this._hideDropdowns();
     },
 });
 
@@ -672,6 +741,13 @@ publicWidget.registry.HeaderMainCollapse = publicWidget.Widget.extend({
                     this.options.wysiwyg && this.options.wysiwyg.odooEditor.observerActive();
                 }
             }
+            // Specific case with the "boxed" header template where the "call to
+            // action" button is inaccessible in the "off-canvas" mobile menu.
+            this.offcanvasAndBoxedHeader = false;
+            if (weUtils.getCSSVariableValue('header-template').includes('boxed')) {
+                this.boxedHeaderCallToActionEl = this.$target[0].querySelector('#top_menu_collapse .oe_structure_solo');
+                this.offcanvasAndBoxedHeader = !!this.boxedHeaderCallToActionEl;
+            }
         }
         return this._super(...arguments);
     },
@@ -691,6 +767,10 @@ publicWidget.registry.HeaderMainCollapse = publicWidget.Widget.extend({
             this.navbarEl.append(this.languageSelectorEl);
             this.options.wysiwyg && this.options.wysiwyg.odooEditor.observerActive();
         }
+        if (this.offcanvasAndBoxedHeader) {
+            this.boxedHeaderCallToActionEl.classList.add('nav-item');
+            this.navbarEl.append(this.boxedHeaderCallToActionEl);
+        }
     },
     /**
      * @private
@@ -702,6 +782,10 @@ publicWidget.registry.HeaderMainCollapse = publicWidget.Widget.extend({
             this.languageSelectorEl.classList.remove('nav-item');
             this.navbarEl.after(this.languageSelectorEl);
             this.options.wysiwyg && this.options.wysiwyg.odooEditor.observerActive();
+        }
+        if (this.offcanvasAndBoxedHeader) {
+            this.boxedHeaderCallToActionEl.classList.remove('nav-item');
+            this.navbarEl.after(this.boxedHeaderCallToActionEl);
         }
     },
 });

@@ -19,16 +19,17 @@
 # Tuomo Aura <tuomo.aura@web-veistamo.fi>, 2022
 # Tommi Rintala <tommi.rintala@gmail.com>, 2022
 # Martin Trigaux, 2022
-# Jarmo Kortetjärvi <jarmo.kortetjarvi@gmail.com>, 2022
+# Jarmo Kortetjärvi <jarmo.kortetjarvi@gmail.com>, 2023
+# Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2024
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-03 16:41+0000\n"
+"POT-Creation-Date: 2024-02-06 13:32+0000\n"
 "PO-Revision-Date: 2022-09-22 05:56+0000\n"
-"Last-Translator: Jarmo Kortetjärvi <jarmo.kortetjarvi@gmail.com>, 2022\n"
-"Language-Team: Finnish (https://www.transifex.com/odoo/teams/41243/fi/)\n"
+"Last-Translator: Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2024\n"
+"Language-Team: Finnish (https://app.transifex.com/odoo/teams/41243/fi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -36,6 +37,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: website_blog
+#. odoo-python
 #: code:addons/website_blog/models/website_blog.py:0
 #, python-format
 msgid "%s (copy)"
@@ -59,7 +61,7 @@ msgstr "' sivun otsikko."
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.blog_post_short
 msgid "'. Showing results for '"
-msgstr ""
+msgstr "'. Näytetään tulokset  '"
 
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.date_selector
@@ -99,7 +101,7 @@ msgstr ""
 "from a web article or a salesperson at Wal-Mart."
 
 #. module: website_blog
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_blog/static/src/js/tours/website_blog.js:0
 #, python-format
 msgid "<b>Publish your blog post</b> to make it visible to your visitors."
@@ -126,7 +128,7 @@ msgstr ""
 " money in your own set up."
 
 #. module: website_blog
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_blog/static/src/js/tours/website_blog.js:0
 #, python-format
 msgid ""
@@ -206,6 +208,8 @@ msgid ""
 "<i class=\"fa fa-clock-o me-1\" role=\"img\" aria-label=\"Post date\" "
 "title=\"Post date\"/>"
 msgstr ""
+"<i class=\"fa fa-clock-o me-1\" role=\"img\" aria-label=\"Julkaisupäivä\" "
+"title=\"Julkaisupäivä\"/>"
 
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.opt_sidebar_blog_index_follow_us
@@ -215,7 +219,7 @@ msgstr "<i class=\"fa fa-github text-github\" aria-label=\"Github\" title=\"Gith
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.blog_post_view_kanban
 msgid "<i class=\"fa fa-globe me-1\" title=\"Website\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-globe me-1\" title=\"Verkkosivu\"/>"
 
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.opt_sidebar_blog_index_follow_us
@@ -264,6 +268,8 @@ msgid ""
 "<span class=\"bg-o-color-3 h6 d-inline-block py-1 px-2 rounded-1\">Read "
 "Next</span>"
 msgstr ""
+"<span class=\"bg-o-color-3 h6 d-inline-block py-1 px-2 rounded-1\">Lue "
+"seuraavaksi</span>"
 
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.opt_blog_post_read_next
@@ -272,16 +278,19 @@ msgid ""
 "                                    <i class=\"fa fa-angle-right fa-3x text-white\" aria-label=\"Read next\" title=\"Read Next\"/>\n"
 "                                </span>"
 msgstr ""
+"<span class=\"h4 d-inline-block py-1 px-2 rounded-1 text-white\">\n"
+"                                    <i class=\"fa fa-angle-right fa-3x text-white\" aria-label=\"Read next\" title=\"Lue seuraavaksi\"/>\n"
+"                                </span>"
 
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.posts_loop
 msgid "<span class=\"me-1\">Show:</span>"
-msgstr ""
+msgstr "<span class=\"me-1\">Näytä:</span>"
 
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.blogs_nav
 msgid "<span class=\"nav-link disabled ps-0\">Blogs:</span>"
-msgstr ""
+msgstr "<span class=\"nav-link disabled ps-0\">Blogit:</span>"
 
 #. module: website_blog
 #: model:blog.post,subtitle:website_blog.blog_post_2
@@ -377,10 +386,11 @@ msgid "All blogs"
 msgstr "Kaikki blogit"
 
 #. module: website_blog
+#. odoo-python
 #: code:addons/website_blog/models/website_snippet_filter.py:0
 #, python-format
 msgid "Alone in the ocean"
-msgstr ""
+msgstr "Yksin meressä"
 
 #. module: website_blog
 #: model_terms:blog.post,content:website_blog.blog_post_6
@@ -388,7 +398,7 @@ msgid "Along those lines, how difficult is the set up and break down?"
 msgstr "Along those lines, how difficult is the set up and break down?"
 
 #. module: website_blog
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_blog/static/src/js/website_blog.js:0
 #, python-format
 msgid "Amazing blog article: %s! Check it live: %s"
@@ -505,10 +515,11 @@ msgid "Avatar"
 msgstr "Avatar"
 
 #. module: website_blog
+#. odoo-python
 #: code:addons/website_blog/models/website_snippet_filter.py:0
 #, python-format
 msgid "Awesome hotel rooms"
-msgstr ""
+msgstr "Mahtavat hotellihuoneet"
 
 #. module: website_blog
 #: model:blog.post,subtitle:website_blog.blog_post_4
@@ -574,6 +585,7 @@ msgid "Beyond The Eye"
 msgstr "Piilossa katseelta"
 
 #. module: website_blog
+#. odoo-python
 #: code:addons/website_blog/models/website.py:0
 #: model:ir.model,name:website_blog.model_blog_blog
 #: model:ir.model.fields,field_description:website_blog.field_blog_post__blog_id
@@ -594,7 +606,7 @@ msgstr "Blogin nimi"
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.snippet_options
 msgid "Blog Page"
-msgstr ""
+msgstr "Blogisivu"
 
 #. module: website_blog
 #: model:ir.model,name:website_blog.model_blog_post
@@ -611,7 +623,7 @@ msgstr "Blogikirjoituksen kansi"
 #. module: website_blog
 #: model:ir.actions.act_window,name:website_blog.action_blog_post
 msgid "Blog Post Pages"
-msgstr ""
+msgstr "Blogikirjoitusten sivut"
 
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.blog_post_complete
@@ -626,6 +638,7 @@ msgstr "Blogikirjoituksen otsikko"
 #. module: website_blog
 #: model:ir.model.fields,field_description:website_blog.field_blog_blog__blog_post_ids
 #: model:ir.ui.menu,name:website_blog.menu_blog_post_pages
+#: model_terms:ir.ui.view,arch_db:website_blog.website_blog
 msgid "Blog Posts"
 msgstr "Blogikirjoitukset"
 
@@ -673,12 +686,12 @@ msgstr "Blogit"
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.snippet_options
 msgid "Blogs List"
-msgstr ""
+msgstr "Blogien luettelo"
 
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.snippet_options
 msgid "Blogs Page"
-msgstr ""
+msgstr "Blogien sivu"
 
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.snippet_options
@@ -744,14 +757,14 @@ msgid "Children’s’ Facilities"
 msgstr "Lasten palvelut"
 
 #. module: website_blog
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_blog/static/src/js/tours/website_blog.js:0
 #, python-format
 msgid "Choose an image from the library."
 msgstr "Valitse kuva kirjastosta."
 
 #. module: website_blog
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_blog/static/src/js/tours/website_blog.js:0
 #, python-format
 msgid "Click here to add new content to your website."
@@ -786,7 +799,7 @@ msgstr "Kommentit"
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.snippet_options
 msgid "Comments/Views Stats"
-msgstr ""
+msgstr "Kommentit ja katseluiden tilastot"
 
 #. module: website_blog
 #: model:ir.model.fields,field_description:website_blog.field_blog_blog__content
@@ -848,12 +861,12 @@ msgstr "Luotu"
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.blog_searchbar_input_snippet_options
 msgid "Date (new to old)"
-msgstr ""
+msgstr "Päiväys (uudesta vanhaan)"
 
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.blog_searchbar_input_snippet_options
 msgid "Date (old to new)"
-msgstr ""
+msgstr "Päivämäärä (vanhasta uuteen)"
 
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.blog_searchbar_input_snippet_options
@@ -863,7 +876,7 @@ msgstr "Kuvaus"
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.s_dynamic_snippet_options_template
 msgid "Dexter"
-msgstr ""
+msgstr "Dexter"
 
 #. module: website_blog
 #: model:ir.model.fields,field_description:website_blog.field_blog_blog__display_name
@@ -876,7 +889,7 @@ msgstr "Näyttönimi"
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.snippet_options
 msgid "Drop Zone for Building Blocks"
-msgstr ""
+msgstr "Rakennuslohkojen pudotusalue"
 
 #. module: website_blog
 #: model_terms:blog.post,content:website_blog.blog_post_2
@@ -919,18 +932,18 @@ msgid "Edit the 'Filter Results' page header."
 msgstr "Muokkaa 'Tulosten suodatus' sivun otsikkoa."
 
 #. module: website_blog
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_blog/static/src/js/tours/website_blog.js:0
 #, python-format
 msgid "Edit your title, the subtitle is optional."
-msgstr ""
+msgstr "Muokkaa otsikkoa, alaotsikko on vapaaehtoinen."
 
 #. module: website_blog
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_blog/static/src/js/tours/website_blog.js:0
 #, python-format
 msgid "Enter your post's title"
-msgstr ""
+msgstr "Kirjoita julkaisun otsikko"
 
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.opt_blog_post_share_links_display
@@ -1166,7 +1179,7 @@ msgstr ""
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.snippet_options
 msgid "Increase Readability"
-msgstr ""
+msgstr "Lisää luettavuutta"
 
 #. module: website_blog
 #: model:ir.model.fields,field_description:website_blog.field_blog_blog__message_is_follower
@@ -1180,10 +1193,11 @@ msgid "Is Published"
 msgstr "On julkaistu"
 
 #. module: website_blog
+#. odoo-python
 #: code:addons/website_blog/models/website_snippet_filter.py:0
 #, python-format
 msgid "Islands"
-msgstr ""
+msgstr "Saaret"
 
 #. module: website_blog
 #: model_terms:blog.post,content:website_blog.blog_post_5
@@ -1240,10 +1254,11 @@ msgstr ""
 "enjoyed when they just looked up."
 
 #. module: website_blog
+#. odoo-python
 #: code:addons/website_blog/models/website_snippet_filter.py:0
 #, python-format
 msgid "Jungle"
-msgstr ""
+msgstr "Viidakko"
 
 #. module: website_blog
 #: model_terms:blog.post,content:website_blog.blog_post_5
@@ -1256,7 +1271,7 @@ msgid "Know when to look"
 msgstr "Tiedä milloin katsoa"
 
 #. module: website_blog
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_blog/static/src/js/options.js:0
 #, python-format
 msgid "Large"
@@ -1300,7 +1315,7 @@ msgstr "Viimeisimmät"
 #. module: website_blog
 #: model:website.snippet.filter,name:website_blog.dynamic_filter_latest_blog_posts
 msgid "Latest Blog Posts"
-msgstr ""
+msgstr "Uusimmat blogikirjoitukset"
 
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.snippet_options
@@ -1362,7 +1377,7 @@ msgstr "Pääliitetiedosto"
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.s_dynamic_snippet_options_template
 msgid "Marley"
-msgstr ""
+msgstr "Marley"
 
 #. module: website_blog
 #: model:blog.post,name:website_blog.blog_post_2
@@ -1413,7 +1428,7 @@ msgstr ""
 " the wonderful things you saw while on vacation."
 
 #. module: website_blog
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_blog/static/src/js/options.js:0
 #, python-format
 msgid "Medium"
@@ -1480,7 +1495,7 @@ msgstr ""
 #. module: website_blog
 #: model:website.snippet.filter,name:website_blog.dynamic_filter_most_viewed_blog_posts
 msgid "Most Viewed Blog Posts"
-msgstr ""
+msgstr "Katsotuimmat blogikirjoitukset"
 
 #. module: website_blog
 #: model:ir.model.fields,field_description:website_blog.field_blog_tag__name
@@ -1491,7 +1506,7 @@ msgstr "Nimi"
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.snippet_options
 msgid "Name / Latest Post"
-msgstr ""
+msgstr "Nimi / Viimeisin virka"
 
 #. module: website_blog
 #: model:ir.actions.act_window,name:website_blog.blog_post_action_add
@@ -1501,12 +1516,12 @@ msgstr "Uusi blogikirjoitus"
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.snippet_options
 msgid "Next Article"
-msgstr ""
+msgstr "Seuraava"
 
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.snippet_options
 msgid "No Cover"
-msgstr ""
+msgstr "Ei kantta"
 
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.posts_loop
@@ -1526,7 +1541,7 @@ msgstr "Ei tuloksia haulle \"%s\"."
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.blog_post_short
 msgid "No results found for '"
-msgstr ""
+msgstr "Ei tuloksia. Kokeile jotain muuta hakusanaa. '"
 
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.opt_sidebar_blog_index_tags
@@ -1556,7 +1571,7 @@ msgstr ""
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.blog_post_view_kanban
 msgid "Not Published"
-msgstr ""
+msgstr "Ei julkaistu"
 
 #. module: website_blog
 #: model_terms:blog.post,content:website_blog.blog_post_5
@@ -1584,7 +1599,7 @@ msgstr "Virheiden määrä"
 #. module: website_blog
 #: model:ir.model.fields,help:website_blog.field_blog_blog__message_needaction_counter
 #: model:ir.model.fields,help:website_blog.field_blog_post__message_needaction_counter
-msgid "Number of messages which requires an action"
+msgid "Number of messages requiring action"
 msgstr "Toimenpiteitä vaativien viestien määrä"
 
 #. module: website_blog
@@ -1611,13 +1626,24 @@ msgstr ""
 "of what we can see on this our closest space object."
 
 #. module: website_blog
-#. openerp-web
+#. odoo-python
+#: code:addons/website_blog/models/ir_qweb_fields.py:0
+#, python-format
+msgid ""
+"On your default language, empty the blog post description and save to get an"
+" automated (translated) summary."
+msgstr ""
+
+#. module: website_blog
+#. odoo-javascript
 #: code:addons/website_blog/static/src/js/tours/website_blog.js:0
 #, python-format
 msgid ""
 "Once you have reviewed the content on mobile, you can switch back to the "
 "normal view by clicking here again"
 msgstr ""
+"Kun olet tarkastellut sisältöä mobiililaitteella, voit siirtyä takaisin "
+"normaaliin näkymään napsauttamalla tästä uudelleen"
 
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.opt_sidebar_blog_index_tags
@@ -1693,12 +1719,12 @@ msgstr "Julkaisuja"
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.snippet_options
 msgid "Posts List"
-msgstr ""
+msgstr "Blogikirjoituksien listaus"
 
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.blog_searchbar_input_snippet_options
 msgid "Publication Date"
-msgstr ""
+msgstr "Julkaisupäivämäärä"
 
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.blog_post_view_kanban
@@ -1732,6 +1758,11 @@ msgid "Publishing date"
 msgstr "Julkaisupäivä"
 
 #. module: website_blog
+#: model:ir.model,name:website_blog.model_ir_qweb_field
+msgid "Qweb Field"
+msgstr "Qweb-kenttä"
+
+#. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.opt_blog_cover_post
 msgid "Read more"
 msgstr "Lue lisää"
@@ -1739,7 +1770,7 @@ msgstr "Lue lisää"
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.posts_loop
 msgid "Read more <i class=\"fa fa-chevron-right ms-2\"/>"
-msgstr ""
+msgstr "Lue lisää <i class=\"fa fa-chevron-right ms-2\"/>"
 
 #. module: website_blog
 #: model_terms:blog.post,content:website_blog.blog_post_3
@@ -1776,32 +1807,35 @@ msgstr "Tekstiviestin toimitusvirhe"
 #: model_terms:ir.ui.view,arch_db:website_blog.dynamic_filter_template_blog_post_horizontal
 #: model_terms:ir.ui.view,arch_db:website_blog.dynamic_filter_template_blog_post_list
 msgid "Sample"
-msgstr ""
+msgstr "Esimerkki"
 
 #. module: website_blog
+#. odoo-python
 #: code:addons/website_blog/models/website_snippet_filter.py:0
 #, python-format
 msgid "Satellites"
-msgstr ""
+msgstr "Satelliitit"
 
 #. module: website_blog
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_blog/static/src/js/tours/website_blog.js:0
 #, python-format
 msgid "Search for an image. (eg: type \"business\")"
 msgstr "Etsi kuvaa. (esim: tyyppi \"liiketoiminta\")"
 
 #. module: website_blog
+#. odoo-python
 #: code:addons/website_blog/models/website_snippet_filter.py:0
 #, python-format
 msgid "Seaside vs mountain side"
-msgstr ""
+msgstr "Merenranta vs. vuoristo"
 
 #. module: website_blog
+#. odoo-python
 #: code:addons/website_blog/models/website_snippet_filter.py:0
 #, python-format
 msgid "Seeing the world from above"
-msgstr ""
+msgstr "Maailman näkeminen ylhäältä käsin"
 
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.blog_post_view_form_add
@@ -1809,14 +1843,14 @@ msgid "Select Blog"
 msgstr "Valitse blogi"
 
 #. module: website_blog
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_blog/static/src/js/tours/website_blog.js:0
 #, python-format
 msgid "Select the blog you want to add the post to."
 msgstr "Valitse blogi johon haluat lisätä kirjoituksen"
 
 #. module: website_blog
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_blog/static/src/js/tours/website_blog.js:0
 #, python-format
 msgid "Select this menu item to create a new blog post."
@@ -1825,12 +1859,12 @@ msgstr "Valitse tämä valikko luodaksesi uuden blogikirjoituksen"
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.snippet_options
 msgid "Select to Comment"
-msgstr ""
+msgstr "Valitse kommentoidaksesi"
 
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.snippet_options
 msgid "Select to Tweet"
-msgstr ""
+msgstr "Valitse tweetin lähettämiseksi"
 
 #. module: website_blog
 #: model:ir.model.fields,field_description:website_blog.field_blog_blog__seo_name
@@ -1845,7 +1879,7 @@ msgid "Separate every keyword with a comma"
 msgstr "Erottele jokainen avainsana pilkulla"
 
 #. module: website_blog
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_blog/static/src/js/tours/website_blog.js:0
 #, python-format
 msgid "Set a blog post <b>cover</b>."
@@ -1865,7 +1899,7 @@ msgstr ""
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.snippet_options
 msgid "Share Links"
-msgstr ""
+msgstr "Jaa linkit"
 
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.opt_blog_post_share_links_display
@@ -1890,7 +1924,7 @@ msgstr "Jaa tämä kirjoitus"
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.snippet_options
 msgid "Sidebar"
-msgstr ""
+msgstr "Sivupalkki"
 
 #. module: website_blog
 #: model:blog.post,name:website_blog.blog_post_1
@@ -1911,13 +1945,14 @@ msgstr ""
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.s_dynamic_snippet_options_template
 msgid "Silly-Chico"
-msgstr ""
+msgstr "Silly-Chico"
 
 #. module: website_blog
+#. odoo-python
 #: code:addons/website_blog/models/website_snippet_filter.py:0
 #, python-format
 msgid "Skies"
-msgstr ""
+msgstr "Taivas"
 
 #. module: website_blog
 #: model_terms:blog.post,content:website_blog.blog_post_6
@@ -1990,12 +2025,14 @@ msgid "Someone famous in <cite title=\"Source Title\">Source Title</cite>"
 msgstr "Joku kuuluisa <cite title=\"Source Title\">Kohteen otsikossa</cite>"
 
 #. module: website_blog
+#. odoo-python
 #: code:addons/website_blog/models/website_snippet_filter.py:0
 #, python-format
 msgid "Spotting the fauna"
-msgstr ""
+msgstr "Eläimistön havainnointi"
 
 #. module: website_blog
+#. odoo-python
 #: code:addons/website_blog/models/website_blog.py:0
 #, python-format
 msgid "Start writing here..."
@@ -2069,13 +2106,14 @@ msgstr "Tunnisteet"
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.snippet_options
 msgid "Tags List"
-msgstr ""
+msgstr "Tunnisteiden Luettelo"
 
 #. module: website_blog
+#. odoo-python
 #: code:addons/website_blog/models/website_snippet_filter.py:0
 #, python-format
 msgid "Taking pictures in the dark"
-msgstr ""
+msgstr "Kuvien ottaminen pimeässä"
 
 #. module: website_blog
 #: model:ir.model.fields,field_description:website_blog.field_blog_post__teaser
@@ -2085,7 +2123,7 @@ msgstr "Teaser"
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.snippet_options
 msgid "Teaser & Tags"
-msgstr ""
+msgstr "Teaser & tunnisteet"
 
 #. module: website_blog
 #: model:ir.model.fields,field_description:website_blog.field_blog_post__teaser_manual
@@ -2314,14 +2352,14 @@ msgid "This box will not be visible to your visitors"
 msgstr "Tämä laatikko ei näy vierailijoille"
 
 #. module: website_blog
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_blog/static/src/js/options.js:0
 #, python-format
 msgid "This tag already exists"
 msgstr "Tämä tunniste on jo olemassa"
 
 #. module: website_blog
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_blog/static/src/js/options.js:0
 #, python-format
 msgid "Tiny"
@@ -2336,12 +2374,12 @@ msgstr "Otsikko"
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.snippet_options
 msgid "Title Above Cover"
-msgstr ""
+msgstr "Otsikko kannen yläpuolella"
 
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.snippet_options
 msgid "Title Inside Cover"
-msgstr ""
+msgstr "Otsikko Kannen sisäpuolella"
 
 #. module: website_blog
 #: model_terms:blog.post,content:website_blog.blog_post_7
@@ -2426,7 +2464,7 @@ msgstr ""
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.snippet_options
 msgid "Top Banner"
-msgstr ""
+msgstr "Yläbanneri"
 
 #. module: website_blog
 #: model:blog.blog,name:website_blog.blog_blog_1
@@ -2449,7 +2487,7 @@ msgid "Untitled Post"
 msgstr "Otsikoimaton viesti"
 
 #. module: website_blog
-#. openerp-web
+#. odoo-javascript
 #: code:addons/website_blog/static/src/js/tours/website_blog.js:0
 #, python-format
 msgid "Use this icon to preview your blog post on <b>mobile devices</b>."
@@ -2463,10 +2501,11 @@ msgid "Used in:"
 msgstr "Käytetty:"
 
 #. module: website_blog
+#. odoo-python
 #: code:addons/website_blog/models/website_snippet_filter.py:0
 #, python-format
 msgid "Viewpoints"
-msgstr ""
+msgstr "Näkökulmat"
 
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.post_info
@@ -2482,6 +2521,11 @@ msgstr "Näkyy kaikkien blogien sivuilla"
 #: model:ir.model.fields,field_description:website_blog.field_blog_post__website_published
 msgid "Visible on current website"
 msgstr "Näkyy nykysellä verkkosivulla"
+
+#. module: website_blog
+#: model_terms:ir.ui.view,arch_db:website_blog.blog_post_content
+msgid "WRITE HERE OR DRAG BUILDING BLOCKS"
+msgstr "KIRJOITA TÄHÄN TAI RAAHAA RAKENNUSPALIKOITA"
 
 #. module: website_blog
 #: model:ir.model,name:website_blog.model_website
@@ -2504,7 +2548,7 @@ msgstr "Verkkosivun ilmoitukset"
 #. module: website_blog
 #: model:ir.model,name:website_blog.model_website_snippet_filter
 msgid "Website Snippet Filter"
-msgstr ""
+msgstr "Verkkosivuston pätkäsuodatin"
 
 #. module: website_blog
 #: model:ir.model.fields,field_description:website_blog.field_blog_post__website_url
@@ -2566,10 +2610,11 @@ msgstr ""
 "devote to your hobby of astronomy much more enjoyable."
 
 #. module: website_blog
+#. odoo-python
 #: code:addons/website_blog/models/website_snippet_filter.py:0
 #, python-format
 msgid "With a View"
-msgstr ""
+msgstr "Näköalalla"
 
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.sidebar_blog_index
@@ -2693,6 +2738,8 @@ msgid ""
 "|\n"
 "                            <i class=\"fa fa-comment text-muted me-1\"/>"
 msgstr ""
+"|\n"
+"                           <i class=\"fa fa-comment text-muted me-1\"/>"
 
 #. module: website_blog
 #: model_terms:ir.ui.view,arch_db:website_blog.opt_blog_post_regular_cover

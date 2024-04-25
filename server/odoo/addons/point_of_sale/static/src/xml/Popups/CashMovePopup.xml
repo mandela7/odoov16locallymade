@@ -12,9 +12,14 @@
                                 <span t-on-click="() => this.onClickButton('out')" class="input-type" t-att-class="{ 'red-highlight': state.inputType == 'out' }">
                                     Cash Out
                                 </span>
-                                <div class="input-field">
-                                    <input type="text" name="amount" t-model="state.inputAmount" t-ref="input-amount-ref" t-on-keypress="_onAmountKeypress"/>
-                                    <span class="currency" t-esc="env.pos.currency.symbol" />
+                                <div class="input-field" t-on-input="handleInputChange">
+                                    <input type="text" name="amount" t-ref="input-amount-ref" t-on-keypress="_onAmountKeypress" t-model="state.inputAmount"/>
+                                    <t t-if="env.pos.currency.symbol.length > 1">
+                                        <span class="left-currency" t-esc="env.pos.currency.symbol" />
+                                    </t>
+                                    <t t-else="">
+                                        <span class="currency" t-esc="env.pos.currency.symbol" />
+                                    </t>
                                 </div>
                             </div>
                             <textarea name="reason" t-model="state.inputReason" placeholder="Reason"></textarea>
@@ -24,8 +29,8 @@
                         </div>
                     </main>
                     <footer class="footer cash-move">
-                        <div class="button confirm disable highlight" t-on-click="confirm">
-                            Confirm
+                        <div class="button confirm disable highlight dynamic-size" t-on-click="confirm">
+                            Confirm <span t-esc="env.pos.format_currency(state.parsedAmount)"/>
                         </div>
                         <div class="button cancel" t-on-click="cancel">
                             <t t-esc="props.cancelText" />

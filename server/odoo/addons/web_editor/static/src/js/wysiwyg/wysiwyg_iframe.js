@@ -61,6 +61,16 @@ Wysiwyg.include({
         }
     },
 
+    /**
+     * @override
+     **/
+    destroy: function() {
+        if (this.options.inIframe && this.options.document) {
+            this.options.document.removeEventListener('scroll', this._onScroll, true);
+        }
+        this._super.apply(this, arguments);
+    },
+
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
@@ -68,8 +78,8 @@ Wysiwyg.include({
     /**
      * @override
      **/
-    _editorOptions: function () {
-        let options = this._super.apply(this, arguments);
+    _getEditorOptions: function () {
+        const options = this._super.apply(this, arguments);
         options.getContextFromParentRect = () => {
             return this.$iframe && this.$iframe.length ? this.$iframe[0].getBoundingClientRect() : { top: 0, left: 0 };
         };
@@ -84,8 +94,12 @@ Wysiwyg.include({
      */
     _loadIframe: function () {
         var self = this;
+        const isEditableRoot = this.$editable === this.$root;
         this.$editable = $('<div class="note-editable oe_structure odoo-editor-editable"></div>');
         this.$el.removeClass('note-editable oe_structure odoo-editor-editable');
+        if (isEditableRoot) {
+            this.$root = this.$editable;
+        }
         this.$iframe = $('<iframe class="wysiwyg_iframe o_iframe">').css({
             'min-height': '55vh',
             width: '100%'
@@ -150,8 +164,11 @@ Wysiwyg.include({
                 self.$iframe[0].contentWindow.document
                     .open("text/html", "replace")
                     .write(`<!DOCTYPE html><html${
-                        self.options.iframeHtmlClass ? ` class="${self.options.iframeHtmlClass}"` : ''
+                        self.options.iframeHtmlClass ? ' class="' + self.options.iframeHtmlClass +'"' : ''
                     }>${iframeContent}</html>`);
+                // Closing the document might trigger a new 'load' event.
+                self.$iframe.off('load', onLoad);
+                self.$iframe[0].contentWindow.document.close();
             });
             self.options.document = self.$iframe[0].contentWindow.document;
         });
@@ -168,6 +185,56 @@ Wysiwyg.include({
             return this.snippetsMenu.appendTo(this.$utilsZone);
         } else {
             return this._super.apply(this, arguments);
+        }
+    },
+
+    /**
+     * Bind the blur event on the iframe so that it would not blur when using
+     * the sidebar.
+     *
+     * @override
+     */
+    _bindOnBlur: function () {
+        if (!this.options.inIframe) {
+            this._super.apply(this, arguments);
+        } else {
+            this.$iframe[0].contentWindow.addEventListener('blur', this._onBlur);
+        }
+    },
+
+    /**
+     * When the editable is inside an iframe, we want to update the toolbar
+     * position in 2 scenarios:
+     * 1. scroll event in the top document, if the iframe is a descendant of
+     * the scroll container.
+     * 2. scroll event in the iframe's document.
+     * 
+     * @override
+     */
+    _onScroll: function(ev) {
+        if (this.options.inIframe) {
+            const iframeDocument = this.$iframe[0].contentDocument;
+            const scrollInIframe = ev.target === iframeDocument || ev.target.ownerDocument === iframeDocument;
+            if (ev.target.contains(this.$iframe[0]))  {
+                this.scrollContainer = ev.target;
+                this.odooEditor.updateToolbarPosition();
+            } else if (scrollInIframe) {
+                // UpdateToolbarPosition needs a scroll container in the top document.
+                this.scrollContainer = this.$iframe[0];
+                this.odooEditor.updateToolbarPosition();
+            }
+        } else {
+            return this._super.apply(this, arguments);
+        }
+    },
+
+    /**
+     * @override
+     */
+    _configureToolbar: function (options) {
+        this._super.apply(this, arguments);
+        if (this.options.inIframe && !options.snippets) {
+            this.options.document.addEventListener('scroll', this._onScroll, true);
         }
     },
 });

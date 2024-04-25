@@ -745,6 +745,27 @@ QUnit.module("Search", (hooks) => {
         ]);
     });
 
+    QUnit.test("process a dynamic filter with a isDefault key to false", async function (assert) {
+        const model = await makeSearchModel({
+            serverData,
+            dynamicFilters: [
+                {
+                    description: "Quick search",
+                    domain: [],
+                    is_default: false,
+                },
+            ],
+        });
+        assert.deepEqual(sanitizeSearchItems(model), [
+            {
+                description: "Quick search",
+                domain: [],
+                isDefault: false,
+                type: "filter",
+            },
+        ]);
+    });
+
     QUnit.test("toggle a filter", async function (assert) {
         assert.expect(1);
         assert.expect(3);
@@ -936,5 +957,24 @@ QUnit.module("Search", (hooks) => {
 
         model.toggleSearchItem(1);
         assert.deepEqual(model.domain, [["date_deadline", "<", "2021-09-17"]]);
+    });
+
+    QUnit.test("no search items created for search panel sections", async function (assert) {
+        const model = await makeSearchModel({
+            serverData,
+            searchViewArch: `
+                        <search>
+                            <searchpanel>
+                                <field name="company_id"/>
+                                <field name="company_id" select="multi"/>
+                            </searchpanel>
+                        </search>
+                    `,
+            resModel: "partner",
+            config: { viewType: "kanban" },
+        });
+        const sections = model.getSections();
+        assert.strictEqual(sections.length, 2);
+        assert.deepEqual(sanitizeSearchItems(model), []);
     });
 });

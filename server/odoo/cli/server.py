@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 """
@@ -20,6 +19,7 @@ import sys
 import threading
 import traceback
 import time
+from pathlib import Path
 
 from psycopg2 import ProgrammingError, errorcodes
 
@@ -118,9 +118,9 @@ def import_translation():
 
     registry = odoo.modules.registry.Registry.new(dbname)
     with registry.cursor() as cr:
-        odoo.tools.trans_load(
-            cr, config["translate_in"], config["language"], overwrite=overwrite,
-        )
+        translation_importer = odoo.tools.translate.TranslationImporter(cr)
+        translation_importer.load_file(config["translate_in"], config["language"])
+        translation_importer.save(overwrite=overwrite)
 
 def main(args):
     check_root_user()
@@ -176,4 +176,5 @@ def main(args):
 class Server(Command):
     """Start the odoo server (default command)"""
     def run(self, args):
+        odoo.tools.config.parser.prog = f'{Path(sys.argv[0]).name} {self.name}'
         main(args)

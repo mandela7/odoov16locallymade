@@ -61,6 +61,8 @@ class PaymentPortal(payment_portal.PaymentPortal):
                 raise ValidationError(_('Country is required.'))
             partner_id = request.website.user_id.partner_id.id
             del kwargs['partner_details']
+        else:
+            partner_id = request.env.user.partner_id.id
 
         kwargs.pop('custom_create_values', None)  # Don't allow passing arbitrary create values
         tx_sudo = self._create_transaction(
@@ -75,6 +77,11 @@ class PaymentPortal(payment_portal.PaymentPortal):
             })
         elif not tx_sudo.partner_country_id:
             tx_sudo.partner_country_id = int(kwargs['partner_details']['country_id'])
+        # the user can change the donation amount on the payment page,
+        # therefor we need to recompute the access_token
+        access_token = payment_utils.generate_access_token(
+            tx_sudo.partner_id.id, tx_sudo.amount, tx_sudo.currency_id.id
+        )
         self._update_landing_route(tx_sudo, access_token)
 
         # Send a notification to warn that a donation has been made
@@ -84,8 +91,15 @@ class PaymentPortal(payment_portal.PaymentPortal):
 
         return tx_sudo._get_processing_values()
 
-    def _get_custom_rendering_context_values(self, donation_options=None, donation_descriptions=None, is_donation=False, **kwargs):
-        rendering_context = super()._get_custom_rendering_context_values(**kwargs)
+    def _get_custom_rendering_context_values(
+        self, donation_options=None, donation_descriptions=None, is_donation=False, **kwargs
+    ):
+        rendering_context = super()._get_custom_rendering_context_values(
+            donation_options=donation_options,
+            donation_descriptions=donation_descriptions,
+            is_donation=is_donation,
+            **kwargs,
+        )
         if is_donation:
             user_sudo = request.env.user
             logged_in = not user_sudo._is_public()

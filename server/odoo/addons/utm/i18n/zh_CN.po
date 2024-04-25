@@ -14,7 +14,7 @@ msgstr ""
 "POT-Creation-Date: 2022-10-04 09:26+0000\n"
 "PO-Revision-Date: 2022-09-22 05:55+0000\n"
 "Last-Translator: Jeffery CHEN <jeffery9@gmail.com>, 2022\n"
-"Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
+"Language-Team: Chinese (China) (https://app.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -652,7 +652,7 @@ msgstr "UTM 来源混合"
 msgid ""
 "UTM Sources track where traffic comes from  (e.g. \"May Newsletter\", \"\", "
 "...)."
-msgstr "UTM来源追踪流量的来源（如 \"五月通讯\"，\"\"，...）。"
+msgstr "UTM来源追踪流量的来源（如 \"五月新闻信\"，\"\"，...）。"
 
 #. module: utm
 #: model:ir.actions.act_window,name:utm.action_view_utm_stage

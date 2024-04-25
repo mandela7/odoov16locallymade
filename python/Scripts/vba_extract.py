@@ -1,4 +1,4 @@
-#!C:\odoobuild\WinPy64\python-3.7.7.amd64\python.exe
+#!C:\odoobuild\WinPy64\python-3.10.11.amd64\python.exe
 
 ##############################################################################
 #

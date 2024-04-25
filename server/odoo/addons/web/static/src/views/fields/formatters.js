@@ -4,89 +4,16 @@ import { formatDate, formatDateTime } from "@web/core/l10n/dates";
 import { localization as l10n } from "@web/core/l10n/localization";
 import { _t } from "@web/core/l10n/translation";
 import { registry } from "@web/core/registry";
-import { escape, intersperse, nbsp, sprintf } from "@web/core/utils/strings";
+import { escape, nbsp, sprintf } from "@web/core/utils/strings";
 import { isBinarySize } from "@web/core/utils/binary";
 import { session } from "@web/session";
+import { humanNumber, insertThousandsSep } from "@web/core/utils/numbers";
 
 import { markup } from "@odoo/owl";
 
 // -----------------------------------------------------------------------------
 // Helpers
 // -----------------------------------------------------------------------------
-
-/**
- * Inserts "thousands" separators in the provided number.
- *
- * @private
- * @param {string} string representing integer number
- * @param {string} [thousandsSep=","] the separator to insert
- * @param {number[]} [grouping=[]]
- *   array of relative offsets at which to insert `thousandsSep`.
- *   See `strings.intersperse` method.
- * @returns {string}
- */
-function insertThousandsSep(number, thousandsSep = ",", grouping = []) {
-    const negative = number[0] === "-";
-    number = negative ? number.slice(1) : number;
-    return (negative ? "-" : "") + intersperse(number, grouping, thousandsSep);
-}
-
-/**
- * Format a number to a human readable format. For example, 3000 could become 3k.
- * Or massive number can use the scientific exponential notation.
- *
- * @private
- * @param {number} number to format
- * @param {Object} [options] Options to format
- * @param {number} [options.decimals=0] number of decimals to use
- *    if minDigits > 1 is used and effective on the number then decimals
- *    will be shrunk to zero, to avoid displaying irrelevant figures ( 0.01 compared to 1000 )
- * @param {number} [options.minDigits=1]
- *    the minimum number of digits to preserve when switching to another
- *    level of thousands (e.g. with a value of '2', 4321 will still be
- *    represented as 4321 otherwise it will be down to one digit (4k))
- * @returns {string}
- */
-function humanNumber(number, options = { decimals: 0, minDigits: 1 }) {
-    const decimals = options.decimals || 0;
-    const minDigits = options.minDigits || 1;
-    const d2 = Math.pow(10, decimals);
-    const numberMagnitude = +number.toExponential().split("e+")[1];
-    number = Math.round(number * d2) / d2;
-    // the case numberMagnitude >= 21 corresponds to a number
-    // better expressed in the scientific format.
-    if (numberMagnitude >= 21) {
-        // we do not use number.toExponential(decimals) because we want to
-        // avoid the possible useless O decimals: 1e.+24 preferred to 1.0e+24
-        number = Math.round(number * Math.pow(10, decimals - numberMagnitude)) / d2;
-        return `${number}e+${numberMagnitude}`;
-    }
-    // note: we need to call toString here to make sure we manipulate the resulting
-    // string, not an object with a toString method.
-    const unitSymbols = _t("kMGTPE").toString();
-    const sign = Math.sign(number);
-    number = Math.abs(number);
-    let symbol = "";
-    for (let i = unitSymbols.length; i > 0; i--) {
-        const s = Math.pow(10, i * 3);
-        if (s <= number / Math.pow(10, minDigits - 1)) {
-            number = Math.round((number * d2) / s) / d2;
-            symbol = unitSymbols[i - 1];
-            break;
-        }
-    }
-    const { decimalPoint, grouping, thousandsSep } = l10n;
-
-    // determine if we should keep the decimals (we don't want to display 1,020.02k for 1020020)
-    const decimalsToKeep = number >= 1000 ? 0 : decimals;
-    number = sign * number;
-    const [integerPart, decimalPart] = number.toFixed(decimalsToKeep).split(".");
-    const int = insertThousandsSep(integerPart, thousandsSep, grouping);
-    if (!decimalPart) {
-        return int + symbol;
-    }
-    return int + decimalPoint + decimalPart + symbol;
-}
 
 function humanSize(value) {
     if (!value) {
@@ -233,9 +160,14 @@ export function formatFloatTime(value, options = {}) {
 
     let hour = Math.floor(value);
     const milliSecLeft = Math.round(value * 3600000) - hour * 3600000;
-    // Although looking quite overkill, the following line ensures that we do
+    // Although looking quite overkill, the following lines ensures that we do
     // not have float issues while still considering that 59s is 00:00.
-    let min = Math.floor(milliSecLeft / 60000);
+    let min = milliSecLeft / 60000;
+    if (options.displaySeconds) {
+        min = Math.floor(min);
+    } else {
+        min = Math.round(min);
+    }
     if (min === 60) {
         min = 0;
         hour = hour + 1;
@@ -362,7 +294,7 @@ export function formatMonetary(value, options = {}) {
         currencyId = Array.isArray(dataValue) ? dataValue[0] : dataValue;
     }
     const currency = session.currencies[currencyId];
-    const digits = (currency && currency.digits) || options.digits;
+    const digits = options.digits || (currency && currency.digits);
 
     let formattedValue;
     if (options.humanReadable) {
@@ -447,6 +379,10 @@ export function formatText(value) {
     return value || "";
 }
 
+export function formatJson(value) {
+    return (value && JSON.stringify(value)) || "";
+}
+
 registry
     .category("formatters")
     .add("binary", formatBinary)
@@ -459,6 +395,7 @@ registry
     .add("float_time", formatFloatTime)
     .add("html", (value) => value)
     .add("integer", formatInteger)
+    .add("json", formatJson)
     .add("many2one", formatMany2one)
     .add("many2one_reference", formatInteger)
     .add("one2many", formatX2many)

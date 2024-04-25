@@ -114,6 +114,141 @@
       }),
   ]"/>
     </record>
+    <record id="lu_2015_tax_AB-EC-16" model="account.tax.template">
+        <field name="sequence">112</field>
+        <field name="description">16%</field>
+        <field name="name">16-EC-P-G</field>
+        <field name="amount">16</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="active" eval="False"/>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_16"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2d_1_base_16_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_3_due_paid_respect_importation_goods_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2d_1_tax_16_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2d_1_base_16_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_3_due_paid_respect_importation_goods_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2d_1_tax_16_tag')],
+      }),
+  ]"/>
+    </record>
+    <record id="lu_2015_tax_AB-EC-13" model="account.tax.template">
+        <field name="sequence">113</field>
+        <field name="description">13%</field>
+        <field name="name">13-EC-P-G</field>
+        <field name="amount">13</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="active" eval="False"/>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_13"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2d_1_base_13_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_3_due_paid_respect_importation_goods_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2d_1_tax_13_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2d_1_base_13_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_3_due_paid_respect_importation_goods_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2d_1_tax_13_tag')],
+      }),
+  ]"/>
+    </record>
+    <record id="lu_2015_tax_AB-EC-7" model="account.tax.template">
+        <field name="sequence">114</field>
+        <field name="description">7%</field>
+        <field name="name">7-EC-P-G</field>
+        <field name="amount">7</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="active" eval="False"/>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_7"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2d_1_base_7_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_3_due_paid_respect_importation_goods_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2d_1_tax_7_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2d_1_base_7_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_3_due_paid_respect_importation_goods_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2d_1_tax_7_tag')],
+      }),
+  ]"/>
+    </record>
     <record id="lu_2011_tax_AB-EC-3" model="account.tax.template">
         <field name="sequence">114</field>
         <field name="description">3%</field>
@@ -316,8 +451,143 @@
       }),
   ]"/>
     </record>
-    <record id="lu_2015_tax_AB-ECP-3" model="account.tax.template">
+    <record id="lu_2015_tax_AB-ECP-16" model="account.tax.template">
+        <field name="sequence">134</field>
+        <field name="description">16%</field>
+        <field name="name">16-EC(P)-P-G</field>
+        <field name="amount">16</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="active" eval="False"/>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_16"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2d_2_base_16_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_3_due_paid_respect_importation_goods_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2d_2_tax_16_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2d_2_base_16_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_3_due_paid_respect_importation_goods_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2d_2_tax_16_tag')],
+      }),
+  ]"/>
+    </record>
+    <record id="lu_2015_tax_AB-ECP-13" model="account.tax.template">
+        <field name="sequence">135</field>
+        <field name="description">13%</field>
+        <field name="name">13-EC(P)-P-G</field>
+        <field name="amount">13</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="active" eval="False"/>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_13"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2d_2_base_13_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_3_due_paid_respect_importation_goods_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2d_2_tax_13_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2d_2_base_13_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_3_due_paid_respect_importation_goods_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2d_2_tax_13_tag')],
+      }),
+  ]"/>
+    </record>
+    <record id="lu_2015_tax_AB-ECP-7" model="account.tax.template">
         <field name="sequence">136</field>
+        <field name="description">7%</field>
+        <field name="name">7-EC(P)-P-G</field>
+        <field name="amount">7</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="active" eval="False"/>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_7"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2d_2_base_7_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_3_due_paid_respect_importation_goods_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2d_2_tax_7_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2d_2_base_7_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_3_due_paid_respect_importation_goods_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2d_2_tax_7_tag')],
+      }),
+  ]"/>
+    </record>
+    <record id="lu_2015_tax_AB-ECP-3" model="account.tax.template">
+        <field name="sequence">137</field>
         <field name="description">3%</field>
         <field name="name">3-EC(P)-P-G</field>
         <field name="amount">3</field>
@@ -419,7 +689,7 @@
           'plus_report_expression_ids': [ref('account_tax_report_line_2b_base_exempt_tag')],
       }),
       (0,0, {
-          'repartition_type': 'tax'       }),
+          'repartition_type': 'tax'}),
   ]"/>
         <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
       (0,0, {
@@ -427,7 +697,7 @@
           'minus_report_expression_ids': [ref('account_tax_report_line_2b_base_exempt_tag')],
       }),
       (0,0, {
-          'repartition_type': 'tax'       }),
+          'repartition_type': 'tax'}),
   ]"/>
     </record>
     <record id="lu_2015_tax_AB-IC-14" model="account.tax.template">
@@ -448,12 +718,12 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_2b_tax_14_tag')]
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_2b_tax_14_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')]
       }),
   ]"/>
         <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
@@ -465,12 +735,12 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_2b_tax_14_tag')]
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_2b_tax_14_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')]
       }),
   ]"/>
     </record>
@@ -492,12 +762,12 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_2b_tax_17_tag')]
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_2b_tax_17_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')]
       }),
   ]"/>
         <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
@@ -509,12 +779,147 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_2b_tax_17_tag')]
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_2b_tax_17_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')]
+      }),
+  ]"/>
+    </record>
+    <record id="lu_2015_tax_AB-IC-16" model="account.tax.template">
+        <field name="sequence">155</field>
+        <field name="description">16%</field>
+        <field name="name">16-IC-P-G</field>
+        <field name="amount">16</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="active" eval="False"/>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_16"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2b_base_16_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2b_tax_16_tag')]
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')]
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2b_base_16_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2b_tax_16_tag')]
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')]
+      }),
+  ]"/>
+    </record>
+    <record id="lu_2015_tax_AB-IC-13" model="account.tax.template">
+        <field name="sequence">156</field>
+        <field name="description">13%</field>
+        <field name="name">13-IC-P-G</field>
+        <field name="amount">13</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="active" eval="False"/>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_13"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2b_base_13_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2b_tax_13_tag')]
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')]
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2b_base_13_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2b_tax_13_tag')]
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')]
+      }),
+  ]"/>
+    </record>
+    <record id="lu_2015_tax_AB-IC-7" model="account.tax.template">
+        <field name="sequence">157</field>
+        <field name="description">7%</field>
+        <field name="name">7-IC-P-G</field>
+        <field name="amount">7</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="active" eval="False"/>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_7"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2b_base_7_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2b_tax_7_tag')]
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')]
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2b_base_7_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2b_tax_7_tag')]
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')]
       }),
   ]"/>
     </record>
@@ -530,35 +935,35 @@
         <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
       (0,0, {
           'repartition_type': 'base',
-          'plus_report_expression_ids': [ref('account_tax_report_line_2b_base_3_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_2b_base_3_tag')]
       }),
       (0,0, {
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_2b_tax_3_tag')]
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_2b_tax_3_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')]
       }),
   ]"/>
         <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
       (0,0, {
           'repartition_type': 'base',
-          'minus_report_expression_ids': [ref('account_tax_report_line_2b_base_3_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_2b_base_3_tag')]
       }),
       (0,0, {
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_2b_tax_3_tag')]
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_2b_tax_3_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
       }),
   ]"/>
     </record>
@@ -580,12 +985,12 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_2b_tax_8_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_2b_tax_8_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
       }),
   ]"/>
         <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
@@ -597,12 +1002,12 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_2b_tax_8_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_2b_tax_8_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
       }),
   ]"/>
     </record>
@@ -692,15 +1097,47 @@
       }),
   ]"/>
     </record>
-    <record id="lu_2011_tax_AB-PA-3" model="account.tax.template">
-        <field name="sequence">172</field>
-        <field name="description">3%</field>
-        <field name="name">3-P-G</field>
-        <field name="amount">3</field>
+    <record id="lu_2015_tax_AB-PA-16" model="account.tax.template">
+        <field name="sequence">102</field>
+        <field name="description">16%</field>
+        <field name="name">16-P-G</field>
+        <field name="amount">16</field>
         <field name="amount_type">percent</field>
         <field name="type_tax_use">purchase</field>
+        <field name="active" eval="False"/>
         <field name="chart_template_id" ref="lu_2011_chart_1"/>
-        <field name="tax_group_id" ref="tax_group_3"/>
+        <field name="tax_group_id" ref="tax_group_16"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_1_invoiced_by_other_taxable_person_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_1_invoiced_by_other_taxable_person_tag')],
+      }),
+  ]"/>
+    </record>
+    <record id="lu_2015_tax_AB-PA-13" model="account.tax.template">
+        <field name="sequence">103</field>
+        <field name="description">13%</field>
+        <field name="name">13-P-G</field>
+        <field name="amount">13</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="active" eval="False"/>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_13"/>
         <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
       (0,0, {
           'repartition_type': 'base',
@@ -731,6 +1168,67 @@
         <field name="type_tax_use">purchase</field>
         <field name="chart_template_id" ref="lu_2011_chart_1"/>
         <field name="tax_group_id" ref="tax_group_8"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_1_invoiced_by_other_taxable_person_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_1_invoiced_by_other_taxable_person_tag')],
+      }),
+  ]"/>
+    </record>
+    <record id="lu_2015_tax_AB-PA-7" model="account.tax.template">
+        <field name="sequence">104</field>
+        <field name="description">7%</field>
+        <field name="name">7-P-G</field>
+        <field name="amount">7</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="active" eval="False"/>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_7"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_1_invoiced_by_other_taxable_person_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_1_invoiced_by_other_taxable_person_tag')],
+      }),
+  ]"/>
+    </record>
+    <record id="lu_2011_tax_AB-PA-3" model="account.tax.template">
+        <field name="sequence">172</field>
+        <field name="description">3%</field>
+        <field name="name">3-P-G</field>
+        <field name="amount">3</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_3"/>
         <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
       (0,0, {
           'repartition_type': 'base',
@@ -868,6 +1366,141 @@
       }),
   ]"/>
     </record>
+    <record id="lu_2015_tax_AP-EC-16" model="account.tax.template">
+        <field name="sequence">185</field>
+        <field name="description">16%</field>
+        <field name="name">16-EC-P-S</field>
+        <field name="amount">16</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="active" eval="False"/>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_16"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_2_base_16_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_2_tax_16_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_2_base_16_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_2_tax_16_tag')],
+      }),
+  ]"/>
+    </record>
+    <record id="lu_2015_tax_AP-EC-13" model="account.tax.template">
+        <field name="sequence">186</field>
+        <field name="description">13%</field>
+        <field name="name">13-EC-P-S</field>
+        <field name="amount">13</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="active" eval="False"/>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_13"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_2_base_13_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_2_tax_13_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_2_base_13_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_2_tax_13_tag')],
+      }),
+  ]"/>
+    </record>
+    <record id="lu_2015_tax_AP-EC-7" model="account.tax.template">
+        <field name="sequence">187</field>
+        <field name="description">7%</field>
+        <field name="name">7-EC-P-S</field>
+        <field name="amount">7</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="active" eval="False"/>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_7"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_2_base_7_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_2_tax_7_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_2_base_7_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_2_tax_7_tag')],
+      }),
+  ]"/>
+    </record>
     <record id="lu_2011_tax_AP-EC-3" model="account.tax.template">
         <field name="sequence">188</field>
         <field name="description">3%</field>
@@ -1002,12 +1635,12 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_14_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_14_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
       }),
   ]"/>
         <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
@@ -1019,12 +1652,12 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_14_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_14_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
       }),
   ]"/>
     </record>
@@ -1046,12 +1679,12 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_17_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_17_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
       }),
   ]"/>
         <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
@@ -1063,17 +1696,152 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_17_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_17_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+      }),
+  ]"/>
+    </record>
+    <record id="lu_2015_tax_AP-IC-16" model="account.tax.template">
+        <field name="sequence">208</field>
+        <field name="description">16%</field>
+        <field name="name">16-IC-P-S</field>
+        <field name="amount">16</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="active" eval="False"/>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_16"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_base_16_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_16_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_base_16_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_16_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+      }),
+  ]"/>
+    </record>
+    <record id="lu_2015_tax_AP-IC-13" model="account.tax.template">
+        <field name="sequence">209</field>
+        <field name="description">13%</field>
+        <field name="name">13-IC-P-S</field>
+        <field name="amount">13</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="active" eval="False"/>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_13"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_base_13_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_13_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_base_13_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_13_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+      }),
+  ]"/>
+    </record>
+    <record id="lu_2015_tax_AP-IC-7" model="account.tax.template">
+        <field name="sequence">210</field>
+        <field name="description">7%</field>
+        <field name="name">7-IC-P-S</field>
+        <field name="amount">7</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="active" eval="False"/>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_7"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_base_7_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_7_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_base_7_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_7_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
       }),
   ]"/>
     </record>
     <record id="lu_2011_tax_AP-IC-3" model="account.tax.template">
-        <field name="sequence">210</field>
+        <field name="sequence">211</field>
         <field name="description">3%</field>
         <field name="name">3-IC-P-S</field>
         <field name="amount">3</field>
@@ -1090,12 +1858,12 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_3_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_3_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
       }),
   ]"/>
         <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
@@ -1107,12 +1875,12 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_3_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_3_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
       }),
   ]"/>
     </record>
@@ -1134,12 +1902,12 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_8_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_8_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
       }),
   ]"/>
         <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
@@ -1151,12 +1919,12 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_8_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_8_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
       }),
   ]"/>
     </record>
@@ -1225,6 +1993,99 @@
         <field name="type_tax_use">purchase</field>
         <field name="chart_template_id" ref="lu_2011_chart_1"/>
         <field name="tax_group_id" ref="tax_group_17"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_1_invoiced_by_other_taxable_person_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_1_invoiced_by_other_taxable_person_tag')],
+      }),
+  ]"/>
+    </record>
+    <record id="lu_2015_tax_AP-PA-16" model="account.tax.template">
+        <field name="sequence">223</field>
+        <field name="description">16%</field>
+        <field name="name">16-P-S</field>
+        <field name="amount">16</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="active" eval="False"/>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_16"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_1_invoiced_by_other_taxable_person_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_1_invoiced_by_other_taxable_person_tag')],
+      }),
+  ]"/>
+    </record>
+    <record id="lu_2015_tax_AP-PA-13" model="account.tax.template">
+        <field name="sequence">223</field>
+        <field name="description">13%</field>
+        <field name="name">13-P-S</field>
+        <field name="amount">13</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="active" eval="False"/>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_13"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_1_invoiced_by_other_taxable_person_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_1_invoiced_by_other_taxable_person_tag')],
+      }),
+  ]"/>
+    </record>
+    <record id="lu_2015_tax_AP-PA-7" model="account.tax.template">
+        <field name="sequence">223</field>
+        <field name="description">7%</field>
+        <field name="name">7-P-S</field>
+        <field name="amount">7</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="active" eval="False"/>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_7"/>
         <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
       (0,0, {
           'repartition_type': 'base',
@@ -1425,8 +2286,143 @@
   ]"/>
         <field name="active" eval="False"/>
     </record>
-    <record id="lu_2011_tax_FB-EC-3" model="account.tax.template">
+    <record id="lu_2015_tax_FB-EC-16" model="account.tax.template">
+        <field name="sequence">238</field>
+        <field name="description">16%</field>
+        <field name="name">16-EC-E-G</field>
+        <field name="amount">16</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_16"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2d_1_base_16_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_3_due_paid_respect_importation_goods_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2d_1_tax_16_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2d_1_base_16_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_3_due_paid_respect_importation_goods_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2d_1_tax_16_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2015_tax_FB-EC-13" model="account.tax.template">
+        <field name="sequence">239</field>
+        <field name="description">13%</field>
+        <field name="name">13-EC-E-G</field>
+        <field name="amount">13</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_13"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2d_1_base_13_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_3_due_paid_respect_importation_goods_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2d_1_tax_13_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2d_1_base_13_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_3_due_paid_respect_importation_goods_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2d_1_tax_13_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2015_tax_FB-EC-7" model="account.tax.template">
         <field name="sequence">240</field>
+        <field name="description">7%</field>
+        <field name="name">7-EC-E-G</field>
+        <field name="amount">7</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_7"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2d_1_base_7_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_3_due_paid_respect_importation_goods_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2d_1_tax_7_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2d_1_base_7_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_3_due_paid_respect_importation_goods_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2d_1_tax_7_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2011_tax_FB-EC-3" model="account.tax.template">
+        <field name="sequence">241</field>
         <field name="description">3%</field>
         <field name="name">3-EC-E-G</field>
         <field name="amount">3</field>
@@ -1634,8 +2630,143 @@
   ]"/>
         <field name="active" eval="False"/>
     </record>
-    <record id="lu_2015_tax_FB-ECP-3" model="account.tax.template">
+    <record id="lu_2015_tax_FB-ECP-16" model="account.tax.template">
+        <field name="sequence">260</field>
+        <field name="description">16%</field>
+        <field name="name">16-EC(P)-E-G</field>
+        <field name="amount">16</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_16"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2d_2_base_16_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_3_due_paid_respect_importation_goods_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2d_2_tax_16_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2d_2_base_16_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_3_due_paid_respect_importation_goods_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2d_2_tax_16_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2015_tax_FB-ECP-13" model="account.tax.template">
+        <field name="sequence">261</field>
+        <field name="description">13%</field>
+        <field name="name">13-EC(P)-E-G</field>
+        <field name="amount">13</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_13"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2d_2_base_13_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_3_due_paid_respect_importation_goods_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2d_2_tax_13_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2d_2_base_13_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_3_due_paid_respect_importation_goods_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2d_2_tax_13_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2015_tax_FB-ECP-7" model="account.tax.template">
         <field name="sequence">262</field>
+        <field name="description">7%</field>
+        <field name="name">7-EC(P)-E-G</field>
+        <field name="amount">7</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_7"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2d_2_base_7_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_3_due_paid_respect_importation_goods_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2d_2_tax_7_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2d_2_base_7_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_3_due_paid_respect_importation_goods_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2d_2_tax_7_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2015_tax_FB-ECP-3" model="account.tax.template">
+        <field name="sequence">263</field>
         <field name="description">3%</field>
         <field name="name">3-EC(P)-E-G</field>
         <field name="amount">3</field>
@@ -1771,12 +2902,12 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_2b_tax_14_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_2b_tax_14_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
       }),
   ]"/>
         <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
@@ -1788,12 +2919,12 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_2b_tax_14_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_2b_tax_14_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
       }),
   ]"/>
         <field name="active" eval="False"/>
@@ -1816,12 +2947,12 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_2b_tax_17_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_2b_tax_17_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
       }),
   ]"/>
         <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
@@ -1833,18 +2964,153 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_2b_tax_17_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_2b_tax_17_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2015_tax_FB-IC-16" model="account.tax.template">
+        <field name="sequence">282</field>
+        <field name="description">16%</field>
+        <field name="name">16-IC-E-G</field>
+        <field name="amount">16</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_16"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2b_base_16_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2b_tax_16_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2b_base_16_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2b_tax_16_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2015_tax_FB-IC-13" model="account.tax.template">
+        <field name="sequence">283</field>
+        <field name="description">13%</field>
+        <field name="name">13-IC-E-G</field>
+        <field name="amount">13</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_13"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2b_base_13_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2b_tax_13_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2b_base_13_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2b_tax_13_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2015_tax_FB-IC-7" model="account.tax.template">
+        <field name="sequence">284</field>
+        <field name="description">7%</field>
+        <field name="name">7-IC-E-G</field>
+        <field name="amount">7</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_7"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2b_base_7_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2b_tax_7_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2b_base_7_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2b_tax_7_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
       }),
   ]"/>
         <field name="active" eval="False"/>
     </record>
     <record id="lu_2011_tax_FB-IC-3" model="account.tax.template">
-        <field name="sequence">284</field>
+        <field name="sequence">285</field>
         <field name="description">3%</field>
         <field name="name">3-IC-E-G</field>
         <field name="amount">3</field>
@@ -1861,12 +3127,12 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_2b_tax_3_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_2b_tax_3_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
       }),
   ]"/>
         <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
@@ -1878,12 +3144,12 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_2b_tax_3_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_2b_tax_3_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
       }),
   ]"/>
         <field name="active" eval="False"/>
@@ -1906,12 +3172,12 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_2b_tax_8_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_2b_tax_8_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
       }),
   ]"/>
         <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
@@ -1923,12 +3189,12 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_2b_tax_8_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_2b_tax_8_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
       }),
   ]"/>
         <field name="active" eval="False"/>
@@ -2022,8 +3288,101 @@
   ]"/>
         <field name="active" eval="False"/>
     </record>
-    <record id="lu_2011_tax_FB-PA-3" model="account.tax.template">
+    <record id="lu_2015_tax_FB-PA-16" model="account.tax.template">
         <field name="sequence">298</field>
+        <field name="description">16%</field>
+        <field name="name">16-E-G</field>
+        <field name="amount">16</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_16"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_1_invoiced_by_other_taxable_person_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_1_invoiced_by_other_taxable_person_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2015_tax_FB-PA-13" model="account.tax.template">
+        <field name="sequence">299</field>
+        <field name="description">13%</field>
+        <field name="name">13-E-G</field>
+        <field name="amount">13</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_13"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_1_invoiced_by_other_taxable_person_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_1_invoiced_by_other_taxable_person_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2015_tax_FB-PA-7" model="account.tax.template">
+        <field name="sequence">300</field>
+        <field name="description">7%</field>
+        <field name="name">7-E-G</field>
+        <field name="amount">7</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_7"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_1_invoiced_by_other_taxable_person_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_1_invoiced_by_other_taxable_person_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2011_tax_FB-PA-3" model="account.tax.template">
+        <field name="sequence">301</field>
         <field name="description">3%</field>
         <field name="name">3-E-G</field>
         <field name="amount">3</field>
@@ -2054,7 +3413,7 @@
         <field name="active" eval="False"/>
     </record>
     <record id="lu_2015_tax_FB-PA-8" model="account.tax.template">
-        <field name="sequence">300</field>
+        <field name="sequence">302</field>
         <field name="description">8%</field>
         <field name="name">8-E-G</field>
         <field name="amount">8</field>
@@ -2085,7 +3444,7 @@
         <field name="active" eval="False"/>
     </record>
     <record id="lu_2011_tax_FP-EC-0" model="account.tax.template">
-        <field name="sequence">301</field>
+        <field name="sequence">303</field>
         <field name="description">0%</field>
         <field name="name">0-EC-E-S</field>
         <field name="amount">0</field>
@@ -2203,8 +3562,143 @@
   ]"/>
         <field name="active" eval="False"/>
     </record>
-    <record id="lu_2011_tax_FP-EC-3" model="account.tax.template">
+    <record id="lu_2015_tax_FP-EC-16" model="account.tax.template">
+        <field name="sequence">312</field>
+        <field name="description">16%</field>
+        <field name="name">16-EC-E-S</field>
+        <field name="amount">16</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_16"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_2_base_16_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_2_tax_16_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_2_base_16_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_2_tax_16_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2015_tax_FP-EC-13" model="account.tax.template">
+        <field name="sequence">313</field>
+        <field name="description">13%</field>
+        <field name="name">13-EC-E-S</field>
+        <field name="amount">13</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_13"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_2_base_13_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_2_tax_13_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_2_base_13_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_2_tax_13_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2015_tax_FP-EC-7" model="account.tax.template">
         <field name="sequence">314</field>
+        <field name="description">7%</field>
+        <field name="name">7-EC-E-S</field>
+        <field name="amount">7</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_7"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_2_base_7_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_2_tax_7_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_2_base_7_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_2_tax_7_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2011_tax_FP-EC-3" model="account.tax.template">
+        <field name="sequence">315</field>
         <field name="description">3%</field>
         <field name="name">3-EC-E-S</field>
         <field name="amount">3</field>
@@ -2340,12 +3834,12 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_14_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_14_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
       }),
   ]"/>
         <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
@@ -2357,12 +3851,12 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_14_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_14_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
       }),
   ]"/>
         <field name="active" eval="False"/>
@@ -2385,12 +3879,12 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_17_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_17_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
       }),
   ]"/>
         <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
@@ -2402,18 +3896,153 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_17_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_17_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2015_tax_FP-IC-16" model="account.tax.template">
+        <field name="sequence">334</field>
+        <field name="description">16%</field>
+        <field name="name">16-IC-E-S</field>
+        <field name="amount">16</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_16"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_base_16_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_16_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_base_16_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_16_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2015_tax_FP-IC-13" model="account.tax.template">
+        <field name="sequence">335</field>
+        <field name="description">13%</field>
+        <field name="name">13-IC-E-S</field>
+        <field name="amount">13</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_13"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_base_13_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_13_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_base_13_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_13_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2015_tax_FP-IC-7" model="account.tax.template">
+        <field name="sequence">336</field>
+        <field name="description">7%</field>
+        <field name="name">7-IC-E-S</field>
+        <field name="amount">7</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_7"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_base_7_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_7_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_base_7_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_7_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
       }),
   ]"/>
         <field name="active" eval="False"/>
     </record>
     <record id="lu_2011_tax_FP-IC-3" model="account.tax.template">
-        <field name="sequence">336</field>
+        <field name="sequence">337</field>
         <field name="description">3%</field>
         <field name="name">3-IC-E-S</field>
         <field name="amount">3</field>
@@ -2430,12 +4059,12 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_3_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_3_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
       }),
   ]"/>
         <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
@@ -2447,12 +4076,12 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_3_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_3_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
       }),
   ]"/>
         <field name="active" eval="False"/>
@@ -2475,12 +4104,12 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_8_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_8_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
       }),
   ]"/>
         <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
@@ -2492,12 +4121,12 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_8_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_8_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
       }),
   ]"/>
         <field name="active" eval="False"/>
@@ -2591,8 +4220,101 @@
   ]"/>
         <field name="active" eval="False"/>
     </record>
-    <record id="lu_2011_tax_FP-PA-3" model="account.tax.template">
+    <record id="lu_2015_tax_FP-PA-16" model="account.tax.template">
         <field name="sequence">350</field>
+        <field name="description">16%</field>
+        <field name="name">16-E-S</field>
+        <field name="amount">16</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_16"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_1_invoiced_by_other_taxable_person_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_1_invoiced_by_other_taxable_person_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2015_tax_FP-PA-13" model="account.tax.template">
+        <field name="sequence">351</field>
+        <field name="description">13%</field>
+        <field name="name">13-E-S</field>
+        <field name="amount">13</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_13"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_1_invoiced_by_other_taxable_person_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_1_invoiced_by_other_taxable_person_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2015_tax_FP-PA-7" model="account.tax.template">
+        <field name="sequence">352</field>
+        <field name="description">7%</field>
+        <field name="name">7-E-S</field>
+        <field name="amount">7</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_7"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_1_invoiced_by_other_taxable_person_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_1_invoiced_by_other_taxable_person_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2011_tax_FP-PA-3" model="account.tax.template">
+        <field name="sequence">353</field>
         <field name="description">3%</field>
         <field name="name">3-E-S</field>
         <field name="amount">3</field>
@@ -2623,7 +4345,7 @@
         <field name="active" eval="False"/>
     </record>
     <record id="lu_2015_tax_FP-PA-8" model="account.tax.template">
-        <field name="sequence">352</field>
+        <field name="sequence">354</field>
         <field name="description">8%</field>
         <field name="name">8-E-S</field>
         <field name="amount">8</field>
@@ -2654,7 +4376,7 @@
         <field name="active" eval="False"/>
     </record>
     <record id="lu_2011_tax_IB-EC-0" model="account.tax.template">
-        <field name="sequence">353</field>
+        <field name="sequence">355</field>
         <field name="description">0%</field>
         <field name="name">0-EC-IG</field>
         <field name="amount">0</field>
@@ -2772,8 +4494,143 @@
   ]"/>
         <field name="active" eval="False"/>
     </record>
-    <record id="lu_2011_tax_IB-EC-3" model="account.tax.template">
+    <record id="lu_2015_tax_IB-EC-16" model="account.tax.template">
+        <field name="sequence">364</field>
+        <field name="description">16%</field>
+        <field name="name">16-EC-IG</field>
+        <field name="amount">16</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_16"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2d_1_base_16_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_3_due_paid_respect_importation_goods_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2d_1_tax_16_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2d_1_base_16_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_3_due_paid_respect_importation_goods_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2d_1_tax_16_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2015_tax_IB-EC-13" model="account.tax.template">
+        <field name="sequence">365</field>
+        <field name="description">13%</field>
+        <field name="name">13-EC-IG</field>
+        <field name="amount">13</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_13"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2d_1_base_13_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_3_due_paid_respect_importation_goods_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2d_1_tax_13_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2d_1_base_13_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_3_due_paid_respect_importation_goods_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2d_1_tax_13_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2015_tax_IB-EC-7" model="account.tax.template">
         <field name="sequence">366</field>
+        <field name="description">7%</field>
+        <field name="name">7-EC-IG</field>
+        <field name="amount">7</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_7"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2d_1_base_7_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_3_due_paid_respect_importation_goods_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2d_1_tax_7_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2d_1_base_7_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_3_due_paid_respect_importation_goods_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2d_1_tax_7_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2011_tax_IB-EC-3" model="account.tax.template">
+        <field name="sequence">367</field>
         <field name="description">3%</field>
         <field name="name">3-EC-IG</field>
         <field name="amount">3</field>
@@ -2981,8 +4838,143 @@
   ]"/>
         <field name="active" eval="False"/>
     </record>
-    <record id="lu_2015_tax_IB-ECP-3" model="account.tax.template">
+    <record id="lu_2015_tax_IB-ECP-16" model="account.tax.template">
+        <field name="sequence">386</field>
+        <field name="description">16%</field>
+        <field name="name">16-EC(P)-IG</field>
+        <field name="amount">16</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_16"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2d_2_base_16_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_3_due_paid_respect_importation_goods_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2d_2_tax_16_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2d_2_base_16_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_3_due_paid_respect_importation_goods_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2d_2_tax_16_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2015_tax_IB-ECP-13" model="account.tax.template">
+        <field name="sequence">387</field>
+        <field name="description">13%</field>
+        <field name="name">13-EC(P)-IG</field>
+        <field name="amount">13</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_13"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2d_2_base_13_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_3_due_paid_respect_importation_goods_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2d_2_tax_13_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2d_2_base_13_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_3_due_paid_respect_importation_goods_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2d_2_tax_13_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2015_tax_IB-ECP-7" model="account.tax.template">
         <field name="sequence">388</field>
+        <field name="description">7%</field>
+        <field name="name">7-EC(P)-IG</field>
+        <field name="amount">7</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_7"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2d_2_base_7_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_3_due_paid_respect_importation_goods_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2d_2_tax_7_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2d_2_base_7_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_3_due_paid_respect_importation_goods_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2d_2_tax_7_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2015_tax_IB-ECP-3" model="account.tax.template">
+        <field name="sequence">389</field>
         <field name="description">3%</field>
         <field name="name">3-EC(P)-IG</field>
         <field name="amount">3</field>
@@ -3118,12 +5110,12 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_2b_tax_14_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_2b_tax_14_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
       }),
   ]"/>
         <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
@@ -3135,12 +5127,12 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_2b_tax_14_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_2b_tax_14_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
       }),
   ]"/>
         <field name="active" eval="False"/>
@@ -3163,12 +5155,12 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_2b_tax_17_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_2b_tax_17_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
       }),
   ]"/>
         <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
@@ -3180,12 +5172,147 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_2b_tax_17_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_2b_tax_17_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2015_tax_IB-IC-16" model="account.tax.template">
+        <field name="sequence">407</field>
+        <field name="description">16%</field>
+        <field name="name">16-IC-IG</field>
+        <field name="amount">16</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_16"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2b_base_16_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2b_tax_16_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2b_base_16_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2b_tax_16_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2015_tax_IB-IC-13" model="account.tax.template">
+        <field name="sequence">408</field>
+        <field name="description">13%</field>
+        <field name="name">13-IC-IG</field>
+        <field name="amount">13</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_13"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2b_base_13_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2b_tax_13_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2b_base_13_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2b_tax_13_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2015_tax_IB-IC-7" model="account.tax.template">
+        <field name="sequence">409</field>
+        <field name="description">7%</field>
+        <field name="name">7-IC-IG</field>
+        <field name="amount">7</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_7"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2b_base_7_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2b_tax_7_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2b_base_7_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2b_tax_7_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
       }),
   ]"/>
         <field name="active" eval="False"/>
@@ -3208,12 +5335,12 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_2b_tax_3_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_2b_tax_3_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
       }),
   ]"/>
         <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
@@ -3225,12 +5352,12 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_2b_tax_3_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_2b_tax_3_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
       }),
   ]"/>
         <field name="active" eval="False"/>
@@ -3253,12 +5380,12 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_2b_tax_8_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_2b_tax_8_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
       }),
   ]"/>
         <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
@@ -3270,12 +5397,12 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_2b_tax_8_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_2b_tax_8_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_2_due_respect_intra_comm_goods_tag')],
       }),
   ]"/>
         <field name="active" eval="False"/>
@@ -3369,8 +5496,101 @@
   ]"/>
         <field name="active" eval="False"/>
     </record>
-    <record id="lu_2011_tax_IB-PA-3" model="account.tax.template">
+    <record id="lu_2015_tax_IB-PA-16" model="account.tax.template">
         <field name="sequence">424</field>
+        <field name="description">16%</field>
+        <field name="name">16-IG</field>
+        <field name="amount">16</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_16"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_1_invoiced_by_other_taxable_person_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_1_invoiced_by_other_taxable_person_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2015_tax_IB-PA-13" model="account.tax.template">
+        <field name="sequence">425</field>
+        <field name="description">13%</field>
+        <field name="name">13-IG</field>
+        <field name="amount">13</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_13"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_1_invoiced_by_other_taxable_person_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_1_invoiced_by_other_taxable_person_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2015_tax_IB-PA-7" model="account.tax.template">
+        <field name="sequence">426</field>
+        <field name="description">7%</field>
+        <field name="name">7-IG</field>
+        <field name="amount">7</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_7"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_1_invoiced_by_other_taxable_person_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_1_invoiced_by_other_taxable_person_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2011_tax_IB-PA-3" model="account.tax.template">
+        <field name="sequence">427</field>
         <field name="description">3%</field>
         <field name="name">3-IG</field>
         <field name="amount">3</field>
@@ -3401,7 +5621,7 @@
         <field name="active" eval="False"/>
     </record>
     <record id="lu_2015_tax_IB-PA-8" model="account.tax.template">
-        <field name="sequence">426</field>
+        <field name="sequence">428</field>
         <field name="description">8%</field>
         <field name="name">8-IG</field>
         <field name="amount">8</field>
@@ -3432,7 +5652,7 @@
         <field name="active" eval="False"/>
     </record>
     <record id="lu_2011_tax_IP-EC-0" model="account.tax.template">
-        <field name="sequence">427</field>
+        <field name="sequence">429</field>
         <field name="description">0%</field>
         <field name="name">0-EC-IS</field>
         <field name="amount">0</field>
@@ -3550,8 +5770,143 @@
   ]"/>
         <field name="active" eval="False"/>
     </record>
-    <record id="lu_2011_tax_IP-EC-3" model="account.tax.template">
+    <record id="lu_2015_tax_IP-EC-16" model="account.tax.template">
+        <field name="sequence">438</field>
+        <field name="description">16%</field>
+        <field name="name">16-EC-IS</field>
+        <field name="amount">16</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_16"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_2_base_16_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_2_tax_16_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_2_base_16_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_2_tax_16_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2015_tax_IP-EC-13" model="account.tax.template">
+        <field name="sequence">439</field>
+        <field name="description">13%</field>
+        <field name="name">13-EC-IS</field>
+        <field name="amount">13</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_13"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_2_base_13_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_2_tax_13_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_2_base_13_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_2_tax_13_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2015_tax_IP-EC-7" model="account.tax.template">
         <field name="sequence">440</field>
+        <field name="description">7%</field>
+        <field name="name">7-EC-IS</field>
+        <field name="amount">7</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_7"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_2_base_7_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_2_tax_7_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_2_base_7_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_2_tax_7_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2011_tax_IP-EC-3" model="account.tax.template">
+        <field name="sequence">441</field>
         <field name="description">3%</field>
         <field name="name">3-EC-IS</field>
         <field name="amount">3</field>
@@ -3687,12 +6042,12 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_14_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_14_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
       }),
   ]"/>
         <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
@@ -3704,12 +6059,12 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_14_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_14_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
       }),
   ]"/>
         <field name="active" eval="False"/>
@@ -3732,12 +6087,12 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_17_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_17_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
       }),
   ]"/>
         <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
@@ -3749,12 +6104,147 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_17_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_17_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2015_tax_IP-IC-16" model="account.tax.template">
+        <field name="sequence">459</field>
+        <field name="description">16%</field>
+        <field name="name">16-IC-IS</field>
+        <field name="amount">16</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_16"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_base_16_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_16_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_base_16_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_16_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2015_tax_IP-IC-13" model="account.tax.template">
+        <field name="sequence">460</field>
+        <field name="description">13%</field>
+        <field name="name">13-IC-IS</field>
+        <field name="amount">13</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_13"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_base_13_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_13_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_base_13_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_13_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2015_tax_IP-IC-7" model="account.tax.template">
+        <field name="sequence">461</field>
+        <field name="description">7%</field>
+        <field name="name">7-IC-IS</field>
+        <field name="amount">7</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_7"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_base_7_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_7_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_base_7_tag')],
+      }),
+      (0,0, {
+          'factor_percent': -100,
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_7_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
       }),
   ]"/>
         <field name="active" eval="False"/>
@@ -3777,12 +6267,12 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_3_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_3_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
       }),
   ]"/>
         <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
@@ -3794,12 +6284,12 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_3_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_3_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
       }),
   ]"/>
         <field name="active" eval="False"/>
@@ -3822,12 +6312,12 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_8_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_8_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
       }),
   ]"/>
         <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
@@ -3839,12 +6329,12 @@
           'factor_percent': -100,
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
-          'plus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
+          'plus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_8_tag')],
       }),
       (0,0, {
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_421611'),
-          'minus_report_expression_ids': [ref('account_tax_report_line_2e_1_a_tax_8_tag')],
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_5_due_under_reverse_charge_tag')],
       }),
   ]"/>
         <field name="active" eval="False"/>
@@ -3938,8 +6428,101 @@
   ]"/>
         <field name="active" eval="False"/>
     </record>
-    <record id="lu_2011_tax_IP-PA-3" model="account.tax.template">
+    <record id="lu_2015_tax_IP-PA-16" model="account.tax.template">
         <field name="sequence">476</field>
+        <field name="description">16%</field>
+        <field name="name">16-IS</field>
+        <field name="amount">16</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_16"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_1_invoiced_by_other_taxable_person_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_1_invoiced_by_other_taxable_person_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2015_tax_IP-PA-13" model="account.tax.template">
+        <field name="sequence">477</field>
+        <field name="description">13%</field>
+        <field name="name">13-IS</field>
+        <field name="amount">13</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_13"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_1_invoiced_by_other_taxable_person_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_1_invoiced_by_other_taxable_person_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2015_tax_IP-PA-7" model="account.tax.template">
+        <field name="sequence">478</field>
+        <field name="description">7%</field>
+        <field name="name">7-IS</field>
+        <field name="amount">7</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">purchase</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_7"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_3a_1_invoiced_by_other_taxable_person_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_421611'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_3a_1_invoiced_by_other_taxable_person_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2011_tax_IP-PA-3" model="account.tax.template">
+        <field name="sequence">479</field>
         <field name="description">3%</field>
         <field name="name">3-IS</field>
         <field name="amount">3</field>
@@ -3970,7 +6553,7 @@
         <field name="active" eval="False"/>
     </record>
     <record id="lu_2015_tax_IP-PA-8" model="account.tax.template">
-        <field name="sequence">478</field>
+        <field name="sequence">480</field>
         <field name="description">8%</field>
         <field name="name">8-IS</field>
         <field name="amount">8</field>
@@ -4264,6 +6847,105 @@
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
           'minus_report_expression_ids': [ref('account_tax_report_line_2a_tax_17_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2015_tax_VB-PA-16" model="account.tax.template">
+        <field name="sequence">503</field>
+        <field name="description">16%</field>
+        <field name="name">16-S-G</field>
+        <field name="amount">16</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">sale</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_16"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2a_base_16_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2a_tax_16_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2a_base_16_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2a_tax_16_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2015_tax_VB-PA-13" model="account.tax.template">
+        <field name="sequence">504</field>
+        <field name="description">13%</field>
+        <field name="name">13-S-G</field>
+        <field name="amount">13</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">sale</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_13"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2a_base_13_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2a_tax_13_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2a_base_13_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2a_tax_13_tag')],
+      }),
+  ]"/>
+        <field name="active" eval="False"/>
+    </record>
+    <record id="lu_2015_tax_VB-PA-7" model="account.tax.template">
+        <field name="sequence">505</field>
+        <field name="description">7%</field>
+        <field name="name">7-S-G</field>
+        <field name="amount">7</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">sale</field>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_7"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2a_base_7_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2a_tax_7_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2a_base_7_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2a_tax_7_tag')],
       }),
   ]"/>
         <field name="active" eval="False"/>
@@ -4567,6 +7249,105 @@
       }),
   ]"/>
     </record>
+    <record id="lu_2015_tax_VP-PA-16" model="account.tax.template">
+        <field name="sequence">480</field>
+        <field name="description">16%</field>
+        <field name="name">16-S-S</field>
+        <field name="amount">16</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">sale</field>
+        <field name="active" eval="False"/>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_16"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2a_base_16_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2a_tax_16_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2a_base_16_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2a_tax_16_tag')],
+      }),
+  ]"/>
+    </record>
+    <record id="lu_2015_tax_VP-PA-13" model="account.tax.template">
+        <field name="sequence">481</field>
+        <field name="description">13%</field>
+        <field name="name">13-S-S</field>
+        <field name="amount">13</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">sale</field>
+        <field name="active" eval="False"/>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_13"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2a_base_13_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2a_tax_13_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2a_base_13_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2a_tax_13_tag')],
+      }),
+  ]"/>
+    </record>
+    <record id="lu_2015_tax_VP-PA-7" model="account.tax.template">
+        <field name="sequence">482</field>
+        <field name="description">7%</field>
+        <field name="name">7-S-S</field>
+        <field name="amount">7</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">sale</field>
+        <field name="active" eval="False"/>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_7"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_2a_base_7_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2a_tax_7_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_2a_base_7_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2a_tax_7_tag')],
+      }),
+  ]"/>
+    </record>
     <record id="lu_2011_tax_VP-PA-3" model="account.tax.template">
         <field name="sequence">503</field>
         <field name="description">3%</field>
@@ -4712,6 +7493,39 @@
           'repartition_type': 'tax',
           'account_id': ref('lu_2020_account_461411'),
           'minus_report_expression_ids': [ref('account_tax_report_line_2a_tax_17_tag')],
+      }),
+  ]"/>
+    </record>
+    <record id="lu_2015_tax_ATN_sale_16" model="account.tax.template">
+        <field name="sequence">511</field>
+        <field name="description">16%</field>
+        <field name="name">16-ATN</field>
+        <field name="amount">16</field>
+        <field name="amount_type">percent</field>
+        <field name="type_tax_use">sale</field>
+        <field name="active" eval="False"/>
+        <field name="chart_template_id" ref="lu_2011_chart_1"/>
+        <field name="tax_group_id" ref="tax_group_16"/>
+        <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'plus_report_expression_ids': [ref('account_tax_report_line_1a_non_bus_gs_tag'), ref('account_tax_report_line_2a_base_16_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'plus_report_expression_ids': [ref('account_tax_report_line_2a_tax_16_tag')],
+      }),
+  ]"/>
+        <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+      (0,0, {
+          'repartition_type': 'base',
+          'minus_report_expression_ids': [ref('account_tax_report_line_1a_non_bus_gs_tag'), ref('account_tax_report_line_2a_base_16_tag')],
+      }),
+      (0,0, {
+          'repartition_type': 'tax',
+          'account_id': ref('lu_2020_account_461411'),
+          'minus_report_expression_ids': [ref('account_tax_report_line_2a_tax_16_tag')],
       }),
   ]"/>
     </record>

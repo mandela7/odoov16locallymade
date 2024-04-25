@@ -5,10 +5,11 @@ import datetime
 import logging
 from freezegun import freeze_time
 from lxml import etree
+from unittest.mock import MagicMock, patch
 
-from odoo import tools
+from odoo import sql_db, Command
 from odoo.tests import tagged
-from odoo.addons.l10n_it_edi.tests.common import TestItEdi, patch_proxy_user
+from odoo.addons.l10n_it_edi.tests.common import TestItEdi
 from odoo.addons.l10n_it_edi.tools.remove_signature import remove_signature
 
 _logger = logging.getLogger(__name__)
@@ -43,8 +44,7 @@ class TestItEdiImport(TestItEdi):
 
     @classmethod
     def setUpClass(cls):
-        super().setUpClass(chart_template_ref='l10n_it.l10n_it_chart_template_generic',
-                           edi_format_ref='l10n_it_edi.edi_fatturaPA')
+        super().setUpClass()
 
         # Build test data.
         # invoice_filename1 is used for vendor bill receipts tests
@@ -76,12 +76,8 @@ class TestItEdiImport(TestItEdi):
             ('signed', 'IT01234567890_FPR01.xml.p7m'),
         ]}
 
-    @classmethod
-    def _get_test_file_content(cls, filename):
-        """ Get the content of a test file inside this module """
-        path = 'l10n_it_edi/tests/expected_xmls/' + filename
-        with tools.file_open(path, mode='rb') as test_file:
-            return test_file.read()
+    def mock_commit(self):
+        pass
 
     # -----------------------------
     #
@@ -108,29 +104,105 @@ class TestItEdiImport(TestItEdi):
                 'ref': '01234567890',
             }])
 
-    @patch_proxy_user
+    def test_cron_receives_bill_from_another_company(self):
+        """ Ensure that when from one of your company, you bill the other, the
+        import isn't impeded because of conflicts with the filename """
+        fattura_pa = self.env.ref('l10n_it_edi.edi_fatturaPA')
+        content = self.fake_test_content.encode()
+
+        # Our test content is not encrypted
+        proxy_user = MagicMock()
+        proxy_user.company_id = self.company
+        proxy_user._decrypt_data.return_value = content
+
+        other_company = self.company_data['company']
+        filename = 'IT01234567890_FPR02.xml'
+
+        invoice = self.env['account.move'].with_company(other_company).create({
+            'move_type': 'out_invoice',
+            'invoice_line_ids': [
+                Command.create({
+                    'name': "something not price included",
+                    'price_unit': 800.40,
+                    'tax_ids': [Command.set(self.company_data['default_tax_sale'].ids)],
+                }),
+            ],
+        })
+        self.env['ir.attachment'].with_company(other_company).create({
+            'name': filename,
+            'datas': content,
+            'res_model': 'account.move',
+            'res_id': invoice.id,
+        })
+
+        with patch.object(sql_db.Cursor, "commit", self.mock_commit):
+            fattura_pa._save_incoming_attachment_fattura_pa(
+                proxy_user=proxy_user,
+                id_transaction='9999999999',
+                filename=filename,
+                content=content,
+                key=None)
+
+        attachment = self.env['ir.attachment'].search([
+            ('name', '=', 'IT01234567890_FPR02.xml'),
+            ('res_model', '=', 'account.move'),
+            ('company_id', '=', self.company.id),
+        ])
+        self.assertTrue(attachment)
+        self.assertTrue(self.env['account.move'].browse(attachment.res_id))
+
     def test_receive_same_vendor_bill_twice(self):
         """ Test that the second time we are receiving an SdiCoop invoice, the second is discarded """
 
-        # The make_request function is called twice when running the _cron_receive_fattura_pa
-        # first to the /in/RicezioneInvoice endpoint (to find new incoming invoices)
-        # second to the /api/l10n_it_edi/1/ack to acknowledge the invoices have been recieved
+        fattura_pa = self.env.ref('l10n_it_edi.edi_fatturaPA')
         content = self.fake_test_content.encode()
-        fake_responses = [
-            # Response of the format id_transaction: fattura dict
-            {'9999999999': {'filename': self.invoice_filename2, 'key': '123', 'file': content}},
-            # The response from the _make_request for the ack can be None
-            None,
-        ] * 2 # Since the cron is run twice, and we want the fake results both times
-        self.proxy_user._make_request.side_effect = fake_responses
-        # When calling the decrypt function, the file we're accessing is already decrypted, just return the file
-        self.proxy_user._decrypt_data.side_effect = lambda file, _key: file
-        # In order for the cron function to progress to the point that it imports, we cannot be in demo mode
-        self.proxy_user._get_demo_state.return_value = 'unit_test'
 
-        self.edi_format.with_context({'test_skip_commit': True})._cron_receive_fattura_pa()
+        # Our test content is not encrypted
+        proxy_user = MagicMock()
+        proxy_user.company_id = self.company
+        proxy_user._decrypt_data.return_value = content
+
+        with patch.object(sql_db.Cursor, "commit", self.mock_commit):
+            for dummy in range(2):
+                fattura_pa._save_incoming_attachment_fattura_pa(
+                    proxy_user=proxy_user,
+                    id_transaction='9999999999',
+                    filename=self.invoice_filename2,
+                    content=content,
+                    key=None)
+
         # There should be one attachement with this filename
-        attachment = self.env['ir.attachment'].search([('name', '=', self.invoice_filename2)])
-        self.assertEqual(len(attachment), 1)
-        invoice = self.env['account.move'].search([('payment_reference', '=', 'TWICE_TEST')])
-        self.assertEqual(len(invoice), 1)
+        attachments = self.env['ir.attachment'].search([('name', '=', self.invoice_filename2)])
+        self.assertEqual(len(attachments), 1)
+        invoices = self.env['account.move'].search([('payment_reference', '=', 'TWICE_TEST')])
+        self.assertEqual(len(invoices), 1)
+
+    def test_receive_bill_with_global_discount(self):
+        content = self.with_applied_xpath(
+            etree.fromstring(self.invoice_content),
+            '''
+                <xpath expr="//FatturaElettronicaBody/DatiGenerali/DatiGeneraliDocumento" position="inside">
+                    <ScontoMaggiorazione>
+                        <Tipo>SC</Tipo>
+                        <Importo>2</Importo>
+                    </ScontoMaggiorazione>
+                </xpath>
+            ''')
+        invoices = self.edi_format._create_invoice_from_xml_tree(self.invoice_filename2, content)
+
+        self.assertRecordValues(invoices, [{
+            'amount_untaxed': 3.0,
+            'amount_tax': 1.1,
+        }])
+        self.assertRecordValues(invoices.invoice_line_ids, [
+            {
+                'quantity': 5.0,
+                'name': 'DESCRIZIONE DELLA FORNITURA',
+                'price_unit': 1.0,
+            },
+            {
+                'quantity': 1.0,
+                'name': 'SCONTO',
+                'price_unit': -2,
+            }
+        ])

@@ -29,6 +29,7 @@ import tempfile
 import threading
 import time
 import unittest
+from . import case
 import warnings
 from collections import defaultdict
 from concurrent.futures import Future, CancelledError, wait
@@ -40,13 +41,11 @@ from contextlib import contextmanager, ExitStack
 from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
 from itertools import zip_longest as izip_longest
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 from xmlrpc import client as xmlrpclib
 
 import requests
 import werkzeug.urls
-import werkzeug.urls
-from decorator import decorator
 from lxml import etree, html
 
 import odoo
@@ -63,12 +62,22 @@ from odoo.tools.misc import find_in_path
 from odoo.tools.safe_eval import safe_eval
 
 try:
+    # the behaviour of decorator changed in 5.0.5 changing the structure of the traceback when
+    # an error is raised inside a method using a decorator.
+    # this is not a hudge problem for test execution but this makes error message
+    # more difficult to read and breaks test_with_decorators
+    # This also changes the error format making runbot error matching fail
+    # This also breaks the first frame meaning that the module detection will also fail on runbot
+    # In 5.1 decoratorx was introduced and it looks like it has the same behaviour of old decorator
+    from decorator import decoratorx as decorator
+except ImportError:
+    from decorator import decorator
+
+try:
     import websocket
 except ImportError:
     # chrome headless tests will be skipped
     websocket = None
-
-from .runner import stats_logger
 
 _logger = logging.getLogger(__name__)
 
@@ -81,7 +90,6 @@ ADMIN_USER_ID = odoo.SUPERUSER_ID
 CHECK_BROWSER_SLEEP = 0.1 # seconds
 CHECK_BROWSER_ITERATIONS = 100
 BROWSER_WAIT = CHECK_BROWSER_SLEEP * CHECK_BROWSER_ITERATIONS # seconds
-
 
 def get_db_name():
     db = odoo.tools.config['db_name']
@@ -167,6 +175,8 @@ def new_test_user(env, login='', groups='base.group_user', context=None, **kwarg
 
     return env['res.users'].with_context(**context).create(create_values)
 
+def loaded_demo_data(env):
+    return bool(env.ref('base.user_demo', raise_if_not_found=False))
 
 class RecordCapturer:
     def __init__(self, model, domain):
@@ -187,138 +197,6 @@ class RecordCapturer:
         if self._after is None:
             return self._model.search(self._domain) - self._before
         return self._after
-
-# ------------------------------------------------------------
-# Main classes
-# ------------------------------------------------------------
-if sys.version_info >= (3, 8):
-    BackportSuite = unittest.suite.TestSuite
-else:
-    class BackportSuite(unittest.suite.TestSuite):
-        # Partial backport of bpo-24412, merged in CPython 3.8
-
-        def _handleClassSetUp(self, test, result):
-            previousClass = getattr(result, '_previousTestClass', None)
-            currentClass = test.__class__
-            if currentClass == previousClass:
-                return
-            if result._moduleSetUpFailed:
-                return
-            if getattr(currentClass, "__unittest_skip__", False):
-                return
-
-            try:
-                currentClass._classSetupFailed = False
-            except TypeError:
-                # test may actually be a function
-                # so its class will be a builtin-type
-                pass
-
-            setUpClass = getattr(currentClass, 'setUpClass', None)
-            if setUpClass is not None:
-                unittest.suite._call_if_exists(result, '_setupStdout')
-                try:
-                    setUpClass()
-                except Exception as e:
-                    if isinstance(result, unittest.suite._DebugResult):
-                        raise
-                    currentClass._classSetupFailed = True
-                    className = unittest.util.strclass(currentClass)
-                    self._createClassOrModuleLevelException(result, e,
-                                                            'setUpClass',
-                                                            className)
-                finally:
-                    unittest.suite._call_if_exists(result, '_restoreStdout')
-                    if currentClass._classSetupFailed is True:
-                        if hasattr(currentClass, 'doClassCleanups'):
-                            currentClass.doClassCleanups()
-                            if len(currentClass.tearDown_exceptions) > 0:
-                                for exc in currentClass.tearDown_exceptions:
-                                    self._createClassOrModuleLevelException(
-                                            result, exc[1], 'setUpClass', className,
-                                            info=exc)
-
-        def _createClassOrModuleLevelException(self, result, exc, method_name, parent, info=None):
-            errorName = f'{method_name} ({parent})'
-            self._addClassOrModuleLevelException(result, exc, errorName, info)
-
-        def _addClassOrModuleLevelException(self, result, exception, errorName, info=None):
-            error = unittest.suite._ErrorHolder(errorName)
-            addSkip = getattr(result, 'addSkip', None)
-            if addSkip is not None and isinstance(exception, unittest.case.SkipTest):
-                addSkip(error, str(exception))
-            else:
-                if not info:
-                    result.addError(error, sys.exc_info())
-                else:
-                    result.addError(error, info)
-
-        def _tearDownPreviousClass(self, test, result):
-            previousClass = getattr(result, '_previousTestClass', None)
-            currentClass = test.__class__
-            if currentClass == previousClass:
-                return
-            if getattr(previousClass, '_classSetupFailed', False):
-                return
-            if getattr(result, '_moduleSetUpFailed', False):
-                return
-            if getattr(previousClass, "__unittest_skip__", False):
-                return
-
-            tearDownClass = getattr(previousClass, 'tearDownClass', None)
-            if tearDownClass is not None:
-                unittest.suite._call_if_exists(result, '_setupStdout')
-                try:
-                    tearDownClass()
-                except Exception as e:
-                    if isinstance(result, unittest.suite._DebugResult):
-                        raise
-                    className = unittest.util.strclass(previousClass)
-                    self._createClassOrModuleLevelException(result, e,
-                                                            'tearDownClass',
-                                                            className)
-                finally:
-                    unittest.suite._call_if_exists(result, '_restoreStdout')
-                    if hasattr(previousClass, 'doClassCleanups'):
-                        previousClass.doClassCleanups()
-                        if len(previousClass.tearDown_exceptions) > 0:
-                            for exc in previousClass.tearDown_exceptions:
-                                className = unittest.util.strclass(previousClass)
-                                self._createClassOrModuleLevelException(result, exc[1],
-                                                                        'tearDownClass',
-                                                                        className,
-                                                                        info=exc)
-
-class OdooSuite(BackportSuite):
-    def _handleClassSetUp(self, test, result):
-        previous_test_class = getattr(result, '_previousTestClass', None)
-        if not (
-                previous_test_class != type(test)
-            and hasattr(result, 'stats')
-            and stats_logger.isEnabledFor(logging.INFO)
-        ):
-            super()._handleClassSetUp(test, result)
-            return
-
-        test_class = type(test)
-        test_id = f'{test_class.__module__}.{test_class.__qualname__}.setUpClass'
-        with result.collectStats(test_id):
-            super()._handleClassSetUp(test, result)
-
-    def _tearDownPreviousClass(self, test, result):
-        previous_test_class = getattr(result, '_previousTestClass', None)
-        if not (
-                previous_test_class
-            and previous_test_class != type(test)
-            and hasattr(result, 'stats')
-            and stats_logger.isEnabledFor(logging.INFO)
-        ):
-            super()._tearDownPreviousClass(test, result)
-            return
-
-        test_id = f'{previous_test_class.__module__}.{previous_test_class.__qualname__}.tearDownClass'
-        with result.collectStats(test_id):
-            super()._tearDownPreviousClass(test, result)
 
 
 class MetaCase(type):
@@ -356,34 +234,14 @@ def _normalize_arch_for_assert(arch_string, parser_method="xml"):
     return etree.tostring(arch_string, pretty_print=True, encoding='unicode')
 
 
-class BaseCase(unittest.TestCase, metaclass=MetaCase):
+class BaseCase(case.TestCase, metaclass=MetaCase):
     """ Subclass of TestCase for Odoo-specific code. This class is abstract and
     expects self.registry, self.cr and self.uid to be initialized by subclasses.
     """
-    if sys.version_info < (3, 8):
-        # Partial backport of bpo-24412, merged in CPython 3.8
-        _class_cleanups = []
-
-        @classmethod
-        def addClassCleanup(cls, function, *args, **kwargs):
-            """Same as addCleanup, except the cleanup items are called even if
-            setUpClass fails (unlike tearDownClass). Backport of bpo-24412."""
-            cls._class_cleanups.append((function, args, kwargs))
-
-        @classmethod
-        def doClassCleanups(cls):
-            """Execute all class cleanup functions. Normally called for you after tearDownClass.
-            Backport of bpo-24412."""
-            cls.tearDown_exceptions = []
-            while cls._class_cleanups:
-                function, args, kwargs = cls._class_cleanups.pop()
-                try:
-                    function(*args, **kwargs)
-                except Exception as exc:
-                    cls.tearDown_exceptions.append(sys.exc_info())
 
     longMessage = True      # more verbose error message by default: https://www.odoo.com/r/Vmh
     warm = True             # False during warm-up phase (see :func:`warmup`)
+    _python_version = sys.version_info
 
     def __init__(self, methodName='runTest'):
         super().__init__(methodName)
@@ -413,9 +271,6 @@ class BaseCase(unittest.TestCase, metaclass=MetaCase):
                 super().run(result)
             if not failure:
                 break
-
-    def shortDescription(self):
-        return None
 
     def cursor(self):
         return self.registry.cursor()
@@ -580,6 +435,9 @@ class BaseCase(unittest.TestCase, metaclass=MetaCase):
                     self.env.flush_all()
                     self.env.cr.flush()
 
+        if not self.warm:
+            return
+
         self.assertEqual(
             len(actual_queries), len(expected),
             "\n---- actual queries:\n%s\n---- expected queries:\n%s" % (
@@ -608,7 +466,7 @@ class BaseCase(unittest.TestCase, metaclass=MetaCase):
         """
         if self.warm:
             # mock random in order to avoid random bus gc
-            with self.subTest(), patch('random.random', lambda: 1):
+            with patch('random.random', lambda: 1):
                 login = self.env.user.login
                 expected = counters.get(login, default)
                 if flush:
@@ -623,11 +481,14 @@ class BaseCase(unittest.TestCase, metaclass=MetaCase):
                 if count != expected:
                     # add some info on caller to allow semi-automatic update of query count
                     frame, filename, linenum, funcname, lines, index = inspect.stack()[2]
+                    filename = filename.replace('\\', '/')
                     if "/odoo/addons/" in filename:
                         filename = filename.rsplit("/odoo/addons/", 1)[1]
                     if count > expected:
                         msg = "Query count more than expected for user %s: %d > %d in %s at %s:%s"
-                        self.fail(msg % (login, count, expected, funcname, filename, linenum))
+                        # add a subtest in order to continue the test_method in case of failures
+                        with self.subTest():
+                            self.fail(msg % (login, count, expected, funcname, filename, linenum))
                     else:
                         logger = logging.getLogger(type(self).__module__)
                         msg = "Query count less than expected for user %s: %d < %d in %s at %s:%s"
@@ -759,7 +620,6 @@ class BaseCase(unittest.TestCase, metaclass=MetaCase):
         # Because lxml.attrib is an ordereddict for which order is important
         # to equality, even though *we* don't care
         self.assertEqual(dict(n1.attrib), dict(n2.attrib), msg)
-
         self.assertEqual((n1.text or u'').strip(), (n2.text or u'').strip(), msg)
         self.assertEqual((n1.tail or u'').strip(), (n2.tail or u'').strip(), msg)
 
@@ -798,6 +658,13 @@ class BaseCase(unittest.TestCase, metaclass=MetaCase):
             db=self.env.cr.dbname,
             profile_session=self.profile_session,
             **kwargs)
+
+    def patch_requests(self):
+        # requests.get -> requests.api.request -> Session().request
+        # TBD: enable by default & set side_effect=NotImplementedError to force an error
+        p = patch('requests.Session.request', Mock(spec_set=[]))
+        self.addCleanup(p.stop)
+        return p.start()
 
 savepoint_seq = itertools.count()
 
@@ -853,11 +720,24 @@ class TransactionCase(BaseCase):
         # restore environments after the test to avoid invoking flush() with an
         # invalid environment (inexistent user id) from another test
         envs = self.env.all.envs
+        for env in list(envs):
+            self.addCleanup(env.clear)
+        # restore the set of known environments as it was at setUp
         self.addCleanup(envs.update, list(envs))
         self.addCleanup(envs.clear)
 
         self.addCleanup(self.registry.clear_caches)
-        self.addCleanup(self.env.clear)
+
+        # This prevents precommit functions and data from piling up
+        # until cr.flush is called in 'assertRaises' clauses
+        # (these are not cleared in self.env.clear or envs.clear)
+        cr = self.env.cr
+
+        def _reset(cb, funcs, data):
+            cb._funcs = funcs
+            cb.data = data
+        for callback in [cr.precommit, cr.postcommit, cr.prerollback, cr.postrollback]:
+            self.addCleanup(_reset, callback, collections.deque(callback._funcs), dict(callback.data))
 
         # flush everything in setUpClass before introducing a savepoint
         self.env.flush_all()
@@ -949,6 +829,22 @@ def fchain(future, next_callback):
             new_future.set_exception(e)
 
     return new_future
+
+
+def save_test_file(test_name, content, prefix, extension='png', logger=_logger, document_type='Screenshot', date_format="%Y%m%d_%H%M%S_%f"):
+    assert re.fullmatch(r'\w*_', prefix)
+    assert re.fullmatch(r'[a-z]+', extension)
+    assert re.fullmatch(r'\w+', test_name)
+    now = datetime.now().strftime(date_format)
+    screenshots_dir = pathlib.Path(odoo.tools.config['screenshots']) / get_db_name() / 'screenshots'
+    screenshots_dir.mkdir(parents=True, exist_ok=True)
+    fname = f'{prefix}{now}_{test_name}.{extension}'
+    full_path = screenshots_dir / fname
+
+    with full_path.open('wb') as f:
+        f.write(content)
+    logger.runbot(f'{document_type} in: {full_path}')
+
 
 class ChromeBrowser:
     """ Helper object to control a Chrome headless process. """
@@ -1119,6 +1015,9 @@ class ChromeBrowser:
             '--remote-debugging-port': str(self.remote_debugging_port),
             '--no-sandbox': '',
             '--disable-gpu': '',
+            '--remote-allow-origins': '*',
+            # '--enable-precise-memory-info': '', # uncomment to debug memory leaks in qunit suite
+            # '--js-flags': '--expose-gc', # uncomment to debug memory leaks in qunit suite
         }
         if self.touch_enabled:
             # enable Chrome's Touch mode, useful to detect touch capabilities using
@@ -1169,6 +1068,7 @@ class ChromeBrowser:
         delay = 0.1
         tries = 0
         failure_info = None
+        message = ''
         while timeout > 0:
             try:
                 os.kill(self.chrome_pid, 0)
@@ -1203,7 +1103,7 @@ class ChromeBrowser:
         raise unittest.SkipTest("Error during Chrome headless connection")
 
     def _open_websocket(self):
-        self.ws = websocket.create_connection(self.ws_url, enable_multithread=True)
+        self.ws = websocket.create_connection(self.ws_url, enable_multithread=True, suppress_origin=True)
         if self.ws.getstatus() != 101:
             raise unittest.SkipTest("Cannot connect to chrome dev tools")
         self.ws.settimeout(0.01)
@@ -1217,6 +1117,8 @@ class ChromeBrowser:
         while True: # or maybe until `self._result` is `done()`?
             try:
                 msg = self.ws.recv()
+                if not msg:
+                    continue
                 self._logger.debug('\n<- %s', msg)
             except websocket.WebSocketTimeoutException:
                 continue
@@ -1244,6 +1146,9 @@ class ChromeBrowser:
                         else:
                             f.set_exception(ChromeBrowserException(res['error']['message']))
             except Exception:
+                msg = str(msg)
+                if msg and len(msg) > 500:
+                    msg = msg[:500] + '...'
                 _logger.exception("While processing message %s", msg)
 
     def _websocket_request(self, method, *, params=None, timeout=10.0):
@@ -1298,13 +1203,18 @@ class ChromeBrowser:
             message += '\n' + stack
 
         log_type = type
-        self._logger.getChild('browser').log(
+        _logger = self._logger.getChild('browser')
+        _logger.log(
             self._TO_LEVEL.get(log_type, logging.INFO),
-            "%s", message # might still have %<x> characters
+            "%s%s",
+            "Error received after termination: " if self._result.done() else "",
+            message # might still have %<x> characters
         )
 
         if log_type == 'error':
             self.had_failure = True
+            if self._result.done():
+                return
             if not self.error_checker or self.error_checker(message):
                 self.take_screenshot()
                 self._save_screencast()
@@ -1337,23 +1247,23 @@ class ChromeBrowser:
 
                 if node_id:
                     self.take_screenshot("unsaved_form_")
-                    self._result.set_exception(ChromeBrowserException("""\
+                    msg = """\
 Tour finished with an open form view in edition mode.
 
 Form views in edition mode are automatically saved when the page is closed, \
-which leads to stray network requests and inconsistencies."""))
+which leads to stray network requests and inconsistencies."""
+                    if self._result.done():
+                        _logger.error("%s", msg)
+                    else:
+                        self._result.set_exception(ChromeBrowserException(msg))
                     return
 
-                try:
+                if not self._result.done():
                     self._result.set_result(True)
-                except Exception:
+                elif self._result.exception() is None:
                     # if the future was already failed, we're happy,
                     # otherwise swap for a new failed
-                    if self._result.exception() is None:
-                        self._result = Future()
-                        self._result.set_exception(ChromeBrowserException(
-                            "Tried to make the tour successful twice."
-                        ))
+                    _logger.error("Tried to make the tour successful twice.")
 
 
     def _handle_exception(self, exceptionDetails, timestamp):
@@ -1365,6 +1275,11 @@ which leads to stray network requests and inconsistencies."""))
         stack = ''.join(self._format_stack(exceptionDetails))
         if stack:
             message += '\n' + stack
+
+        if self._result.done():
+            self._logger.getChild('browser').error(
+                "Exception received after termination: %s", message)
+            return
 
         self.take_screenshot()
         self._save_screencast()
@@ -1384,14 +1299,19 @@ which leads to stray network requests and inconsistencies."""))
             wait()
 
     def _handle_screencast_frame(self, sessionId, data, metadata):
+        if not self.screencasts_frames_dir:
+            return
         self._websocket_send('Page.screencastFrameAck', params={'sessionId': sessionId})
         outfile = os.path.join(self.screencasts_frames_dir, 'frame_%05d.b64' % len(self.screencast_frames))
-        with open(outfile, 'w') as f:
-            f.write(data)
-            self.screencast_frames.append({
-                'file_path': outfile,
-                'timestamp': metadata.get('timestamp')
-            })
+        try:
+            with open(outfile, 'w') as f:
+                f.write(data)
+                self.screencast_frames.append({
+                    'file_path': outfile,
+                    'timestamp': metadata.get('timestamp')
+                })
+        except FileNotFoundError:
+            self._logger.debug('Useless screencast frame skipped: %s', outfile)
 
     _TO_LEVEL = {
         'debug': logging.DEBUG,
@@ -1432,6 +1352,8 @@ which leads to stray network requests and inconsistencies."""))
             self._logger.debug('No screencast frames to encode')
             return None
 
+        self.stop_screencast()
+
         for f in self.screencast_frames:
             with open(f['file_path'], 'rb') as b64_file:
                 frame = base64.decodebytes(b64_file.read())
@@ -1459,7 +1381,11 @@ which leads to stray network requests and inconsistencies."""))
                     duration = end_time - self.screencast_frames[i]['timestamp']
                     concat_file.write("file '%s'\nduration %s\n" % (frame_file_path, duration))
                 concat_file.write("file '%s'" % frame_file_path)  # needed by the concat plugin
-            r = subprocess.run([ffmpeg_path, '-intra', '-f', 'concat','-safe', '0', '-i', concat_script_path, '-pix_fmt', 'yuv420p', outfile])
+            try:
+                subprocess.run([ffmpeg_path, '-f', 'concat', '-safe', '0', '-i', concat_script_path, '-pix_fmt', 'yuv420p', '-g', '0', outfile], check=True)
+            except subprocess.CalledProcessError:
+                self._logger.error('Failed to encode screencast.')
+                return
             self._logger.log(25, 'Screencast in: %s', outfile)
         else:
             outfile = outfile.strip('.mp4')
@@ -1469,6 +1395,9 @@ which leads to stray network requests and inconsistencies."""))
     def start_screencast(self):
         assert self.screencasts_dir
         self._websocket_send('Page.startScreencast')
+
+    def stop_screencast(self):
+        self._websocket_send('Page.stopScreencast')
 
     def set_cookie(self, name, value, path, domain):
         params = {'name': name, 'value': value, 'path': path, 'domain': domain}
@@ -1481,7 +1410,8 @@ which leads to stray network requests and inconsistencies."""))
         self._websocket_request('Network.deleteCookies', params=params)
         return
 
-    def _wait_ready(self, ready_code, timeout=60):
+    def _wait_ready(self, ready_code=None, timeout=60):
+        ready_code = ready_code or "document.readyState === 'complete'"
         self._logger.info('Evaluate ready code "%s"', ready_code)
         start_time = time.time()
         result = None
@@ -1551,7 +1481,8 @@ which leads to stray network requests and inconsistencies."""))
     def clear(self):
         self._websocket_send('Page.stopScreencast')
         if self.screencasts_dir and os.path.isdir(self.screencasts_frames_dir):
-            shutil.rmtree(self.screencasts_frames_dir)
+            self.screencasts_dir = self.screencasts_frames_dir = None
+            shutil.rmtree(self.screencasts_frames_dir, ignore_errors=True)
         self.screencast_frames = []
         self._websocket_request('Page.stopLoading')
         self._websocket_request('Runtime.evaluate', params={'expression': """
@@ -1858,7 +1789,6 @@ class HttpCase(TransactionCase):
 
             # Needed because tests like test01.js (qunit tests) are passing a ready
             # code = ""
-            ready = ready or "document.readyState === 'complete'"
             self.assertTrue(self.browser._wait_ready(ready), 'The ready "%s" code was always falsy' % ready)
 
             error = False
@@ -1924,7 +1854,7 @@ def no_retry(arg):
 def users(*logins):
     """ Decorate a method to execute it once for each given user. """
     @decorator
-    def wrapper(func, *args, **kwargs):
+    def _users(func, *args, **kwargs):
         self = args[0]
         old_uid = self.uid
         try:
@@ -1945,7 +1875,7 @@ def users(*logins):
         finally:
             self.uid = old_uid
 
-    return wrapper
+    return _users
 
 
 @decorator
@@ -2987,76 +2917,12 @@ def tagged(*tags):
     """
     include = {t for t in tags if not t.startswith('-')}
     exclude = {t[1:] for t in tags if t.startswith('-')}
+
     def tags_decorator(obj):
         obj.test_tags = (getattr(obj, 'test_tags', set()) | include) - exclude
+        at_install = 'at_install' in obj.test_tags
+        post_install = 'post_install' in obj.test_tags
+        if not (at_install ^ post_install):
+            _logger.warning('A tests should be either at_install or post_install, which is not the case of %r', obj)
         return obj
     return tags_decorator
-
-
-class TagsSelector(object):
-    """ Test selector based on tags. """
-    filter_spec_re = re.compile(r'^([+-]?)(\*|\w*)(?:/(\w*))?(?::(\w*))?(?:\.(\w*))?$')  # [-][tag][/module][:class][.method]
-
-    def __init__(self, spec):
-        """ Parse the spec to determine tags to include and exclude. """
-        filter_specs = {t.strip() for t in spec.split(',') if t.strip()}
-        self.exclude = set()
-        self.include = set()
-
-        for filter_spec in filter_specs:
-            match = self.filter_spec_re.match(filter_spec)
-            if not match:
-                _logger.error('Invalid tag %s', filter_spec)
-                continue
-
-            sign, tag, module, klass, method = match.groups()
-            is_include = sign != '-'
-
-            if not tag and is_include:
-                # including /module:class.method implicitly requires 'standard'
-                tag = 'standard'
-            elif not tag or tag == '*':
-                # '*' indicates all tests (instead of 'standard' tests only)
-                tag = None
-            test_filter = (tag, module, klass, method)
-
-            if is_include:
-                self.include.add(test_filter)
-            else:
-                self.exclude.add(test_filter)
-
-        if self.exclude and not self.include:
-            self.include.add(('standard', None, None, None))
-
-    def check(self, test):
-        """ Return whether ``arg`` matches the specification: it must have at
-            least one tag in ``self.include`` and none in ``self.exclude`` for each tag category.
-        """
-        if not hasattr(test, 'test_tags'): # handle the case where the Test does not inherit from BaseCase and has no test_tags
-            _logger.debug("Skipping test '%s' because no test_tag found.", test)
-            return False
-
-        test_module = getattr(test, 'test_module', None)
-        test_class = getattr(test, 'test_class', None)
-        test_tags = test.test_tags | {test_module}  # module as test_tags deprecated, keep for retrocompatibility,
-        test_method = getattr(test, '_testMethodName', None)
-
-        def _is_matching(test_filter):
-            (tag, module, klass, method) = test_filter
-            if tag and tag not in test_tags:
-                return False
-            elif module and module != test_module:
-                return False
-            elif klass and klass != test_class:
-                return False
-            elif method and test_method and method != test_method:
-                return False
-            return True
-
-        if any(_is_matching(test_filter) for test_filter in self.exclude):
-            return False
-
-        if any(_is_matching(test_filter) for test_filter in self.include):
-            return True
-
-        return False

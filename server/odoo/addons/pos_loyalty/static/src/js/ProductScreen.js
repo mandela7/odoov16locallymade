@@ -56,7 +56,21 @@ export const PosLoyaltyProductScreen = (ProductScreen) =>
                     return false;
                 }
                 const trimmedCode = code.trim();
-                if (trimmedCode && trimmedCode.startsWith('044')) {
+                let nomenclatureRules = this.env.barcode_reader.barcode_parser.nomenclature.rules;
+                if (this.env.barcode_reader.fallbackBarcodeParser) {
+                    nomenclatureRules.push(...this.env.barcode_reader.fallbackBarcodeParser.nomenclature.rules);
+                }
+                const couponNomenclatureRules = _.filter(nomenclatureRules, function(rule) {
+                    return rule.type == "coupon";
+                });
+                let nomenclatureCodePatterns = [];
+                _.each(_.pluck(couponNomenclatureRules, "pattern"), function(pattern){
+                    nomenclatureCodePatterns.push(...pattern.split("|"));
+                });
+                const trimmedCodeValid = _.find(nomenclatureCodePatterns, function(pattern) {
+                    return trimmedCode.startsWith(pattern);
+                });
+                if (trimmedCode && trimmedCodeValid) {
                     // check if the code exist in the database
                     // if so, use its balance, otherwise, use the unit price of the gift card product
                     const fetchedGiftCard = await this.rpc({
@@ -160,7 +174,7 @@ export const PosLoyaltyProductScreen = (ProductScreen) =>
         async _updateSelectedOrderline(event) {
             const selectedLine = this.currentOrder.get_selected_orderline();
             if (event.detail.key === '-') {
-                if (selectedLine.eWalletGiftCardProgram) {
+                if (selectedLine && selectedLine.eWalletGiftCardProgram) {
                     // Do not allow negative quantity or price in a gift card or ewallet orderline.
                     // Refunding gift card or ewallet is not supported.
                     this.showNotification(this.env._t('You cannot set negative quantity or price to gift card or ewallet.'), 4000);
@@ -223,6 +237,12 @@ export const PosLoyaltyProductScreen = (ProductScreen) =>
             }
             if (!selectedLine.is_reward_line || (selectedLine.is_reward_line && val === 'remove')) {
                 selectedLine.order._updateRewards();
+            }
+        }
+        async _showDecreaseQuantityPopup() {
+            const result = await super._showDecreaseQuantityPopup();
+            if (result){
+                this.env.pos.get_order()._updateRewards();
             }
         }
     };

@@ -21,6 +21,7 @@ class IrUiMenu(models.Model):
     _description = 'Menu'
     _order = "sequence,id"
     _parent_store = True
+    _allow_sudo_commands = False
 
     name = fields.Char(string='Menu', required=True, translate=True)
     active = fields.Boolean(default=True)
@@ -231,7 +232,7 @@ class IrUiMenu(models.Model):
 
         xmlids = menu_roots._get_menuitems_xmlids()
         for menu in menu_roots_data:
-            menu['xmlid'] = xmlids[menu['id']]
+            menu['xmlid'] = xmlids.get(menu['id'], '')
 
         return menu_root
 

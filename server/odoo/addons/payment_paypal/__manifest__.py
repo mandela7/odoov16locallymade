@@ -6,6 +6,7 @@
     'category': 'Accounting/Payment Providers',
     'sequence': 350,
     'summary': "An American payment provider for online payments all over the world.",
+    'description': " ",  # Non-empty string to avoid loading the README file.
     'depends': ['payment'],
     'data': [
         'views/payment_paypal_templates.xml',
@@ -15,7 +16,7 @@
         'data/payment_provider_data.xml',
         'data/payment_paypal_email_data.xml',
     ],
-    'application': True,
+    'application': False,
     'post_init_hook': 'post_init_hook',
     'uninstall_hook': 'uninstall_hook',
     'license': 'LGPL-3',

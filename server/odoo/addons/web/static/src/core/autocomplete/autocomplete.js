@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { Deferred } from "@web/core/utils/concurrency";
 import { useForwardRefToParent, useService } from "@web/core/utils/hooks";
 import { useDebounced } from "@web/core/utils/timing";
 import { getActiveHotkey } from "@web/core/hotkeys/hotkey_service";
@@ -23,8 +24,27 @@ export class AutoComplete extends Component {
 
         this.inputRef = useForwardRefToParent("input");
         this.root = useRef("root");
-        this.debouncedOnInput = useDebounced(this.onInput, this.constructor.timeout);
-        useExternalListener(window, "scroll", this.onWindowScroll, true);
+
+        this.debouncedProcessInput = useDebounced(async () => {
+            const currentPromise = this.pendingPromise;
+            this.pendingPromise = null;
+            this.props.onInput({
+                inputValue: this.inputRef.el.value,
+            });
+            try {
+                await this.open(true);
+                currentPromise.resolve();
+            } catch {
+                currentPromise.reject();
+            } finally {
+                if (currentPromise === this.loadingPromise) {
+                    this.loadingPromise = null;
+                }
+            }
+        }, this.constructor.timeout);
+
+        useExternalListener(window, "scroll", this.externalClose, true);
+        useExternalListener(window, "pointerdown", this.externalClose, true);
 
         this.hotkey = useService("hotkey");
         this.hotkeysToRemove = [];
@@ -60,7 +80,7 @@ export class AutoComplete extends Component {
 
     open(useInput = false) {
         this.state.open = true;
-        this.loadSources(useInput);
+        return this.loadSources(useInput);
     }
 
     close() {
@@ -68,8 +88,19 @@ export class AutoComplete extends Component {
         this.state.activeSourceOption = null;
     }
 
-    loadSources(useInput) {
+    cancel() {
+        if (this.inputRef.el.value.length) {
+            if (this.props.autoSelect) {
+                this.inputRef.el.value = this.props.value;
+                this.props.onCancel();
+            }
+        }
+        this.close();
+    }
+
+    async loadSources(useInput) {
         this.sources = [];
+        this.state.activeSourceOption = null;
         const proms = [];
         for (const pSource of this.props.sources) {
             const source = this.makeSource(pSource);
@@ -92,9 +123,8 @@ export class AutoComplete extends Component {
             }
         }
 
-        Promise.all(proms).then(() => {
-            this.navigate(0);
-        });
+        await Promise.all(proms);
+        this.navigate(0);
     }
     loadOptions(options, request) {
         if (typeof options === "function") {
@@ -142,6 +172,8 @@ export class AutoComplete extends Component {
             ...params,
             input: this.inputRef.el,
         });
+        const customEvent = new CustomEvent("AutoComplete:OPTION_SELECTED", { bubbles: true });
+        this.root.el.dispatchEvent(customEvent);
         this.close();
     }
 
@@ -185,26 +217,21 @@ export class AutoComplete extends Component {
 
             if (source) {
                 const optionIndex = step < 0 ? source.options.length - 1 : 0;
-                this.state.activeSourceOption = [sourceIndex, optionIndex];
+                if (optionIndex < source.options.length) {
+                    this.state.activeSourceOption = [sourceIndex, optionIndex];
+                }
             }
         }
     }
 
     onInputBlur() {
-        const value = this.inputRef.el.value;
-        if (
-            this.props.autoSelect &&
-            this.state.activeSourceOption &&
-            value.length > 0 &&
-            value !== this.props.value
-        ) {
-            this.selectOption(this.state.activeSourceOption, { triggeredOnBlur: true });
-        } else {
-            this.props.onBlur({
-                inputValue: value,
-            });
-            this.close();
+        if (this.ignoreBlur) {
+            this.ignoreBlur = false;
+            return;
         }
+        this.props.onBlur({
+            inputValue: this.inputRef.el.value,
+        });
     }
     onInputClick() {
         if (!this.isOpened) {
@@ -213,20 +240,33 @@ export class AutoComplete extends Component {
             this.close();
         }
     }
-    onInputChange() {
+    onInputChange(ev) {
+        if (this.ignoreBlur) {
+            ev.stopImmediatePropagation();
+        }
         this.props.onChange({
             inputValue: this.inputRef.el.value,
         });
     }
-    onInput() {
-        this.props.onInput({
-            inputValue: this.inputRef.el.value,
-        });
-        this.open(true);
+    async onInput() {
+        this.pendingPromise = this.pendingPromise || new Deferred();
+        this.loadingPromise = this.pendingPromise;
+        this.debouncedProcessInput();
     }
 
-    onInputKeydown(ev) {
+    async onInputKeydown(ev) {
         const hotkey = getActiveHotkey(ev);
+        const isSelectKey = hotkey === "enter" || hotkey === "tab";
+
+        if (this.loadingPromise && isSelectKey) {
+            if (hotkey === "enter") {
+                ev.stopPropagation();
+                ev.preventDefault();
+            }
+
+            await this.loadingPromise;
+        }
+
         switch (hotkey) {
             case "enter":
                 if (!this.isOpened || !this.state.activeSourceOption) {
@@ -238,7 +278,7 @@ export class AutoComplete extends Component {
                 if (!this.isOpened) {
                     return;
                 }
-                this.close();
+                this.cancel();
                 break;
             case "tab":
                 if (!this.isOpened) {
@@ -281,11 +321,12 @@ export class AutoComplete extends Component {
     }
     onOptionClick(indices) {
         this.selectOption(indices);
+        this.inputRef.el.focus();
     }
 
-    onWindowScroll(ev) {
+    externalClose(ev) {
         if (this.isOpened && !this.root.el.contains(ev.target)) {
-            this.close();
+            this.cancel();
         }
     }
 }
@@ -309,6 +350,7 @@ Object.assign(AutoComplete, {
         placeholder: { type: String, optional: true },
         autoSelect: { type: Boolean, optional: true },
         resetOnSelect: { type: Boolean, optional: true },
+        onCancel: { type: Function, optional: true },
         onInput: { type: Function, optional: true },
         onChange: { type: Function, optional: true },
         onBlur: { type: Function, optional: true },
@@ -317,6 +359,7 @@ Object.assign(AutoComplete, {
     defaultProps: {
         placeholder: "",
         autoSelect: false,
+        onCancel: () => {},
         onInput: () => {},
         onChange: () => {},
         onBlur: () => {},

@@ -6,6 +6,7 @@
     'category': 'Accounting/Payment Providers',
     'sequence': 350,
     'summary': "A payment provider for custom flows like wire transfers.",
+    'description': " ",  # Non-empty string to avoid loading the README file.
     'depends': ['payment'],
     'data': [
         'views/payment_custom_templates.xml',
@@ -18,7 +19,7 @@
             'payment_custom/static/src/js/post_processing.js',
         ],
     },
-    'application': True,
+    'application': False,
     'post_init_hook': 'post_init_hook',
     'uninstall_hook': 'uninstall_hook',
     'license': 'LGPL-3',

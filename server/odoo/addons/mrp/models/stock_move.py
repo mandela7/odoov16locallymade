@@ -85,6 +85,13 @@ class StockMoveLine(models.Model):
                 move_line._log_message(production, move_line, 'mrp.track_production_move_template', vals)
         return super(StockMoveLine, self).write(vals)
 
+    def _get_aggregated_properties(self, move_line=False, move=False):
+        aggregated_properties = super()._get_aggregated_properties(move_line, move)
+        bom = aggregated_properties['move'].bom_line_id.bom_id
+        aggregated_properties['bom'] = bom or False
+        aggregated_properties['line_key'] += f'_{bom.id if bom else ""}'
+        return aggregated_properties
+
     def _get_aggregated_product_quantities(self, **kwargs):
         """Returns dictionary of products and corresponding values of interest grouped by optional kit_name
 
@@ -97,17 +104,32 @@ class StockMoveLine(models.Model):
         """
         aggregated_move_lines = super()._get_aggregated_product_quantities(**kwargs)
         kit_name = kwargs.get('kit_name')
-        if kit_name:
-            for aggregated_move_line in aggregated_move_lines:
-                if aggregated_move_lines[aggregated_move_line]['description'] == kit_name:
+
+        to_be_removed = []
+        for aggregated_move_line in aggregated_move_lines:
+            bom = aggregated_move_lines[aggregated_move_line]['bom']
+            is_phantom = bom.type == 'phantom' if bom else False
+            if kit_name:
+                product = bom.product_id or bom.product_tmpl_id if bom else False
+                display_name = product.display_name if product else False
+                description = aggregated_move_lines[aggregated_move_line]['description']
+                if not is_phantom or display_name != kit_name:
+                    to_be_removed.append(aggregated_move_line)
+                elif description == kit_name:
                     aggregated_move_lines[aggregated_move_line]['description'] = ""
+            elif not kwargs and is_phantom:
+                to_be_removed.append(aggregated_move_line)
+
+        for move_line in to_be_removed:
+            del aggregated_move_lines[move_line]
+
         return aggregated_move_lines
 
 
 class StockMove(models.Model):
     _inherit = 'stock.move'
 
-    created_production_id = fields.Many2one('mrp.production', 'Created Production Order', check_company=True)
+    created_production_id = fields.Many2one('mrp.production', 'Created Production Order', check_company=True, index=True)
     production_id = fields.Many2one(
         'mrp.production', 'Production Order for finished products', check_company=True, index='btree_not_null')
     raw_material_production_id = fields.Many2one(
@@ -131,13 +153,13 @@ class StockMove(models.Model):
     unit_factor = fields.Float('Unit Factor', compute='_compute_unit_factor', store=True)
     is_done = fields.Boolean(
         'Done', compute='_compute_is_done', store=True)
-    order_finished_lot_id = fields.Many2one('stock.lot', string="Finished Lot/Serial Number", related="raw_material_production_id.lot_producing_id", store=True)
+    order_finished_lot_id = fields.Many2one('stock.lot', string="Finished Lot/Serial Number", related="raw_material_production_id.lot_producing_id", store=True, index='btree_not_null')
     should_consume_qty = fields.Float('Quantity To Consume', compute='_compute_should_consume_qty', digits='Product Unit of Measure')
     cost_share = fields.Float(
         "Cost Share (%)", digits=(5, 2),  # decimal = 2 is important for rounding calculations!!
         help="The percentage of the final production cost for this by-product. The total of all by-products' cost share must be smaller or equal to 100.")
-    product_qty_available = fields.Float('Product On Hand Quantity', related='product_id.qty_available')
-    product_virtual_available = fields.Float('Product Forecasted Quantity', related='product_id.virtual_available')
+    product_qty_available = fields.Float('Product On Hand Quantity', related='product_id.qty_available', depends=['product_id'])
+    product_virtual_available = fields.Float('Product Forecasted Quantity', related='product_id.virtual_available', depends=['product_id'])
     description_bom_line = fields.Char('Kit', compute='_compute_description_bom_line')
     manual_consumption = fields.Boolean(
         'Manual Consumption', compute='_compute_manual_consumption', store=True,
@@ -149,7 +171,7 @@ class StockMove(models.Model):
         for move in self:
             if move.state != 'draft':
                 continue
-            move.manual_consumption = not move.raw_material_production_id.use_auto_consume_components_lots and (move.bom_line_id.manual_consumption or move.has_tracking != 'none')
+            move.manual_consumption = move._is_manual_consumption()
 
     @api.depends('bom_line_id')
     def _compute_description_bom_line(self):
@@ -231,12 +253,6 @@ class StockMove(models.Model):
             mo = self.raw_material_production_id
             self._update_quantity_done(mo)
 
-    @api.onchange('quantity_done')
-    def _onchange_quantity_done(self):
-        if self.raw_material_production_id and not self.manual_consumption and \
-           self.should_consume_qty != self.quantity_done:
-            self.manual_consumption = True
-
     @api.model
     def default_get(self, fields_list):
         defaults = super(StockMove, self).default_get(fields_list)
@@ -285,21 +301,39 @@ class StockMove(models.Model):
                     product_id_to_product[values['product_id']] = product
                     values['location_dest_id'] = mo.production_location_id.id
                     values['price_unit'] = product.standard_price
+                    if not values.get('location_id'):
+                        values['location_id'] = mo.location_src_id.id
                     continue
                 # produced products + byproducts
                 values['location_id'] = mo.production_location_id.id
                 values['date'] = mo._get_date_planned_finished()
                 values['date_deadline'] = mo.date_deadline
+                if not values.get('location_dest_id'):
+                    values['location_dest_id'] = mo.location_dest_id.id
         return super().create(vals_list)
 
     def write(self, vals):
         if self.env.context.get('force_manual_consumption'):
             vals['manual_consumption'] = True
-        if 'product_uom_qty' in vals and 'move_line_ids' in vals:
-            # first update lines then product_uom_qty as the later will unreserve
-            # so possibly unlink lines
-            move_line_vals = vals.pop('move_line_ids')
-            super().write({'move_line_ids': move_line_vals})
+        if 'product_uom_qty' in vals:
+            if 'move_line_ids' in vals:
+                # first update lines then product_uom_qty as the later will unreserve
+                # so possibly unlink lines
+                move_line_vals = vals.pop('move_line_ids')
+                super().write({'move_line_ids': move_line_vals})
+            procurement_requests = []
+            for move in self:
+                if move.raw_material_production_id.state != 'confirmed' \
+                        or not float_is_zero(move.product_uom_qty, precision_rounding=move.product_uom.rounding) \
+                        or move.procure_method != 'make_to_order':
+                    continue
+                values = move._prepare_procurement_values()
+                origin = move._prepare_procurement_origin()
+                procurement_requests.append(self.env['procurement.group'].Procurement(
+                    move.product_id, vals['product_uom_qty'], move.product_uom,
+                    move.location_id, move.rule_id and move.rule_id.name or "/",
+                    origin, move.company_id, values))
+            self.env['procurement.group'].run(procurement_requests)
         return super().write(vals)
 
     def _action_assign(self, force_qty=False):
@@ -312,6 +346,7 @@ class StockMove(models.Model):
 
     def _action_confirm(self, merge=True, merge_into=False):
         moves = self.action_explode()
+        merge_into = merge_into and merge_into.action_explode()
         # we go further with the list of ids potentially changed by action_explode
         return super(StockMove, moves)._action_confirm(merge=merge, merge_into=merge_into)
 
@@ -331,24 +366,27 @@ class StockMove(models.Model):
             if not bom:
                 moves_ids_to_return.add(move.id)
                 continue
-            if move.picking_id.immediate_transfer:
+            if move.picking_id.immediate_transfer or float_is_zero(move.product_uom_qty, precision_rounding=move.product_uom.rounding):
                 factor = move.product_uom._compute_quantity(move.quantity_done, bom.product_uom_id) / bom.product_qty
             else:
                 factor = move.product_uom._compute_quantity(move.product_uom_qty, bom.product_uom_id) / bom.product_qty
             boms, lines = bom.sudo().explode(move.product_id, factor, picking_type=bom.picking_type_id)
             for bom_line, line_data in lines:
-                if move.picking_id.immediate_transfer:
+                if move.picking_id.immediate_transfer or float_is_zero(move.product_uom_qty, precision_rounding=move.product_uom.rounding):
                     phantom_moves_vals_list += move._generate_move_phantom(bom_line, 0, line_data['qty'])
                 else:
                     phantom_moves_vals_list += move._generate_move_phantom(bom_line, line_data['qty'], 0)
             # delete the move with original product which is not relevant anymore
             moves_ids_to_unlink.add(move.id)
 
-        self.env['stock.move'].browse(moves_ids_to_unlink).sudo().unlink()
         if phantom_moves_vals_list:
             phantom_moves = self.env['stock.move'].create(phantom_moves_vals_list)
             phantom_moves._adjust_procure_method()
             moves_ids_to_return |= phantom_moves.action_explode().ids
+        move_to_unlink = self.env['stock.move'].browse(moves_ids_to_unlink).sudo()
+        move_to_unlink.quantity_done = 0
+        move_to_unlink._action_cancel()
+        move_to_unlink.unlink()
         return self.env['stock.move'].browse(moves_ids_to_return)
 
     def action_show_details(self):
@@ -400,7 +438,8 @@ class StockMove(models.Model):
         if bom_line.product_id.type in ['product', 'consu']:
             vals = self.copy_data(default=self._prepare_phantom_move_values(bom_line, product_qty, quantity_done))
             if self.state == 'assigned':
-                vals['state'] = 'assigned'
+                for v in vals:
+                    v['state'] = 'assigned'
         return vals
 
     def _is_consuming(self):
@@ -409,10 +448,10 @@ class StockMove(models.Model):
     def _get_backorder_move_vals(self):
         self.ensure_one()
         return {
-            'state': 'confirmed',
+            'state': 'draft' if self.state == 'draft' else 'confirmed',
             'reservation_date': self.reservation_date,
             'date_deadline': self.date_deadline,
-            'manual_consumption': self.bom_line_id.manual_consumption or self.product_id.tracking != 'none',
+            'manual_consumption': self._is_manual_consumption(),
             'move_orig_ids': [Command.link(m.id) for m in self.mapped('move_orig_ids')],
             'move_dest_ids': [Command.link(m.id) for m in self.mapped('move_dest_ids')],
             'procure_method': self.procure_method,
@@ -458,7 +497,11 @@ class StockMove(models.Model):
 
     @api.model
     def _prepare_merge_moves_distinct_fields(self):
-        return super()._prepare_merge_moves_distinct_fields() + ['created_production_id', 'cost_share', 'bom_line_id']
+        res = super()._prepare_merge_moves_distinct_fields()
+        res += ['created_production_id', 'cost_share']
+        if self.bom_line_id and ("phantom" in self.bom_line_id.bom_id.mapped('type')):
+            res.append('bom_line_id')
+        return res
 
     @api.model
     def _prepare_merge_negative_moves_excluded_distinct_fields(self):
@@ -530,9 +573,9 @@ class StockMove(models.Model):
     def _update_candidate_moves_list(self, candidate_moves_list):
         super()._update_candidate_moves_list(candidate_moves_list)
         for production in self.mapped('raw_material_production_id'):
-            candidate_moves_list.append(production.move_raw_ids)
+            candidate_moves_list.append(production.move_raw_ids.filtered(lambda m: m.product_id in self.product_id))
         for production in self.mapped('production_id'):
-            candidate_moves_list.append(production.move_finished_ids)
+            candidate_moves_list.append(production.move_finished_ids.filtered(lambda m: m.product_id in self.product_id))
 
     def _multi_line_quantity_done_set(self, quantity_done):
         if self.raw_material_production_id:
@@ -546,12 +589,6 @@ class StockMove(models.Model):
         res['bom_line_id'] = self.bom_line_id.id
         return res
 
-    def _get_mto_procurement_date(self):
-        date = super()._get_mto_procurement_date()
-        if 'manufacture' in self.product_id._get_rules_from_location(self.location_id).mapped('action'):
-            date -= relativedelta(days=self.company_id.manufacturing_lead)
-        return date
-
     def action_open_reference(self):
         res = super().action_open_reference()
         source = self.production_id or self.raw_material_production_id
@@ -563,3 +600,12 @@ class StockMove(models.Model):
                 'res_id': source.id,
             }
         return res
+
+    def _is_manual_consumption(self):
+        self.ensure_one()
+        return self._determine_is_manual_consumption(self.product_id, self.raw_material_production_id, self.bom_line_id)
+
+    @api.model
+    def _determine_is_manual_consumption(self, product, production, bom_line):
+        return (product.product_tmpl_id.tracking != 'none' and not production.use_auto_consume_components_lots) or \
+               (product.product_tmpl_id.tracking == 'none' and bom_line and bom_line.manual_consumption)

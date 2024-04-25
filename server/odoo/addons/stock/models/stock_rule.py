@@ -7,7 +7,7 @@ from collections import defaultdict, namedtuple
 from dateutil.relativedelta import relativedelta
 
 from odoo import SUPERUSER_ID, _, api, fields, models, registry
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from odoo.osv import expression
 from odoo.tools import float_compare, float_is_zero, html_escape
 from odoo.tools.misc import split_every
@@ -54,14 +54,14 @@ class StockRule(models.Model):
     group_id = fields.Many2one('procurement.group', 'Fixed Procurement Group')
     action = fields.Selection(
         selection=[('pull', 'Pull From'), ('push', 'Push To'), ('pull_push', 'Pull & Push')], string='Action',
-        required=True)
+        required=True, index=True)
     sequence = fields.Integer('Sequence', default=20)
     company_id = fields.Many2one('res.company', 'Company',
         default=lambda self: self.env.company,
         domain="[('id', '=?', route_company_id)]")
-    location_dest_id = fields.Many2one('stock.location', 'Destination Location', required=True, check_company=True)
-    location_src_id = fields.Many2one('stock.location', 'Source Location', check_company=True)
-    route_id = fields.Many2one('stock.route', 'Route', required=True, ondelete='cascade')
+    location_dest_id = fields.Many2one('stock.location', 'Destination Location', required=True, check_company=True, index=True)
+    location_src_id = fields.Many2one('stock.location', 'Source Location', check_company=True, index=True)
+    route_id = fields.Many2one('stock.route', 'Route', required=True, ondelete='cascade', index=True)
     route_company_id = fields.Many2one(related='route_id.company_id', string='Route Company')
     procure_method = fields.Selection([
         ('make_to_stock', 'Take From Stock'),
@@ -88,7 +88,7 @@ class StockRule(models.Model):
     propagate_carrier = fields.Boolean(
         'Propagation of carrier', default=False,
         help="When ticked, carrier of shipment will be propagated.")
-    warehouse_id = fields.Many2one('stock.warehouse', 'Warehouse', check_company=True)
+    warehouse_id = fields.Many2one('stock.warehouse', 'Warehouse', check_company=True, index=True)
     propagate_warehouse_id = fields.Many2one(
         'stock.warehouse', 'Warehouse to Propagate',
         help="The warehouse to propagate on the created move/procurement, which can be different of the warehouse this rule is for (e.g for resupplying rules from another warehouse)")
@@ -99,6 +99,13 @@ class StockRule(models.Model):
         help="The 'Manual Operation' value will create a stock move after the current one. "
              "With 'Automatic No Step Added', the location is replaced in the original move.")
     rule_message = fields.Html(compute='_compute_action_message')
+
+    @api.constrains('company_id')
+    def _check_company_consistency(self):
+        for rule in self:
+            route = rule.route_id
+            if route.company_id and rule.company_id.id != route.company_id.id:
+                raise ValidationError(_("Rule %s belongs to %s while the route belongs to %s.", rule.display_name, rule.company_id.display_name, route.company_id.display_name))
 
     @api.onchange('picking_type_id')
     def _onchange_picking_type(self):
@@ -204,6 +211,7 @@ class StockRule(models.Model):
             'origin': move_to_copy.origin or move_to_copy.picking_id.name or "/",
             'location_id': move_to_copy.location_dest_id.id,
             'location_dest_id': self.location_dest_id.id,
+            'rule_id': self.id,
             'date': new_date,
             'date_deadline': move_to_copy.date_deadline,
             'company_id': company_id,
@@ -315,6 +323,10 @@ class StockRule(models.Model):
                     partner = partners
                 move_dest.partner_id = self.location_src_id.warehouse_id.partner_id or self.company_id.partner_id
 
+        # If the quantity is negative the move should be considered as a refund
+        if float_compare(product_qty, 0.0, precision_rounding=product_uom.rounding) < 0:
+            values['to_refund'] = True
+
         move_values = {
             'name': name[:2000],
             'company_id': self.company_id.id or self.location_src_id.company_id.id or self.location_dest_id.company_id.id or company_id.id,
@@ -355,6 +367,9 @@ class StockRule(models.Model):
         :rtype: tuple[int, list[str, str]]
         """
         delay = sum(self.filtered(lambda r: r.action in ['pull', 'pull_push']).mapped('delay'))
+        global_visibility_days = self.env['ir.config_parameter'].sudo().get_param('stock.visibility_days')
+        if global_visibility_days:
+            delay += int(global_visibility_days)
         if self.env.context.get('bypass_delay_description'):
             delay_description = []
         else:
@@ -363,6 +378,8 @@ class StockRule(models.Model):
                 for rule in self
                 if rule.action in ['pull', 'pull_push'] and rule.delay
             ]
+        if global_visibility_days:
+            delay_description.append((_('Global Visibility Days'), _('+ %d day(s)') % int(global_visibility_days)))
         return delay, delay_description
 
 
@@ -497,7 +514,7 @@ class ProcurementGroup(models.Model):
         """ Find a pull rule for the location_id, fallback on the parent
         locations if it could not be found.
         """
-        result = False
+        result = self.env['stock.rule']
         location = location_id
         while (not result) and location:
             domain = self._get_rule_domain(location, values)

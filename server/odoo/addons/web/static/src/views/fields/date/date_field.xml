@@ -12,6 +12,9 @@
                 inputId="props.id"
                 placeholder="props.placeholder"
                 onDateTimeChanged="(date) => this.onDateTimeChanged(date)"
+                onInput.bind="onDatePickerInput"
+                onUpdateInput.bind="onUpdateInput"
+                revId="revId"
             />
         </t>
     </t>

@@ -118,6 +118,7 @@ class CrmTeam(models.Model):
     member_warning = fields.Text('Membership Issue Warning', compute='_compute_member_warning')
     crm_team_member_ids = fields.One2many(
         'crm.team.member', 'crm_team_id', string='Sales Team Members',
+        context={'active_test': True},
         help="Add members to automatically assign their documents to this sales team.")
     crm_team_member_all_ids = fields.One2many(
         'crm.team.member', 'crm_team_id', string='Sales Team Members (incl. inactive)',
@@ -190,7 +191,9 @@ class CrmTeam(models.Model):
     def _search_member_ids(self, operator, value):
         return [('crm_team_member_ids.user_id', operator, value)]
 
-    @api.depends('company_id')
+    # 'name' should not be in the trigger, but as 'company_id' is possibly not present in the view
+    # because it depends on the multi-company group, we use it as fake trigger to force computation
+    @api.depends('company_id', 'name')
     def _compute_member_company_ids(self):
         """ Available companies for members. Either team company if set, either
         any company if not set on team. """

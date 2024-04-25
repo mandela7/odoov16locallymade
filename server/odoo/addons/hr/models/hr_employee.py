@@ -81,10 +81,11 @@ class HrEmployeePrivate(models.Model):
         help='Employee bank account to pay salaries')
     permit_no = fields.Char('Work Permit No', groups="hr.group_hr_user", tracking=True)
     visa_no = fields.Char('Visa No', groups="hr.group_hr_user", tracking=True)
-    visa_expire = fields.Date('Visa Expire Date', groups="hr.group_hr_user", tracking=True)
+    visa_expire = fields.Date('Visa Expiration Date', groups="hr.group_hr_user", tracking=True)
     work_permit_expiration_date = fields.Date('Work Permit Expiration Date', groups="hr.group_hr_user", tracking=True)
     has_work_permit = fields.Binary(string="Work Permit", groups="hr.group_hr_user", tracking=True)
     work_permit_scheduled_activity = fields.Boolean(default=False, groups="hr.group_hr_user")
+    work_permit_name = fields.Char('work_permit_name', compute='_compute_work_permit_name')
     additional_note = fields.Text(string='Additional Note', groups="hr.group_hr_user", tracking=True)
     certificate = fields.Selection([
         ('graduate', 'Graduate'),
@@ -120,6 +121,7 @@ class HrEmployeePrivate(models.Model):
     message_main_attachment_id = fields.Many2one(groups="hr.group_hr_user")
     id_card = fields.Binary(string="ID Card Copy", groups="hr.group_hr_user")
     driving_license = fields.Binary(string="Driving License", groups="hr.group_hr_user")
+    currency_id = fields.Many2one('res.currency', related='company_id.currency_id', readonly=True)
 
     _sql_constraints = [
         ('barcode_uniq', 'unique (barcode)', "The Badge ID must be unique, this one is already assigned to another employee."),
@@ -151,10 +153,17 @@ class HrEmployeePrivate(models.Model):
             avatar = employee._origin[image_field]
             if not avatar:
                 if employee.user_id:
-                    avatar = employee.user_id[avatar_field]
+                    avatar = employee.user_id.sudo()[avatar_field]
                 else:
                     avatar = base64.b64encode(employee._avatar_get_placeholder())
             employee[avatar_field] = avatar
+
+    @api.depends('name', 'permit_no')
+    def _compute_work_permit_name(self):
+        for employee in self:
+            name = employee.name.replace(' ', '_') + '_' if employee.name else ''
+            permit_no = '_' + employee.permit_no if employee.permit_no else ''
+            employee.work_permit_name = "%swork_permit%s" % (name, permit_no)
 
     def action_create_user(self):
         self.ensure_one()
@@ -208,7 +217,7 @@ class HrEmployeePrivate(models.Model):
             responsible_user_id = employee.parent_id.user_id.id
             if responsible_user_id:
                 employees_scheduled |= employee
-                lang = self.env['res.partner'].browse(responsible_user_id).lang
+                lang = self.env['res.users'].browse(responsible_user_id).lang
                 formated_date = format_date(employee.env, employee.work_permit_expiration_date, date_format="dd MMMM y", lang_code=lang)
                 employee.activity_schedule(
                     'mail.mail_activity_data_todo',
@@ -231,6 +240,14 @@ class HrEmployeePrivate(models.Model):
         if self.check_access_rights('read', raise_exception=False):
             return super().get_view(view_id, view_type, **options)
         return self.env['hr.employee.public'].get_view(view_id, view_type, **options)
+
+    @api.model
+    def get_views(self, views, options):
+        if self.check_access_rights('read', raise_exception=False):
+            return super().get_views(views, options)
+        res = self.env['hr.employee.public'].get_views(views, options)
+        res['models'].update({'hr.employee': res['models']['hr.employee.public']})
+        return res
 
     @api.model
     def _search(self, args, offset=0, limit=None, order=None, count=False, access_rights_uid=None):
@@ -298,7 +315,7 @@ class HrEmployeePrivate(models.Model):
 
     def _sync_user(self, user, employee_has_image=False):
         vals = dict(
-            work_email=user.email,
+            work_contact_id=user.partner_id.id,
             user_id=user.id,
         )
         if not employee_has_image:
@@ -338,6 +355,7 @@ class HrEmployeePrivate(models.Model):
         onboarding_notes_bodies = {}
         hr_root_menu = self.env.ref('hr.menu_hr_root')
         for employee in employees:
+            employee._message_subscribe(employee.address_home_id.ids)
             # Launch onboarding plans
             url = '/web#%s' % url_encode({
                 'action': 'hr.plan_wizard_action',
@@ -354,13 +372,16 @@ class HrEmployeePrivate(models.Model):
 
     def write(self, vals):
         if 'address_home_id' in vals:
-            account_id = vals.get('bank_account_id') or self.bank_account_id.id
-            if account_id:
-                self.env['res.partner.bank'].browse(account_id).partner_id = vals['address_home_id']
-        if vals.get('user_id'):
+            account_ids = vals.get('bank_account_id') or self.bank_account_id.ids
+            if account_ids:
+                self.env['res.partner.bank'].browse(account_ids).partner_id = vals['address_home_id']
+            self.message_unsubscribe(self.address_home_id.ids)
+            if vals['address_home_id']:
+                self._message_subscribe([vals['address_home_id']])
+        if 'user_id' in vals:
             # Update the profile pictures with user, except if provided 
             vals.update(self._sync_user(self.env['res.users'].browse(vals['user_id']),
-                                        (bool(self.image_1920))))
+                                        (bool(all(emp.image_1920 for emp in self)))))
         if 'work_permit_expiration_date' in vals:
             vals['work_permit_scheduled_activity'] = False
         res = super(HrEmployeePrivate, self).write(vals)
@@ -491,12 +512,8 @@ class HrEmployeePrivate(models.Model):
 
     def _get_unusual_days(self, date_from, date_to=None):
         # Checking the calendar directly allows to not grey out the leaves taken
-        # by the employee
-        # Prevents a traceback when loading calendar views and no employee is linked to the user.
-        if not self:
-            return {}
-        self.ensure_one()
-        return self.resource_calendar_id._get_unusual_days(
+        # by the employee or fallback to the company calendar
+        return (self.resource_calendar_id or self.env.company.resource_calendar_id)._get_unusual_days(
             datetime.combine(fields.Date.from_string(date_from), time.min).replace(tzinfo=UTC),
             datetime.combine(fields.Date.from_string(date_to), time.max).replace(tzinfo=UTC)
         )

@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 
+from collections import defaultdict
 from datetime import timedelta, datetime, date
 import calendar
 
-from odoo import fields, models, api, _
+from odoo import fields, models, api, _, Command
 from odoo.exceptions import ValidationError, UserError, RedirectWarning
 from odoo.tools.mail import is_html_empty
 from odoo.tools.misc import format_date
 from odoo.tools.float_utils import float_round, float_is_zero
+from odoo.addons.account.models.account_move import MAX_HASH_VERSION
 
 
 MONTH_SELECTION = [
@@ -128,6 +130,7 @@ class ResCompany(models.Model):
     terms_type = fields.Selection([('plain', 'Add a Note'), ('html', 'Add a link to a Web Page')],
                                   string='Terms & Conditions format', default='plain')
     invoice_terms_html = fields.Html(string='Default Terms and Conditions as a Web page', translate=True,
+                                     sanitize_attributes=False,
                                      compute='_compute_invoice_terms_html', store=True, readonly=False)
 
     account_setup_bill_state = fields.Selection(ONBOARDING_STEP_STATES, string="State of the onboarding bill step", default='not_done')
@@ -178,6 +181,15 @@ class ResCompany(models.Model):
     # Storno Accounting
     account_storno = fields.Boolean(string="Storno accounting", readonly=False)
 
+    # Multivat
+    fiscal_position_ids = fields.One2many(comodel_name="account.fiscal.position", inverse_name="company_id")
+    multi_vat_foreign_country_ids = fields.Many2many(
+        string="Foreign VAT countries",
+        help="Countries for which the company has a VAT number",
+        comodel_name='res.country',
+        compute='_compute_multi_vat_foreign_country',
+    )
+
     # Fiduciary mode
     quick_edit_mode = fields.Selection(
         selection=[
@@ -203,10 +215,24 @@ class ResCompany(models.Model):
             if rec.fiscalyear_last_day > max_day:
                 raise ValidationError(_("Invalid fiscal year last day"))
 
+    @api.depends('fiscal_position_ids.foreign_vat')
+    def _compute_multi_vat_foreign_country(self):
+        company_to_foreign_vat_country = {
+            val['company_id'][0]: val['country_ids']
+            for val in self.env['account.fiscal.position'].read_group(
+                domain=[('company_id', 'in', self.ids), ('foreign_vat', '!=', False)],
+                fields=['country_ids:array_agg(country_id)'],
+                groupby='company_id',
+            )
+        }
+        for company in self:
+            company.multi_vat_foreign_country_ids = self.env['res.country'].browse(company_to_foreign_vat_country.get(company.id))
+
     @api.depends('country_id')
     def compute_account_tax_fiscal_country(self):
         for record in self:
-            record.account_fiscal_country_id = record.country_id
+            if not record.account_fiscal_country_id:
+                record.account_fiscal_country_id = record.country_id
 
     @api.depends('account_fiscal_country_id')
     def _compute_account_enabled_tax_country_ids(self):
@@ -316,7 +342,7 @@ class ResCompany(models.Model):
                 error_msg = _('There are still unposted entries in the period you want to lock. You should either post or delete them.')
                 action_error = {
                     'view_mode': 'tree',
-                    'name': 'Unposted Entries',
+                    'name': _('Unposted Entries'),
                     'res_model': 'account.move',
                     'type': 'ir.actions.act_window',
                     'domain': [('id', 'in', draft_entries.ids)],
@@ -339,6 +365,8 @@ class ResCompany(models.Model):
 
     def _get_user_fiscal_lock_date(self):
         """Get the fiscal lock date for this company depending on the user"""
+        if not self:
+            return date.min
         self.ensure_one()
         lock_date = max(self.period_lock_date or date.min, self.fiscalyear_lock_date or date.min)
         if self.user_has_groups('account.group_account_manager'):
@@ -382,7 +410,6 @@ class ResCompany(models.Model):
     def setting_init_fiscal_year_action(self):
         """ Called by the 'Fiscal Year Opening' button of the setup bar."""
         company = self.env.company
-        company.create_op_move_if_non_existant()
         new_wizard = self.env['account.financial.year.op'].create({'company_id': company.id})
         view_id = self.env.ref('account.setup_financial_year_opening_form').id
 
@@ -406,9 +433,6 @@ class ResCompany(models.Model):
         if company.opening_move_posted():
             return 'account.action_account_form'
 
-        # Otherwise, we create the opening move
-        company.create_op_move_if_non_existant()
-
         # Then, we open will open a custom tree view allowing to edit opening balances of the account
         view_id = self.env.ref('account.init_accounts_tree').id
         # Hide the current year earnings account as it is automatically computed
@@ -424,27 +448,39 @@ class ResCompany(models.Model):
             'domain': domain,
         }
 
-    @api.model
+    def _get_default_opening_move_values(self):
+        """ Get the default values to create the opening move.
+
+        :return: A dictionary to be passed to account.move.create.
+        """
+        self.ensure_one()
+        default_journal = self.env['account.journal'].search(
+            [
+                ('type', '=', 'general'),
+                ('company_id', '=', self.id),
+            ],
+            limit=1,
+        )
+
+        if not default_journal:
+            raise UserError(_("Please install a chart of accounts or create a miscellaneous journal before proceeding."))
+
+        return {
+            'ref': _('Opening Journal Entry'),
+            'company_id': self.id,
+            'journal_id': default_journal.id,
+            'date': self.account_opening_date - timedelta(days=1),
+        }
+
     def create_op_move_if_non_existant(self):
         """ Creates an empty opening move in 'draft' state for the current company
         if there wasn't already one defined. For this, the function needs at least
         one journal of type 'general' to exist (required by account.move).
         """
+        # TO BE REMOVED IN MASTER
         self.ensure_one()
         if not self.account_opening_move_id:
-            default_journal = self.env['account.journal'].search([('type', '=', 'general'), ('company_id', '=', self.id)], limit=1)
-
-            if not default_journal:
-                raise UserError(_("Please install a chart of accounts or create a miscellaneous journal before proceeding."))
-
-            opening_date = self.account_opening_date - timedelta(days=1)
-
-            self.account_opening_move_id = self.env['account.move'].create({
-                'ref': _('Opening Journal Entry'),
-                'company_id': self.id,
-                'journal_id': default_journal.id,
-                'date': opening_date,
-            })
+            self.account_opening_move_id = self.env['account.move'].create(self._get_default_opening_move_values())
 
     def opening_move_posted(self):
         """ Returns true if this company has an opening account move and this move is posted."""
@@ -472,6 +508,7 @@ class ResCompany(models.Model):
             })
 
     def get_opening_move_differences(self, opening_move_lines):
+        # TO BE REMOVED IN MASTER
         currency = self.currency_id
         balancing_move_line = opening_move_lines.filtered(lambda x: x.account_id == self.get_unaffected_earnings_account())
 
@@ -492,6 +529,7 @@ class ResCompany(models.Model):
         and is unbalanced, balances it with a automatic account.move.line in the
         current year earnings account.
         """
+        # TO BE REMOVED IN MASTER
         if self.account_opening_move_id and self.account_opening_move_id.state == 'draft':
             balancing_account = self.get_unaffected_earnings_account()
             currency = self.currency_id
@@ -521,6 +559,135 @@ class ResCompany(models.Model):
                         'debit': credit_diff,
                         'credit': debit_diff,
                     })
+
+    def _update_opening_move(self, to_update):
+        """ Create or update the opening move for the accounts passed as parameter.
+
+        :param to_update:   A dictionary mapping each account with a tuple (debit, credit).
+                            A separated opening line is created for both fields. A None value on debit/credit means the corresponding
+                            line will not be updated.
+        """
+        self.ensure_one()
+
+        # Don't allow to modify the opening move if not in draft.
+        opening_move = self.account_opening_move_id
+        if opening_move and opening_move.state != 'draft':
+            raise UserError(_(
+                'You cannot import the "openning_balance" if the opening move (%s) is already posted. \
+                If you are absolutely sure you want to modify the opening balance of your accounts, reset the move to draft.',
+                self.account_opening_move_id.name,
+            ))
+
+        move_values = {'line_ids': []}
+        if opening_move:
+            conversion_date = opening_move.date
+        else:
+            move_values.update(self._get_default_opening_move_values())
+            conversion_date = move_values['date']
+
+        # Multi-currency management.
+        cache_conversion_rate_per_currency = {}
+
+        def get_conversion_rate(account_currency):
+            if account_currency in cache_conversion_rate_per_currency:
+                return cache_conversion_rate_per_currency[account_currency]
+
+            rate = cache_conversion_rate_per_currency[account_currency] = self.env['res.currency']._get_conversion_rate(
+                from_currency=self.currency_id,
+                to_currency=account_currency,
+                company=self,
+                date=conversion_date,
+            )
+            return rate
+
+        # Decode the existing opening move.
+        corresponding_lines_per_account = defaultdict(lambda: self.env['account.move.line'])
+        for line in opening_move.line_ids:
+            side = 'debit' if line.balance > 0.0 or line.amount_currency > 0.0 else 'credit'
+            account = line.account_id
+            corresponding_lines_per_account[(account, side)] |= line
+
+        line_ids = []
+        open_balance = 0.0
+        for account, amounts in to_update.items():
+            for i, side, sign in ((0, 'debit', 1), (1, 'credit', -1)):
+                amount = amounts[i]
+                if amount is None:
+                    continue
+
+                currency = account.currency_id or self.currency_id
+                if currency == self.currency_id:
+                    balance = amount_currency = sign * amount
+                else:
+                    balance = sign * amount
+                    rate = get_conversion_rate(currency)
+                    amount_currency = currency.round(balance * rate)
+
+                corresponding_lines = corresponding_lines_per_account[(account, side)]
+
+                if self.currency_id.is_zero(balance):
+                    for line in corresponding_lines:
+                        open_balance -= line.balance
+                        line_ids.append(Command.delete(line.id))
+                elif corresponding_lines:
+                    # Update the existing lines.
+                    corresponding_line = corresponding_lines[0]
+                    open_balance -= corresponding_line.balance
+                    open_balance += balance
+                    line_ids.append(Command.update(corresponding_line.id, {
+                        'balance': balance,
+                        'amount_currency': amount_currency,
+                        'currency_id': currency.id,
+                    }))
+
+                    # If more than one line on this account, remove the others.
+                    for line in corresponding_lines[1:]:
+                        open_balance -= line.balance
+                        line_ids.append(Command.delete(line.id))
+                else:
+                    # Create a new line.
+                    open_balance += balance
+                    line_ids.append(Command.create({
+                        'name': _("Opening balance"),
+                        'balance': balance,
+                        'amount_currency': amount_currency,
+                        'currency_id': currency.id,
+                        'account_id': account.id,
+                    }))
+
+        # Auto-balance.
+        balancing_account = self.get_unaffected_earnings_account()
+        balancing_move_lines = opening_move.line_ids.filtered(lambda x: x.account_id == balancing_account)
+        for i, line in enumerate(balancing_move_lines):
+            open_balance -= line.balance
+            if i > 0:
+                line_ids.append(Command.delete(line.id))
+
+        balancing_move_line = balancing_move_lines[:1]
+        if balancing_move_line and self.currency_id.is_zero(open_balance):
+            line_ids.append(Command.delete(balancing_move_line.id))
+        elif balancing_move_lines:
+            line_ids.append(Command.update(balancing_move_line.id, {
+                'balance': -open_balance,
+                'amount_currency': -open_balance,
+            }))
+        else:
+            line_ids.append(Command.create({
+                'name': _("Automatic Balancing Line"),
+                'account_id': balancing_account.id,
+                'balance': -open_balance,
+                'amount_currency': -open_balance,
+            }))
+
+        # Nothing to do.
+        if not line_ids:
+            return
+
+        move_values['line_ids'] = line_ids
+        if opening_move:
+            opening_move.write(move_values)
+        else:
+            self.account_opening_move_id = self.env['account.move'].create(move_values)
 
     @api.model
     def action_close_account_invoice_onboarding(self):
@@ -588,6 +755,9 @@ class ResCompany(models.Model):
         """Checks that all posted moves have still the same data as when they were posted
         and raises an error with the result.
         """
+        if not self.env.user.has_group('account.group_account_user'):
+            raise UserError(_('Please contact your accountant to print the Hash integrity result.'))
+
         def build_move_info(move):
             return(move.name, move.inalterable_hash, fields.Date.to_string(move.date))
 
@@ -615,8 +785,11 @@ class ResCompany(models.Model):
                 results_by_journal['results'].append(rslt)
                 continue
 
-            all_moves_count = self.env['account.move'].search_count([('state', '=', 'posted'), ('journal_id', '=', journal.id)])
-            moves = self.env['account.move'].search([('state', '=', 'posted'), ('journal_id', '=', journal.id),
+            # We need the `sudo()` to ensure that all the moves are searched, no matter the user's access rights.
+            # This is required in order to generate consistent hashs.
+            # It is not an issue, since the data is only used to compute a hash and not to return the actual values.
+            all_moves_count = self.env['account.move'].sudo().search_count([('state', '=', 'posted'), ('journal_id', '=', journal.id)])
+            moves = self.env['account.move'].sudo().search([('state', '=', 'posted'), ('journal_id', '=', journal.id),
                                             ('secure_sequence_number', '!=', 0)], order="secure_sequence_number ASC")
             if not moves:
                 rslt.update({
@@ -628,8 +801,13 @@ class ResCompany(models.Model):
             previous_hash = u''
             start_move_info = []
             hash_corrupted = False
+            current_hash_version = 1
             for move in moves:
-                if move.inalterable_hash != move._compute_hash(previous_hash=previous_hash):
+                computed_hash = move.with_context(hash_version=current_hash_version)._compute_hash(previous_hash=previous_hash)
+                while move.inalterable_hash != computed_hash and current_hash_version < MAX_HASH_VERSION:
+                    current_hash_version += 1
+                    computed_hash = move.with_context(hash_version=current_hash_version)._compute_hash(previous_hash=previous_hash)
+                if move.inalterable_hash != computed_hash:
                     rslt.update({'msg_cover': _('Corrupted data on journal entry with id %s.', move.id)})
                     results_by_journal['results'].append(rslt)
                     hash_corrupted = True

@@ -45,6 +45,7 @@ This module also uses analytic accounting and is compatible with the invoice on 
         'security/ir_rule.xml',
         'report/hr_expense_report.xml',
         'views/account_move_views.xml',
+        'views/account_payment_views.xml',
         'views/hr_department_views.xml',
         'views/res_config_settings_views.xml',
         'views/account_journal_dashboard.xml',
@@ -65,6 +66,9 @@ This module also uses analytic accounting and is compatible with the invoice on 
         ],
         'web.assets_tests': [
             'hr_expense/static/tests/tours/expense_upload_tours.js',
+        ],
+        'web.qunit_mobile_suite_tests': [
+            'hr_expense/static/tests/expense_mobile_tests.js',
         ],
     },
     'license': 'LGPL-3',

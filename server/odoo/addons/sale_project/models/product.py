@@ -12,11 +12,11 @@ class ProductTemplate(models.Model):
     def _selection_service_policy(self):
         service_policies = [
             # (service_policy, string)
-            ('ordered_prepaid', 'Prepaid/Fixed Price'),
-            ('delivered_manual', 'Based on Delivered Quantity (Manual)'),
+            ('ordered_prepaid', _('Prepaid/Fixed Price')),
+            ('delivered_manual', _('Based on Delivered Quantity (Manual)')),
         ]
         if self.user_has_groups('project.group_project_milestone'):
-            service_policies.insert(1, ('delivered_milestones', 'Based on Milestones'))
+            service_policies.insert(1, ('delivered_milestones', _('Based on Milestones')))
         return service_policies
 
     service_tracking = fields.Selection(
@@ -193,6 +193,12 @@ class ProductProduct(models.Model):
             self.project_template_id = False
         elif self.service_tracking in ['task_in_project', 'project_only']:
             self.project_id = False
+
+    def _inverse_service_policy(self):
+        for product in self:
+            if product.service_policy:
+
+                product.invoice_policy, product.service_type = self.product_tmpl_id._get_service_to_general(product.service_policy)
 
     @api.onchange('type')
     def _onchange_type(self):

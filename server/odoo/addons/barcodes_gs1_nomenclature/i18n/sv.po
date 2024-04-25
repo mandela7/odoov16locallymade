@@ -4,19 +4,21 @@
 # 
 # Translators:
 # Mikael Åkerberg <mikael.akerberg@mariaakerberg.com>, 2022
-# Anders Wallenquist <anders.wallenquist@vertel.se>, 2022
 # Simon S, 2022
 # Martin Trigaux, 2022
 # Kim Asplund <kim.asplund@gmail.com>, 2022
+# Jakob Krabbe <jakob.krabbe@vertel.se>, 2022
+# Lasse L, 2023
+# Anders Wallenquist <anders.wallenquist@vertel.se>, 2024
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.4\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-09 14:05+0000\n"
+"POT-Creation-Date: 2022-12-15 12:50+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Kim Asplund <kim.asplund@gmail.com>, 2022\n"
-"Language-Team: Swedish (https://www.transifex.com/odoo/teams/41243/sv/)\n"
+"Last-Translator: Anders Wallenquist <anders.wallenquist@vertel.se>, 2024\n"
+"Language-Team: Swedish (https://app.transifex.com/odoo/teams/41243/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -31,9 +33,8 @@ msgstr ""
 #. module: barcodes_gs1_nomenclature
 #: model:ir.model.fields,help:barcodes_gs1_nomenclature.field_barcode_nomenclature__gs1_separator_fnc1
 msgid ""
-"Alternative regex delimiter for the FNC1 (by default, if not set, it is <GS>"
-" ASCII 29 char). The separator must not match the begin/end of any related "
-"rules pattern."
+"Alternative regex delimiter for the FNC1. The separator must not match the "
+"begin/end of any related rules pattern."
 msgstr ""
 
 #. module: barcodes_gs1_nomenclature
@@ -89,12 +90,17 @@ msgstr ""
 #. module: barcodes_gs1_nomenclature
 #: model:ir.model.fields,field_description:barcodes_gs1_nomenclature.field_barcode_rule__gs1_content_type
 msgid "GS1 Content Type"
-msgstr ""
+msgstr "GS1 Innehållstyp"
 
 #. module: barcodes_gs1_nomenclature
 #: model:ir.model.fields.selection,name:barcodes_gs1_nomenclature.selection__barcode_rule__encoding__gs1-128
 msgid "GS1-128"
 msgstr ""
+
+#. module: barcodes_gs1_nomenclature
+#: model:ir.model,name:barcodes_gs1_nomenclature.model_ir_http
+msgid "HTTP Routing"
+msgstr "HTTP-rutt"
 
 #. module: barcodes_gs1_nomenclature
 #: model:ir.model.fields,help:barcodes_gs1_nomenclature.field_barcode_rule__gs1_decimal_usage
@@ -103,14 +109,14 @@ msgid ""
 msgstr ""
 
 #. module: barcodes_gs1_nomenclature
-#. openerp-web
+#. odoo-javascript
 #: code:addons/barcodes_gs1_nomenclature/static/src/js/barcode_parser.js:0
 #, python-format
 msgid "Invalid barcode: can't be formated as date"
 msgstr ""
 
 #. module: barcodes_gs1_nomenclature
-#. openerp-web
+#. odoo-javascript
 #: code:addons/barcodes_gs1_nomenclature/static/src/js/barcode_parser.js:0
 #, python-format
 msgid "Invalid barcode: the check digit is incorrect"
@@ -135,7 +141,7 @@ msgstr "Parti"
 #. module: barcodes_gs1_nomenclature
 #: model:ir.model.fields.selection,name:barcodes_gs1_nomenclature.selection__barcode_rule__gs1_content_type__measure
 msgid "Measure"
-msgstr ""
+msgstr "Mätning"
 
 #. module: barcodes_gs1_nomenclature
 #: model:ir.model.fields.selection,name:barcodes_gs1_nomenclature.selection__barcode_rule__gs1_content_type__identifier
@@ -145,7 +151,7 @@ msgstr ""
 #. module: barcodes_gs1_nomenclature
 #: model:ir.model.fields.selection,name:barcodes_gs1_nomenclature.selection__barcode_rule__type__pack_date
 msgid "Pack Date"
-msgstr ""
+msgstr "Datum för paketering"
 
 #. module: barcodes_gs1_nomenclature
 #: model:ir.model.fields.selection,name:barcodes_gs1_nomenclature.selection__barcode_rule__type__package
@@ -163,6 +169,7 @@ msgid "Quantity"
 msgstr "Antal"
 
 #. module: barcodes_gs1_nomenclature
+#. odoo-python
 #: code:addons/barcodes_gs1_nomenclature/models/barcode_nomenclature.py:0
 #, python-format
 msgid "The FNC1 Separator Alternative is not a valid Regex: "
@@ -179,12 +186,14 @@ msgid ""
 msgstr ""
 
 #. module: barcodes_gs1_nomenclature
+#. odoo-python
 #: code:addons/barcodes_gs1_nomenclature/models/barcode_rule.py:0
 #, python-format
 msgid "The rule pattern \"%s\" is not a valid Regex: "
 msgstr ""
 
 #. module: barcodes_gs1_nomenclature
+#. odoo-python
 #: code:addons/barcodes_gs1_nomenclature/models/barcode_rule.py:0
 #, python-format
 msgid ""
@@ -194,6 +203,7 @@ msgid ""
 msgstr ""
 
 #. module: barcodes_gs1_nomenclature
+#. odoo-python
 #: code:addons/barcodes_gs1_nomenclature/models/barcode_nomenclature.py:0
 #, python-format
 msgid ""
@@ -211,14 +221,14 @@ msgid ""
 msgstr ""
 
 #. module: barcodes_gs1_nomenclature
-#. openerp-web
+#. odoo-javascript
 #: code:addons/barcodes_gs1_nomenclature/static/src/js/barcode_parser.js:0
 #, python-format
 msgid "This barcode can't be parsed by any barcode rules."
 msgstr ""
 
 #. module: barcodes_gs1_nomenclature
-#. openerp-web
+#. odoo-javascript
 #: code:addons/barcodes_gs1_nomenclature/static/src/js/barcode_parser.js:0
 #, python-format
 msgid "This barcode can't be partially or fully parsed."

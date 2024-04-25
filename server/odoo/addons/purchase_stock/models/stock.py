@@ -89,7 +89,7 @@ class Orderpoint(models.Model):
     vendor_id = fields.Many2one(related='supplier_id.partner_id', string="Vendor", store=True)
     purchase_visibility_days = fields.Float(default=0.0, help="Visibility Days applied on the purchase routes.")
 
-    @api.depends('product_id.purchase_order_line_ids', 'product_id.purchase_order_line_ids.state')
+    @api.depends('product_id.purchase_order_line_ids.product_qty', 'product_id.purchase_order_line_ids.state')
     def _compute_qty(self):
         """ Extend to add more depends values """
         return super()._compute_qty()
@@ -186,19 +186,17 @@ class Orderpoint(models.Model):
         return res
 
     def _set_default_route_id(self):
-        route_id = self.env['stock.rule'].search([
+        route_ids = self.env['stock.rule'].search([
             ('action', '=', 'buy')
         ]).route_id
-        orderpoint_wh_supplier = self.filtered(lambda o: o.product_id.seller_ids)
-        if route_id and orderpoint_wh_supplier:
-            orderpoint_wh_supplier.route_id = route_id[0].id
+        for orderpoint in self:
+            route_id = orderpoint.rule_ids.route_id & route_ids
+            if not orderpoint.product_id.seller_ids:
+                continue
+            if not route_id:
+                continue
+            orderpoint.route_id = route_id[0].id
         return super()._set_default_route_id()
-
-    def _get_orderpoint_procurement_date(self):
-        date = super()._get_orderpoint_procurement_date()
-        if any(rule.action == 'buy' for rule in self.rule_ids):
-            date -= relativedelta(days=self.company_id.po_lead)
-        return date
 
 
 class StockLot(models.Model):
@@ -225,3 +223,20 @@ class StockLot(models.Model):
         action['domain'] = [('id', 'in', self.mapped('purchase_order_ids.id'))]
         action['context'] = dict(self._context, create=False)
         return action
+
+
+class ProcurementGroup(models.Model):
+    _inherit = 'procurement.group'
+
+    @api.model
+    def run(self, procurements, raise_user_error=True):
+        wh_by_comp = dict()
+        for procurement in procurements:
+            routes = procurement.values.get('route_ids')
+            if routes and any(r.action == 'buy' for r in routes.rule_ids):
+                company = procurement.company_id
+                if company not in wh_by_comp:
+                    wh_by_comp[company] = self.env['stock.warehouse'].search([('company_id', '=', company.id)])
+                wh = wh_by_comp[company]
+                procurement.values['route_ids'] |= wh.reception_route_id
+        return super().run(procurements, raise_user_error=raise_user_error)

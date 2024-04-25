@@ -21,6 +21,7 @@ import {
 import {
     click,
     getFixture,
+    getNodesTextContent,
     legacyExtraNextTick,
     mount,
     nextTick,
@@ -28,7 +29,7 @@ import {
 } from "../../helpers/utils";
 import { createWebClient, doAction, getActionManagerServerData } from "../../webclient/helpers";
 import { openViewItem } from "@web/webclient/debug_items";
-import { editSearchView, editView, setDefaults } from "@web/views/debug_items";
+import { editSearchView, editView, setDefaults, viewMetadata } from "@web/views/debug_items";
 
 import { Component, xml } from "@odoo/owl";
 const { prepareRegistriesWithCleanup } = utils;
@@ -262,12 +263,8 @@ QUnit.module("DebugMenu", (hooks) => {
             if (args.method === "check_access_rights") {
                 return Promise.resolve(true);
             }
-            if (route === "/web/dataset/call_kw/ir.attachment/search") {
-                assert.step("ir.attachment/search");
-                return [1, 2, 3];
-            }
-            if (route === "/web/dataset/call_kw/ir.attachment/unlink") {
-                assert.step("ir.attachment/unlink");
+            if (route === "/web/dataset/call_kw/ir.attachment/regenerate_assets_bundles") {
+                assert.step("ir.attachment/regenerate_assets_bundles");
                 return Promise.resolve(true);
             }
         };
@@ -285,7 +282,7 @@ QUnit.module("DebugMenu", (hooks) => {
         const item = target.querySelector(".dropdown-menu .dropdown-item");
         assert.strictEqual(item.textContent, "Regenerate Assets Bundles");
         await click(item);
-        assert.verifySteps(["ir.attachment/search", "ir.attachment/unlink", "reloadPage"]);
+        assert.verifySteps(["ir.attachment/regenerate_assets_bundles", "reloadPage"]);
     });
 
     QUnit.test("can open a view", async (assert) => {
@@ -654,5 +651,149 @@ QUnit.module("DebugMenu", (hooks) => {
         await nextTick();
         await click(target.querySelectorAll(".modal .modal-footer button")[1]);
         assert.containsNone(target, ".modal");
+    });
+
+    QUnit.test("view metadata: basic rendering", async (assert) => {
+        prepareRegistriesWithCleanup();
+        patchWithCleanup(odoo, {
+            debug: true,
+        });
+
+        registry.category("services").add("user", makeFakeUserService());
+        registry.category("debug").category("form").add("viewMetadata", viewMetadata);
+
+        const serverData = getActionManagerServerData();
+        serverData.actions[1234] = {
+            id: 1234,
+            xml_id: "action_1234",
+            name: "Partners",
+            res_model: "partner",
+            res_id: 27,
+            type: "ir.actions.act_window",
+            views: [[false, "form"]],
+        };
+        serverData.models.partner.records = [{ id: 27, display_name: "p1" }];
+
+        const mockRPC = async (route, args) => {
+            if (args.method === "check_access_rights") {
+                return Promise.resolve(true);
+            }
+            if (args.method === "get_metadata") {
+                return [
+                    {
+                        create_date: "2023-01-26 14:12:10",
+                        create_uid: [4, "Some user"],
+                        id: 27,
+                        noupdate: false,
+                        write_date: "2023-01-26 14:13:31",
+                        write_uid: [6, "Another User"],
+                        xmlid: "abc.partner_16",
+                        xmlids: [{ xmlid: "abc.partner_16", noupdate: false }],
+                    },
+                ];
+            }
+        };
+        const webClient = await createWebClient({ serverData, mockRPC });
+        await doAction(webClient, 1234);
+        await click(target.querySelector(".o_debug_manager button"));
+        await click(target.querySelector(".o_debug_manager .dropdown-item"));
+        assert.containsOnce(target, ".modal");
+        assert.deepEqual(
+            getNodesTextContent(
+                target.querySelectorAll(".modal-body table tr th, .modal-body table tr td")
+            ),
+            [
+                "ID:",
+                "27",
+                "XML ID:",
+                "abc.partner_16",
+                "No Update:",
+                "false (change)",
+                "Creation User:",
+                "Some user",
+                "Creation Date:",
+                "01/26/2023 15:12:10",
+                "Latest Modification by:",
+                "Another User",
+                "Latest Modification Date:",
+                "01/26/2023 15:13:31",
+            ]
+        );
+    });
+
+    QUnit.test("set defaults: setting default value for datetime field", async (assert) => {
+        assert.expect(7);
+
+        prepareRegistriesWithCleanup();
+        patchWithCleanup(odoo, {
+            debug: true,
+        });
+
+        registry.category("services").add("user", makeFakeUserService());
+        registry.category("debug").category("form").add("setDefaults", setDefaults);
+
+        const serverData = getActionManagerServerData();
+        serverData.actions[1234] = {
+            id: 1234,
+            xml_id: "action_1234",
+            name: "Partners",
+            res_model: "partner",
+            res_id: 1,
+            type: "ir.actions.act_window",
+            views: [[18, "form"]],
+        };
+        serverData.models.partner.fields.datetime = {string: 'Datetime', type: 'datetime'}
+        serverData.models.partner.fields.reference = {string: 'Reference', type: 'reference', selection: [["pony", "Pony"]]}
+        serverData.views["partner,18,form"] = `
+            <form>
+                <field name="datetime"/>
+                <field name="reference"/>
+                <field name="m2o"/>
+            </form>`;
+        serverData.models["ir.ui.view"] = {
+            fields: {},
+            records: [{ id: 18 }],
+        };
+        serverData.models.pony.records = [{
+            id: 1,
+            name: "Test"
+        }];
+        serverData.models.partner.records = [{
+            id: 1,
+            display_name: "p1",
+            datetime: "2024-01-24 16:46:16",
+            reference: 'pony,1',
+            m2o: 1
+        }];
+
+        const mockRPC = async (route, args) => {
+            if (args.method === "check_access_rights") {
+                return Promise.resolve(true);
+            }
+            if (args.method === "set" && args.model === "ir.default") {
+                arg_steps.push(args.args)
+                return true;
+            }
+        };
+        const webClient = await createWebClient({serverData, mockRPC});
+        let arg_steps = [];
+        for (const field_name of ['datetime', 'reference', 'm2o']) {
+            await doAction(webClient, 1234);
+            await click(target.querySelector(".o_debug_manager button"));
+            await click(target.querySelector(".o_debug_manager .dropdown-item"));
+            assert.containsOnce(target, ".modal");
+
+            const select = target.querySelector(".modal #formview_default_fields");
+            select.value = field_name;
+            select.dispatchEvent(new Event("change"));
+            await nextTick();
+            await click(target.querySelectorAll(".modal .modal-footer button")[1]);
+            assert.containsNone(target, ".modal");
+        }
+        assert.deepEqual(arg_steps, [
+            ["partner", "datetime", "2024-01-24 16:46:16", true, true, false],
+            ["partner", "reference", {"displayName": "Test", "resId": 1, "resModel": "pony"}, true, true, false],
+            ["partner", "m2o", 1, true, true, false],
+        ]);
     });
 });
